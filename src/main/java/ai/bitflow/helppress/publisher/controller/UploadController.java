@@ -73,7 +73,7 @@ public class UploadController {
     /**
      * 파일을 씁니다.
      */
-    private static void writeFile(String path, byte[] bytes) throws IOException {
+    private void writeFile(String path, byte[] bytes) throws IOException {
         OutputStream os = null;
         try {
             os = new FileOutputStream(path);
@@ -86,10 +86,10 @@ public class UploadController {
     /**
      * 디렉토리가 없는 경우 디렉토리를 생성합니다.
      */
-    private static void makeDirectory(String dirPath) {
+    private void makeDirectory(String dirPath) {
         File dir = new File(dirPath);
         if (!dir.exists()) {
-            dir.mkdir();
+            dir.mkdirs();
         }
     }
 }

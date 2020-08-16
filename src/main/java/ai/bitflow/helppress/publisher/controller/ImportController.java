@@ -49,7 +49,7 @@ public class ImportController {
     public Map<String, Object> importDoc(HttpServletRequest request, @RequestParam("file") MultipartFile importFile)
             throws IOException {
 
-    	String TEMP_DOC_UPLOAD_PATH = UPLOAD_ROOT_PATH + File.separator + TEMP_DOC_REL_PATH;
+    	String TEMP_DOC_UPLOAD_PATH = UPLOAD_ROOT_PATH + TEMP_DOC_REL_PATH;
         makeDirectory(TEMP_DOC_UPLOAD_PATH);
 
         String fileName = importFile.getOriginalFilename();
@@ -59,7 +59,7 @@ public class ImportController {
      
         // 파일별로 변환결과를 저장할 경로 생성
         String key = (String) request.getParameter("key");
-        String worksDirAbsPath = UPLOAD_ROOT_PATH + File.separator + IMG_UPLOAD_REL_PATH + File.separator + key;
+        String worksDirAbsPath = UPLOAD_ROOT_PATH + IMG_UPLOAD_REL_PATH + File.separator + key;
         makeDirectory(worksDirAbsPath);
  
         // 문서 변환
@@ -125,7 +125,7 @@ public class ImportController {
      * @return
      * @throws IOException
      */
-    public static Integer[] serializePbData(String pbFilePath) throws IOException {
+    public Integer[] serializePbData(String pbFilePath) throws IOException {
         List<Integer> serializedData = new ArrayList<Integer>();
         FileInputStream fis = null;
         InflaterInputStream ifis = null;
@@ -160,7 +160,7 @@ public class ImportController {
      * @param bytes
      * @throws IOException
      */
-    private static void writeFile(String path, byte[] bytes) throws IOException {
+    private void writeFile(String path, byte[] bytes) throws IOException {
         OutputStream os = null;
         try {
             os = new FileOutputStream(path);
@@ -174,7 +174,7 @@ public class ImportController {
      * 파일 삭제
      * @param path
      */
-    private static void deleteFile(String path) {
+    private void deleteFile(String path) {
         File file = new File(path);
         if (file.exists()) {
             file.delete();
@@ -184,10 +184,12 @@ public class ImportController {
     /**
      * 디렉토리가 없는 경우 디렉토리를 생성합니다.
      */
-    private static void makeDirectory(String dirPath) {
+    private void makeDirectory(String dirPath) {
         File dir = new File(dirPath);
+        logger.debug("making dir " + dir.getAbsolutePath());
         if (!dir.exists()) {
-            dir.mkdir();
+        	logger.debug("not exists");
+            dir.mkdirs();
         }
     }
      
