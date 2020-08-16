@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>관리자등록 - DB금융투자 도움말 제작도구</title>
+<link rel="shortcut icon" type="image/ico" href="/img/favicon.ico">
+<link rel="stylesheet" type="text/css" href="/bootstrap-4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/mini-default.min.css">
+<link rel="stylesheet" type="text/css" href="/css/install.css">
+</head>
+<body>
+
+<div class="container">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card row">
+      <div class="card-left col-sm-3">
+        <img src="/img/bg-cms-login-left.jpg" style="width: 100%;"/>
+      </div>
+      <div class="card-content-wrapper col-sm-9">
+	      <div class="card-header">
+	        <h3>관리자 등록</h3>
+	      </div>
+	      <div class="card-body">
+          <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
+          <fieldset>
+            <div class="row">
+              <div class="col-5">
+                <label for="username">아이디</label>
+              </div>
+              <div class="col-7">
+                <input type="text" id="username" name="username" placeholder="아이디" maxlength="16" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-5">
+                <label for="password">비밀번호</label>
+              </div>
+              <div class="col-7">
+                <input type="password" id="password" name="password" placeholder="비밀번호" maxlength="16" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-5">
+                <label for="password2">비밀번호 확인</label>
+              </div>
+              <div class="col-7">
+                <input type="password" id="password2" name="password2" placeholder="비밀번호 확인" onkeydown="onJoinEnterPressed();" maxlength="16" />
+              </div>
+            </div>
+             <div class="row">
+               <div class="col-12 button-wrapper">
+                 <button id="btn-join" class="primary">관리자 등록</button>
+                 <!-- <div><a href="/login">※ 로그인을 하시겠습니까?</a></div> -->
+               </div>
+              </div>
+          </fieldset>
+	      </div>
+      </div>
+		</div>
+	</div>
+</div>
+
+<div class="spinner primary"></div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/ecm/join_login.js"></script>
+
+</body>
+</html>

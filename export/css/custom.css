@@ -1,0 +1,111 @@
+html, body { height: 100%; overflow-y: hidden; }
+header { background-color: white; position: relative; }
+header li { border-top: 1px solid #ccc; }
+header li + li { border-left: 1px solid #ccc; }
+.fancytree-title { font-size: 14px; }
+span.fancytree-focused span.fancytree-title { outline: none; }
+#tree { height: calc(100% - 50px); border: 0; border-radius: 6px; padding: 0;
+	-ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none; }
+#bf-body-wrapper { height: calc(100% - 56px); padding: 0; }
+#bf-content-area { height: 100%; }
+span.fancytree-node { width: 96%; }
+.bf-menu-section { position: relative; padding: 0 12px; }
+.tree-menu { padding: 11px 0 3px 0; }
+#search-bar { width: 100%; height: 40px; margin: 2px 0px; border: 2px solid #888; background-color: white; border-radius: 9px; font-size: 14px; }
+#ic-search { position: absolute; right: 12px; top: 12px; color: #888; }
+span.fancytree-active span.fancytree-title { border-radius: 3px; }
+.modal { display: none; }
+.logo > img { height: 30px; margin-top: 9px; position: absolute; }
+#ft-id-1, .ui-fancytree.fancytree-container { border: none; background-color: inherit; }
+.ui-fancytree.fancytree-container.fancytree-plain.fancytree-treefocus { border: none; }
+span.fancytree-empty, span.fancytree-vline, span.fancytree-expander, span.fancytree-icon, span.fancytree-checkbox, span.fancytree-drag-helper-img, #fancytree-drop-marker {
+  background-image: url(../img/ic-tree.png); background-size: cover; }
+.fancytree-exp-cl span.fancytree-expander, .fancytree-exp-c span.fancytree-expander {
+  background-position: 0px -16px; }
+.fancytree-exp-e span.fancytree-expander, .fancytree-exp-ed span.fancytree-expander, .fancytree-exp-el span.fancytree-expander, .fancytree-exp-edl span.fancytree-expander {
+  background-position: 0px 0px; }
+.tree-menu i { font-size: 20px; color: #888; cursor: pointer; }
+:focus { outline: none; }
+.col-20 { width: calc(20% - 25px); border-right: 1px solid #eee; background-color: #f6f6f6; }
+.col-80 { width: 80%; background-color: white; }
+.fancytree-treefocus span.fancytree-active.fancytree-folder span.fancytree-title {
+  color: inherit; background-color: inherit; outline: none; }
+.fancytree-exp-n span.fancytree-expander,
+  .fancytree-exp-nl span.fancytree-expander { width: 2px; }
+.fancytree-folder { border: 1px solid #ccc; padding-left: 6px; background-color: white; }
+.fancytree-exp-e span.fancytree-expander, .fancytree-exp-ed span.fancytree-expander, .fancytree-exp-el span.fancytree-expander, .fancytree-exp-edl span.fancytree-expander, .fancytree-exp-c span.fancytree-expander, .fancytree-exp-cl span.fancytree-expander 
+{ margin-top: 3px; }
+#footer-copyright { position: absolute; bottom: 0; height: 32px; width: 100%; background-color: white; border-top: 1px solid #eee;
+  text-align: center; }
+#footer-copyright > div { display: inline-flex; left: calc(50% - 180px); font-size: 13px; vertical-align: middle; }
+#footer-copyright img { margin-top: 3px; }
+#bf-contents { position: relative; }
+#contents-detail { height: calc(100% - 32px); }
+.fancytree-exp-e span.fancytree-expander:hover, .fancytree-exp-c span.fancytree-expander:hover { 
+  background-image: url(../img/ic-tree.png); background-size: cover; }
+.fancytree-exp-e span.fancytree-expander, .fancytree-exp-ed span.fancytree-expander, .fancytree-exp-el span.fancytree-expander, .fancytree-exp-edl span.fancytree-expander
+  , .fancytree-exp-c span.fancytree-expander, .fancytree-exp-cl span.fancytree-expander  { border: none; }
+.fancytree-exp-e span.fancytree-expander:hover { background-position: 0 0; }
+.fancytree-exp-c span.fancytree-expander:hover, .fancytree-exp-cl span.fancytree-expander:hover { background-position: 0 -16px; }
+iframe { border: 0; }
+span.fancytree-icon { display: none; }
+span.fancytree-expander {
+  width: 16px; height: 16px; margin: 0; padding: 0; }
+.floating-export-wrapper { position: absolute; right: 12px; bottom: 0; }
+.floating-export-wrapper i { padding: 12px 14px; background-color: var(--mark-back-color); color: white; cursor: pointer; }
+#snackbar {
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: #f3f3f3; /* Black background color */
+  border: 1px solid #333;
+  color: #333; /* White text color */
+  text-align: center; /* Centered text */
+  border-radius: 6px; /* Rounded borders */
+  padding: 16px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  top: 30px; /* 30px from the bottom */
+  -webkit-box-shadow: 3px 3px 5px -3px rgba(102,102,102,0.7);
+  -moz-box-shadow: 3px 3px 5px -3px rgba(102,102,102,0.7);
+  box-shadow: 3px 3px 5px -3px rgba(102,102,102,0.7);
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {top: 0; opacity: 0;}
+  to {top: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {top: 0; opacity: 0;}
+  to {top: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {top: 30px; opacity: 1;}
+  to {top: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {top: 30px; opacity: 1;}
+  to {top: 0; opacity: 0;}
+}
+
+@media print {
+  body { overflow: inherit; }
+  #contents-detail { height: 100vh; width: 100vw; }
+  #contents-detail, #bf-contents { height: 100%; overflow-y: auto; }
+  header, .bf-menu-section, #footer-copyright { display:none; }
+  #contents-detail body * { display:block; }
+}

@@ -1,0 +1,73 @@
+{{#layout}}
+
+{{#style}}
+<style>
+input[type="button"] + input[type="button"] { margin-right: 12px; }
+#bf-content-area .col { overflow-y: auto; height: 100%; }
+.header-row { text-align: center; }
+.list-row .col { height: 100%; overflow-y: auto; }
+ul.list-wrapper { padding: 0; }
+ul.list-wrapper li { padding: 2px 10px; font-size: 14px; font-weight: 300; list-style-type: none; }
+</style>
+{{/style}}
+
+<div class="row header-row" style="position:absolute; top: 56px; width: 100%;">
+	<div class="col col-sm-4">
+    <h5>배포이력</h5>	   
+	</div>
+	<div class="col col-sm-4">
+	  <h5>변경이력</h5>
+	</div>
+	<div class="col col-sm-4">
+	  <h5>다운로드</h5>
+	</div>
+</div>
+
+<div class="row list-row" style="position: absolute; top: 90px; width: 100%; height: calc(100% - 90px);">
+	
+	<div class="col col-sm-4">
+	  <ul class="list-wrapper"> 
+	  </ul>
+	</div>
+	
+	<div class="col col-sm-4">
+		<ul class="list-wrapper">
+			{{#list}}
+			<li class="alert alert-light">
+			  <span><i class="far fa-file-code"></i>&nbsp;{{statusKr}} {{filePath}}</span><span style="float: right;">{{updDtStr}}</span>
+		  </li>
+			{{/list}}
+		</ul>
+	</div>
+	
+	<div class="col col-sm-4 bf-detail-area" id="bf-contents">
+		<input type="button" value="전체 파일" class="btn btn-outline-primary" id="btn-download-all"><br><br>
+		<input type="button" value="변경된 모든 파일" class="btn btn-outline-primary" onclick="alert('현재 버전에서는 지원하지 않습니다');"><br><br>
+		<input type="button" value="내가 변경한 파일" class="btn btn-outline-primary" onclick="alert('현재 버전에서는 지원하지 않습니다');"><br><br>
+		<a href="/export" target="_blank"><input type="button" value="미리보기" class="btn btn-outline-primary"></a>
+	</div>
+	
+</div>
+
+<iframe id="ifrm" style="display: none;"></iframe>
+
+{{#script}}
+<script src="/ecm/category.js"></script>
+<script>
+function openPreview() {
+	
+}
+
+$(function () {
+	$("#btn-download-all").click(function() {
+		$(".spinner-border").show();
+		$("#ifrm").attr("src", "/api/v1/ecm/release/all");
+		setTimeout(function() {
+			$(".spinner-border").hide();
+		}, 6000);
+	});
+});
+</script>
+{{/script}}
+
+{{/layout}}
