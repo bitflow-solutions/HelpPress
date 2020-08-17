@@ -33,6 +33,8 @@ public class ChangeHistory {
 	@Column(length=255)
 	private String filePath;
 	private Character released;
+	@Column(length=255)
+	private String comment;
 	
 	@Transient
 	private String statusKr;

@@ -22,9 +22,9 @@
 		<div class="form-group row" style="margin-bottom: 0;padding: 0 15px;">
 		  <select class="form-control col-8" id="sel_category" onchange="onSelectChanged(this);">
 		    <option value="">--- 도움말 그룹 ---</option>
-				{{#list}}
+			{{#list}}
 		    <option value="{{categoryId}}">{{#name}}{{name}}{{/name}}</option>
-			  {{/list}}
+			{{/list}}
 		  </select>
 			<div class="col-4" style="text-align: center;">
 		    <i id="btn-expand-all" class="far fa-plus-square"></i>&nbsp;&nbsp;<i id="btn-collapse-all" class="far fa-minus-square"></i>

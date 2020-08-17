@@ -1,6 +1,6 @@
 function getCategory(obj) {
 	if (obj) {
-		document.frm.action = "/api/v1/ecm/category/" + $(obj).attr("bf-category-id");
+		document.frm.action = "/api/v1/ecm/group/" + $(obj).attr("bf-category-id");
 		console.log("" + $(obj).attr("bf-order") + " " + $(obj).attr("bf-category-id") + " " + $(obj).attr("bf-name"));
 		$(".btn-create").hide();
 		$(".btn-modify").show();
@@ -23,7 +23,7 @@ function getCategory(obj) {
 $(function() {
 	$(".btn-delete").click(function () {
 		if (confirm("선택한 카테고리와 하위 컨텐츠들이 모두 삭제됩니다.\n정말 삭제하시겠습니까?")) {
-			var url = "/api/v1/ecm/category/" + $("#categoryId").val();
+			var url = "/api/v1/ecm/group/" + $("#categoryId").val();
 			$.ajax({
 				url: url,
 				method: "DELETE",
@@ -38,7 +38,7 @@ $(function() {
 		}
 	});
 	$(".btn-modify").click(function () {
-		var url = "/api/v1/ecm/category/" + $("#categoryId").val();
+		var url = "/api/v1/ecm/group/" + $("#categoryId").val();
 		$.ajax({
 			url: url,
 			method: "PUT",
@@ -52,7 +52,7 @@ $(function() {
 		});
 	});
 	$(".btn-create").click(function () {
-		var url = "/api/v1/ecm/category/" + $("#categoryId").val();
+		var url = "/api/v1/ecm/group/" + $("#categoryId").val();
 		$.ajax({
 			url: url,
 			method: "POST",

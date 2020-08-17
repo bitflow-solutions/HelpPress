@@ -1,6 +1,10 @@
 package ai.bitflow.helppress.publisher.constant;
 
-public interface CmsConstant {
+/**
+ * 전역 상수 설정
+ * @author 김성준
+ */
+public interface ApplicationConstant {
 
 	String ADD 		= "ADD";
 	String MODIFY 	= "MOD";

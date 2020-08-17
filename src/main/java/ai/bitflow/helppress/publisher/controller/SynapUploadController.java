@@ -19,10 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * 사이냅에디터 이미지 업로드 API
+ * @author 김성준
+ */
 @Controller
-public class UploadController {
+public class SynapUploadController {
 	
-	private final Logger logger = LoggerFactory.getLogger(UploadController.class);
+	private final Logger logger = LoggerFactory.getLogger(SynapUploadController.class);
 
 	@Value("${app.upload.root.path}")
 	private String UPLOAD_ROOT_PATH;

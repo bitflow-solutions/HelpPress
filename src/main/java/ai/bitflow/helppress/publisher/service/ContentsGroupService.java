@@ -8,48 +8,50 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import ai.bitflow.helppress.publisher.dao.FileDao;
-import ai.bitflow.helppress.publisher.domain.Category;
 import ai.bitflow.helppress.publisher.domain.ChangeHistory;
-import ai.bitflow.helppress.publisher.repository.CategoryRepository;
+import ai.bitflow.helppress.publisher.domain.ContentsGroup;
 import ai.bitflow.helppress.publisher.repository.ChangeHistoryRepository;
-import ai.bitflow.helppress.publisher.vo.req.CategoryReq;
+import ai.bitflow.helppress.publisher.repository.ContentsGroupRepository;
+import ai.bitflow.helppress.publisher.vo.req.ContentsGroupReq;
 import lombok.extern.slf4j.Slf4j;
 
-
+/**
+ * 도움말그룹 관련 서비스
+ * @author 김성준
+ */
 @Slf4j
 @Service
-public class CategoryService {
+public class ContentsGroupService {
 
-	private final Logger logger = LoggerFactory.getLogger(CategoryService.class);
+	private final Logger logger = LoggerFactory.getLogger(ContentsGroupService.class);
 	
 	@Autowired
-	private CategoryRepository crepo;
+	private ContentsGroupRepository grepo;
 	
 	@Autowired
 	private ChangeHistoryRepository hrepo;
 	
-    @Autowired
-    private SpringTemplateEngine tengine;
-	
 	@Autowired
 	private FileDao fdao;
+	
 	
 	/**
 	 * 전체 카테고리 조회
 	 * @return
 	 */
-	public List<Category> getCategories() {
-		return crepo.findAllByOrderByOrderNo();
+	public List<ContentsGroup> getGroups() {
+		return grepo.findAllByOrderByOrderNo();
     }
 	
 	/**
-	 * 카테고리 1건 조회
+	 * 도움말그룹 조회
+	 * @param id
+	 * @return
 	 */
-	public Category getCategory(String id) {
-		Optional<Category> row = crepo.findById(id);
+	public ContentsGroup getGroup(String id) {
+		Optional<ContentsGroup> row = grepo.findById(id);
 		if (row.isPresent()) {
 			return row.get();
 		} else {
@@ -58,19 +60,19 @@ public class CategoryService {
     }
 	
 	/**
-	 * 카테고리 생성
+	 * 도움말그룹 생성
 	 * @param params
 	 * @return
 	 */
 	@Transactional
-    public String createCategory(CategoryReq params) {
-		Category item = new Category();
+    public String createGroup(ContentsGroupReq params) {
+		ContentsGroup item = new ContentsGroup();
 		item.setCategoryId(params.getCategoryId());
 		item.setName(params.getName());
 		item.setOrderNo(params.getOrderNo());
-		String ret = crepo.save(item).getCategoryId();
+		String ret = grepo.save(item).getCategoryId();
 		
-		List<Category> list = crepo.findAll();
+		List<ContentsGroup> list = grepo.findAll();
 		fdao.makeAllContentGroupHTML(list);
 		
 		// 변경이력 저장
@@ -84,14 +86,14 @@ public class CategoryService {
 	}
 	
 	/**
-	 * 카테고리 수정
+	 * 도움말그룹 수정
 	 * @param params
 	 * @return
 	 */
 	@Transactional
-    public Category updateCategory(CategoryReq params) {
-		Optional<Category> row = crepo.findById(params.getCategoryId());
-		Category item1 = null;
+    public ContentsGroup updateGroup(ContentsGroupReq params) {
+		Optional<ContentsGroup> row = grepo.findById(params.getCategoryId());
+		ContentsGroup item1 = null;
 		if (!row.isPresent()) {
 			return null;
 		} else {
@@ -106,9 +108,9 @@ public class CategoryService {
 				item1.setOrderNo(params.getOrderNo());
 			}
 		}
-		Category ret = crepo.save(item1);
+		ContentsGroup ret = grepo.save(item1);
 		
-		List<Category> list = crepo.findAll();
+		List<ContentsGroup> list = grepo.findAll();
 		fdao.makeAllContentGroupHTML(list);
 		
 		// 변경이력 저장
@@ -122,14 +124,14 @@ public class CategoryService {
     }
 	
 	/**
-	 * 카테고리 삭제
+	 * 도움말그룹 삭제
 	 * @param id
 	 */
 	@Transactional
-    public void deleteCategory(String id) {
-		crepo.deleteById(id);
+    public void deleteGroup(String id) {
+		grepo.deleteById(id);
 		
-		List<Category> list = crepo.findAll();
+		List<ContentsGroup> list = grepo.findAll();
 		fdao.makeAllContentGroupHTML(list);
 		
 		// 변경이력 저장

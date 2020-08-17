@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ai.bitflow.helppress.publisher.domain.Category;
+import ai.bitflow.helppress.publisher.domain.ContentsGroup;
 
 
 @Repository
-public interface CategoryRepository extends JpaRepository <Category, String> {
+public interface ContentsGroupRepository extends JpaRepository <ContentsGroup, String> {
 
-	List<Category> findAllByOrderByOrderNo();
+	List<ContentsGroup> findAllByOrderByOrderNo();
 	
 }

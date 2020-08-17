@@ -24,10 +24,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * 사이냅에디터 문서 불러오기(변환) API
+ * @author 김성준
+ */
 @Controller
-public class ImportController {
+public class SynapImportController {
 	
-	private final Logger logger = LoggerFactory.getLogger(ImportController.class);
+	private final Logger logger = LoggerFactory.getLogger(SynapImportController.class);
 
 	@Value("${app.upload.root.path}")
 	private String UPLOAD_ROOT_PATH;

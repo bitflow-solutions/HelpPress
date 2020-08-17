@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -25,8 +26,6 @@ public class Contents {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(insertable=false, updatable=false)
 	private Integer id;
-	@Column(length=255)
-	private String title;
 	@Lob
 	private String content;
 	@Column(length=50)
@@ -34,4 +33,7 @@ public class Contents {
 	@CreationTimestamp
     private LocalDateTime regDt;
 	private Boolean released;
+
+	@Transient
+	private String title;
 }

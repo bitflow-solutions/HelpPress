@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ai.bitflow.helppress.publisher.domain.Contents;
 import ai.bitflow.helppress.publisher.service.ContentsService;
-import ai.bitflow.helppress.publisher.vo.req.NewContentReq;
+import ai.bitflow.helppress.publisher.vo.req.ContentsReq;
 import ai.bitflow.helppress.publisher.vo.res.ContentsRes;
 import ai.bitflow.helppress.publisher.vo.res.result.ContentResult;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class ApiContentController {
 	private final Logger logger = LoggerFactory.getLogger(ApiContentController.class);
 	
 	@Autowired
-	private ContentsService eservice;
+	private ContentsService cservice;
 	
 	/**
 	 * 컨텐츠 등록
@@ -38,9 +38,9 @@ public class ApiContentController {
 	 * @return
 	 */
 	@PostMapping("")
-	public ContentsRes newContent(NewContentReq params) {
+	public ContentsRes newContent(ContentsReq params) {
 		ContentsRes ret = new ContentsRes();
-		Contents res = eservice.newContent(params);
+		Contents res = cservice.newContent(params);
 		if (res!=null) {
 			ContentResult rst = new ContentResult();
 			rst.setKey(String.format("%05d", res.getId()));
@@ -60,7 +60,7 @@ public class ApiContentController {
 	@GetMapping("/{id}")
 	public ContentsRes get(@PathVariable String id) {
 		ContentsRes ret = new ContentsRes();
-		Contents item = eservice.getContents(id);
+		Contents item = cservice.getContents(id);
 		ContentResult result = new ContentResult();
 		if (item!=null) {
 			result.setTitle(item.getTitle());
@@ -80,7 +80,7 @@ public class ApiContentController {
 	@DeleteMapping("/{id}")
 	public ContentsRes delete(@PathVariable String id) {
 		ContentsRes ret = new ContentsRes();
-		boolean success = eservice.deleteContent(id);
+		boolean success = cservice.deleteContent(id);
 		return ret;
 	}
 	
@@ -91,10 +91,10 @@ public class ApiContentController {
 	 * @return
 	 */
 	@PutMapping("/{id}")
-	public ContentsRes updateDoc(NewContentReq params, @PathVariable String id) {
+	public ContentsRes updateDoc(ContentsReq params, @PathVariable String id) {
 		ContentsRes ret = new ContentsRes();
 		ContentResult result = new ContentResult();
-		eservice.updateContent(params, id);
+		cservice.updateContent(params, id);
 		result.setKey(id);
 		ret.setResult(result);
 		return ret;

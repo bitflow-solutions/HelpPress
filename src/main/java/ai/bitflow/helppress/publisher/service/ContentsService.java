@@ -13,7 +13,7 @@ import ai.bitflow.helppress.publisher.domain.ChangeHistory;
 import ai.bitflow.helppress.publisher.domain.Contents;
 import ai.bitflow.helppress.publisher.repository.ChangeHistoryRepository;
 import ai.bitflow.helppress.publisher.repository.ContentsRepository;
-import ai.bitflow.helppress.publisher.vo.req.NewContentReq;
+import ai.bitflow.helppress.publisher.vo.req.ContentsReq;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -38,7 +38,7 @@ public class ContentsService {
 	 * @param item
 	 */
 	@Transactional
-	public Contents newContent(NewContentReq params) {
+	public Contents newContent(ContentsReq params) {
 		
 		Contents item1 = new Contents();
 		item1.setTitle(params.getTitle());
@@ -50,6 +50,7 @@ public class ContentsService {
 		item3.setType("CONTENT");
 		item3.setMethod("ADD");
 		item3.setFilePath(String.format("%05d", item2.getId()) + ".html");
+		item3.setComment(params.getComment());
 		hrepo.save(item3);
 		
 		return item2;
@@ -62,7 +63,7 @@ public class ContentsService {
 	 * @return
 	 */
 	@Transactional
-	public String updateContent(NewContentReq params, String key) {
+	public String updateContent(ContentsReq params, String key) {
 		// id가 폴더이면 childDoc, id가 파일이면 업데이트
 		Optional<Contents> row1 = contentsrepo.findById(Integer.parseInt(key));
 		if (row1.isPresent()) {

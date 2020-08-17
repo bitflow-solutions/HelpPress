@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import ai.bitflow.helppress.publisher.domain.Category;
 import ai.bitflow.helppress.publisher.domain.Contents;
+import ai.bitflow.helppress.publisher.domain.ContentsGroup;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -73,10 +73,10 @@ public class FileDao {
 	 * @param list
 	 * @return
 	 */
-	public boolean makeAllContentGroupHTML(List<Category> list) {
+	public boolean makeAllContentGroupHTML(List<ContentsGroup> list) {
 		// All contents group
 		for (int i=0; i<list.size(); i++) {
-			Category item1 = list.get(i);
+			ContentsGroup item1 = list.get(i);
 			item1.setClassName("on");
 			// Write to HTML file
 			Context ctx = new Context();
@@ -100,7 +100,7 @@ public class FileDao {
 	 * @param htmlCodes
 	 * @return
 	 */
-	public boolean makeNewContentGroupTemplate(Category item, String htmlCodes) {
+	public boolean makeNewContentGroupTemplate(ContentsGroup item, String htmlCodes) {
 		
 		File dir = new File(UPLOAD_ROOT_PATH);
 		if (!dir.exists()) {

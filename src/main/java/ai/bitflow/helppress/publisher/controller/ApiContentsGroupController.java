@@ -13,38 +13,39 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ai.bitflow.helppress.publisher.domain.Category;
-import ai.bitflow.helppress.publisher.service.CategoryService;
-import ai.bitflow.helppress.publisher.vo.req.CategoryReq;
+import ai.bitflow.helppress.publisher.domain.ContentsGroup;
+import ai.bitflow.helppress.publisher.service.ContentsGroupService;
+import ai.bitflow.helppress.publisher.vo.req.ContentsGroupReq;
 import ai.bitflow.helppress.publisher.vo.res.CategoryRes;
 import ai.bitflow.helppress.publisher.vo.res.GeneralRes;
 import ai.bitflow.helppress.publisher.vo.res.result.CategoryResult;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
- * @author method76
+ * 도움말그룹 관련 API
+ * @author 김성준
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/ecm/category") 
-public class ApiCategoryController {
+@RequestMapping("/api/v1/ecm/group") 
+public class ApiContentsGroupController {
 	
-	private final Logger logger = LoggerFactory.getLogger(ApiCategoryController.class);
+	private final Logger logger = LoggerFactory.getLogger(ApiContentsGroupController.class);
 	
 	@Autowired
-	private CategoryService cservice;
+	private ContentsGroupService gservice;
+	
 	
 	/**
-	 * 카테고리 저장
+	 * 도움말그룹 저장
 	 * @param params
 	 * @return
 	 */
 	@PostMapping("/{categoryId}")
-	public GeneralRes postCategory(@PathVariable String categoryId, CategoryReq params) {
+	public GeneralRes postGroup(@PathVariable String categoryId, ContentsGroupReq params) {
 		logger.debug("params " + params.toString());
 		params.setCategoryId(categoryId);
-		String res = cservice.createCategory(params);
+		String res = gservice.createGroup(params);
 		GeneralRes ret = new GeneralRes();
 		if (res==null) {
 			ret.setFailResponse();
@@ -53,8 +54,8 @@ public class ApiCategoryController {
 	}
 	
 	@GetMapping("/{categoryId}")
-	public CategoryRes getCategory(@PathVariable String categoryId) {
-		Category res = cservice.getCategory(categoryId);
+	public CategoryRes getGroup(@PathVariable String categoryId) {
+		ContentsGroup res = gservice.getGroup(categoryId);
 		CategoryRes ret = new CategoryRes();
 		if (res!=null) {
 			CategoryResult rst = new CategoryResult();
@@ -66,16 +67,16 @@ public class ApiCategoryController {
 	}
 	
 	/**
-	 * 
+	 * 도움말그룹 수정
 	 * @param categoryId
 	 * @param params
 	 * @return
 	 */
 	@PutMapping("/{categoryId}")
-	public CategoryRes putCategory(@PathVariable String categoryId, CategoryReq params) {
+	public CategoryRes putGroup(@PathVariable String categoryId, ContentsGroupReq params) {
 		logger.debug("params " + params.toString());
 		params.setCategoryId(categoryId);
-		Category res = cservice.updateCategory(params);
+		ContentsGroup res = gservice.updateGroup(params);
 		CategoryRes ret = new CategoryRes();
 		if (res==null) {
 			ret.setFailResponse();
@@ -88,12 +89,17 @@ public class ApiCategoryController {
 		return ret;
 	}
 	
+	/**
+	 * 도움말그룹 삭제
+	 * @param categoryId
+	 * @return
+	 */
 	@DeleteMapping("/{categoryId}")
-	public GeneralRes categoryDelete(@PathVariable String categoryId) {
+	public GeneralRes deleteGroup(@PathVariable String categoryId) {
 		logger.debug("params " + categoryId);
 		GeneralRes ret = new GeneralRes();
 		try {
-			cservice.deleteCategory(categoryId);
+			gservice.deleteGroup(categoryId);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			ret.setFailResponse();
@@ -102,13 +108,13 @@ public class ApiCategoryController {
 	}
 	
 	/**
-	 * 카테고리 저장
+	 * 도움말그룹 목록 조회
 	 * @param params
 	 * @return
 	 */
 	@GetMapping("")
-	public List<Category> getCategories() {
-		return cservice.getCategories();
+	public List<ContentsGroup> getGroups() {
+		return gservice.getGroups();
 	}
 	
 }

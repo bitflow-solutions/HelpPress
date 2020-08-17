@@ -228,7 +228,7 @@ function saveTree() {
   const tree = _tree.toDict(true);
   console.log('saveTree ' + JSON.stringify(tree));
   $.ajax({
-	  url: "/api/v1/ecm/category/" + selectedGroupId,
+	  url: "/api/v1/ecm/group/" + selectedGroupId,
 	  method: "PUT",
 		data: { 
 		  tree: JSON.stringify(tree.children)
@@ -251,7 +251,7 @@ function onSelectChanged(select) {
 	  $("#contents-detail").attr("src", "/empty-content.html");
   } else {
 	$.ajax({
-	  url: "/api/v1/ecm/category/" + selectedGroupId,
+	  url: "/api/v1/ecm/group/" + selectedGroupId,
 	  method: "GET"
 	})
 	.done(function(msg) {

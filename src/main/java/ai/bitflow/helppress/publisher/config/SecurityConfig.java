@@ -14,9 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ai.bitflow.helppress.publisher.service.UserService;
 import lombok.AllArgsConstructor;
 
+
 /**
- * 
- * @author mgmt_
+ * Spring Security 설정
+ * @author ted@bitflow.ai
  */
 @Configuration
 @EnableWebSecurity

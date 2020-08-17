@@ -14,7 +14,7 @@ import lombok.ToString;
 @Data
 @ToString
 @Entity
-public class Category {
+public class ContentsGroup {
 	
 	@Id
 	@Column(length=50)
@@ -29,7 +29,7 @@ public class Category {
 	private String className;
 	
 	@Builder
-	public Category(String categoryId, String name, short orderNo) {
+	public ContentsGroup(String categoryId, String name, short orderNo) {
 		this.categoryId = categoryId;
 		this.name = name;
 		this.orderNo = orderNo;
