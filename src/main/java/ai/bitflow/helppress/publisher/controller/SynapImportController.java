@@ -86,6 +86,9 @@ public class SynapImportController {
         // 브라우저에서 접근가능한 경로를 importPath에 담아서 넘겨줍니다.
         // OUTPUT_DIR_REL_PATH 경로에 맞춰서 수정해야 합니다.
         map.put("importPath", "uploads/" + key);
+        
+        logger.debug("importPath " + "uploads/" + key);
+        
         return map;
     }
      

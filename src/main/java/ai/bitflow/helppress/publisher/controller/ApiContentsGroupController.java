@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
 import ai.bitflow.helppress.publisher.service.ContentsGroupService;
 import ai.bitflow.helppress.publisher.vo.req.ContentsGroupReq;
-import ai.bitflow.helppress.publisher.vo.res.CategoryRes;
+import ai.bitflow.helppress.publisher.vo.res.ContentsGroupRes;
 import ai.bitflow.helppress.publisher.vo.res.GeneralRes;
-import ai.bitflow.helppress.publisher.vo.res.result.CategoryResult;
+import ai.bitflow.helppress.publisher.vo.res.result.ContentsGroupResult;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -41,10 +41,10 @@ public class ApiContentsGroupController {
 	 * @param params
 	 * @return
 	 */
-	@PostMapping("/{categoryId}")
-	public GeneralRes postGroup(@PathVariable String categoryId, ContentsGroupReq params) {
+	@PostMapping("/{groupId}")
+	public GeneralRes postGroup(@PathVariable String groupId, ContentsGroupReq params) {
 		logger.debug("params " + params.toString());
-		params.setCategoryId(categoryId);
+		params.setGroupId(groupId);
 		String res = gservice.createGroup(params);
 		GeneralRes ret = new GeneralRes();
 		if (res==null) {
@@ -53,13 +53,13 @@ public class ApiContentsGroupController {
 		return ret;
 	}
 	
-	@GetMapping("/{categoryId}")
-	public CategoryRes getGroup(@PathVariable String categoryId) {
-		ContentsGroup res = gservice.getGroup(categoryId);
-		CategoryRes ret = new CategoryRes();
+	@GetMapping("/{groupId}")
+	public ContentsGroupRes getGroup(@PathVariable String groupId) {
+		ContentsGroup res = gservice.getGroup(groupId);
+		ContentsGroupRes ret = new ContentsGroupRes();
 		if (res!=null) {
-			CategoryResult rst = new CategoryResult();
-			rst.setCategoryId(res.getCategoryId());
+			ContentsGroupResult rst = new ContentsGroupResult();
+			rst.setGroupId(res.getGroupId());
 			rst.setTree(res.getTree());
 			ret.setResult(rst);
 		}
@@ -68,21 +68,21 @@ public class ApiContentsGroupController {
 	
 	/**
 	 * 도움말그룹 수정
-	 * @param categoryId
+	 * @param groupId
 	 * @param params
 	 * @return
 	 */
-	@PutMapping("/{categoryId}")
-	public CategoryRes putGroup(@PathVariable String categoryId, ContentsGroupReq params) {
+	@PutMapping("/{groupId}")
+	public ContentsGroupRes putGroup(@PathVariable String groupId, ContentsGroupReq params) {
 		logger.debug("params " + params.toString());
-		params.setCategoryId(categoryId);
+		params.setGroupId(groupId);
 		ContentsGroup res = gservice.updateGroup(params);
-		CategoryRes ret = new CategoryRes();
+		ContentsGroupRes ret = new ContentsGroupRes();
 		if (res==null) {
 			ret.setFailResponse();
 		} else {
-			CategoryResult rst = new CategoryResult();
-			rst.setCategoryId(res.getCategoryId());
+			ContentsGroupResult rst = new ContentsGroupResult();
+			rst.setGroupId(res.getGroupId());
 			rst.setTree(res.getTree());
 			ret.setResult(rst);
 		}
@@ -91,15 +91,15 @@ public class ApiContentsGroupController {
 	
 	/**
 	 * 도움말그룹 삭제
-	 * @param categoryId
+	 * @param groupId
 	 * @return
 	 */
-	@DeleteMapping("/{categoryId}")
-	public GeneralRes deleteGroup(@PathVariable String categoryId) {
-		logger.debug("params " + categoryId);
+	@DeleteMapping("/{groupId}")
+	public GeneralRes deleteGroup(@PathVariable String groupId) {
+		logger.debug("params " + groupId);
 		GeneralRes ret = new GeneralRes();
 		try {
-			gservice.deleteGroup(categoryId);
+			gservice.deleteGroup(groupId);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			ret.setFailResponse();

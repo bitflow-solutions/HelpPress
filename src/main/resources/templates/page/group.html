@@ -12,7 +12,7 @@ input[type="button"] + input[type="button"] { margin-right: 12px; }
 	<div id="category-wrapper" class="col col-md-2">
 		<ul>
 			{{#list}}
-			<a href="javascript:void(0);" onclick="getCategory(this);" bf-name="{{#name}}{{name}}{{/name}}"  bf-category-id="{{categoryId}}" bf-order="{{orderNo}}">
+			<a href="javascript:void(0);" onclick="getCategory(this);" bf-name="{{#name}}{{name}}{{/name}}"  bf-category-id="{{groupId}}" bf-order="{{orderNo}}">
 				<li class="alert alert-light"><i class="far fa-folder"></i>&nbsp;&nbsp;{{#name}}{{name}}{{/name}}</li>
 			</a>
 			{{/list}}
@@ -35,9 +35,9 @@ input[type="button"] + input[type="button"] { margin-right: 12px; }
 				<form name="frm">
 					<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
 					<div class="form-group row">
-				    <label for="categoryId" class="col-sm-2 col-form-label">도움말그룹URI</label>
+				    <label for="groupId" class="col-sm-2 col-form-label">도움말그룹URI</label>
 				    <div class="col-sm-10">
-				      <input type="text" id="categoryId" class="form-control" placeholder="영소문자 (공백없음)" value="{{#item}}{{item.uri}}{{/item}}">
+				      <input type="text" id="groupId" class="form-control" placeholder="영소문자 (공백없음)" value="{{#item}}{{item.uri}}{{/item}}">
 				    </div>
 				  </div>
 	        <div class="form-group row">
@@ -60,7 +60,7 @@ input[type="button"] + input[type="button"] { margin-right: 12px; }
 </div>
 
 {{#script}}
-<script src="/ecm/category.js"></script>
+<script src="/page/group.js"></script>
 {{/script}}
 
 {{/layout}}

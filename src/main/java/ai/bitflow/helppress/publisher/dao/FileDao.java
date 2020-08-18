@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 import ai.bitflow.helppress.publisher.domain.Contents;
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
@@ -30,6 +34,11 @@ public class FileDao {
 
     @Autowired
     private SpringTemplateEngine tengine;
+    
+    @PostConstruct
+    public void init() {
+    	this.tengine.setTemplateResolver(templateResolver()); 
+	}
 	
 	/**
 	 * 도움말 HTML 파일 생성
@@ -82,17 +91,26 @@ public class FileDao {
 			Context ctx = new Context();
 			ctx.setVariable("group", list);
 			ctx.setVariable("tree",  item1.getTree());
-			String htmlCodes = this.tengine.process("release-template.html", ctx);
+			String htmlCodes = this.tengine.process("hp-group-template.html", ctx);
 			makeNewContentGroupTemplate(item1, htmlCodes);
 			item1.setClassName("");
 			if (i==0) {
-				ctx.setVariable("targetHtml", item1.getCategoryId() + ".html");
-				String indexHtmlCodes = this.tengine.process("index-redirection.html", ctx);
+				ctx.setVariable("targetHtml", item1.getGroupId() + ".html");
+//				this.tengine.setTemplateResolver(new ClassLoaderTemplateResolver());
+				String indexHtmlCodes = this.tengine.process("hp-index-redirection.html", ctx);
 				makeNewIndexRedirectionHtml(indexHtmlCodes);
 			}
 		}
 		return true;
 	}
+	
+    private FileTemplateResolver templateResolver() {
+    	FileTemplateResolver resolver = new FileTemplateResolver();
+        resolver.setPrefix("./export/");
+        resolver.setSuffix(".html");
+        resolver.setCacheable(false);
+        return resolver;
+    }
 	
 	/**
 	 * 
@@ -110,7 +128,7 @@ public class FileDao {
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-					UPLOAD_ROOT_PATH + File.separator + item.getCategoryId() + ".html"), "UTF-8"));
+					UPLOAD_ROOT_PATH + File.separator + item.getGroupId() + ".html"), "UTF-8"));
 			writer.write(htmlCodes);
 		    return true;
 		} catch (IOException e) {

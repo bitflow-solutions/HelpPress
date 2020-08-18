@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class ContentsGroupReq {
 	
-	private String categoryId;
+	private String groupId;
 	private String name;
 	private Short orderNo;
 	private String tree;

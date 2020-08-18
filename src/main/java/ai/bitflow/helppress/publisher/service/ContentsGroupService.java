@@ -67,10 +67,10 @@ public class ContentsGroupService {
 	@Transactional
     public String createGroup(ContentsGroupReq params) {
 		ContentsGroup item = new ContentsGroup();
-		item.setCategoryId(params.getCategoryId());
+		item.setGroupId(params.getGroupId());
 		item.setName(params.getName());
 		item.setOrderNo(params.getOrderNo());
-		String ret = grepo.save(item).getCategoryId();
+		String ret = grepo.save(item).getGroupId();
 		
 		List<ContentsGroup> list = grepo.findAll();
 		fdao.makeAllContentGroupHTML(list);
@@ -79,7 +79,7 @@ public class ContentsGroupService {
 		ChangeHistory item3 = new ChangeHistory();
 		item3.setType("GROUP");
 		item3.setMethod("ADD");
-		item3.setFilePath(params.getCategoryId() + ".html");
+		item3.setFilePath(params.getGroupId() + ".html");
 		hrepo.save(item3);
 		
 		return ret;
@@ -92,7 +92,7 @@ public class ContentsGroupService {
 	 */
 	@Transactional
     public ContentsGroup updateGroup(ContentsGroupReq params) {
-		Optional<ContentsGroup> row = grepo.findById(params.getCategoryId());
+		Optional<ContentsGroup> row = grepo.findById(params.getGroupId());
 		ContentsGroup item1 = null;
 		if (!row.isPresent()) {
 			return null;
@@ -117,7 +117,7 @@ public class ContentsGroupService {
 		ChangeHistory item3 = new ChangeHistory();
 		item3.setType("GROUP");
 		item3.setMethod("MOD");
-		item3.setFilePath(params.getCategoryId() + ".html");
+		item3.setFilePath(params.getGroupId() + ".html");
 		hrepo.save(item3);
 		
 		return ret;

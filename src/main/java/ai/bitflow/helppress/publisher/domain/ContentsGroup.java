@@ -18,7 +18,7 @@ public class ContentsGroup {
 	
 	@Id
 	@Column(length=50)
-	private String categoryId;
+	private String groupId;
 	private short orderNo;
 	@Column(length=255)
 	private String name;
@@ -29,8 +29,8 @@ public class ContentsGroup {
 	private String className;
 	
 	@Builder
-	public ContentsGroup(String categoryId, String name, short orderNo) {
-		this.categoryId = categoryId;
+	public ContentsGroup(String groupId, String name, short orderNo) {
+		this.groupId = groupId;
 		this.name = name;
 		this.orderNo = orderNo;
 	}

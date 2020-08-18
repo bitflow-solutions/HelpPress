@@ -46,7 +46,6 @@ public class SynapUploadController {
     	
     	String key = (String) request.getParameter("key");
         String UPLOAD_DIR_ABS_PATH = UPLOAD_ROOT_PATH + File.separator + IMG_UPLOAD_REL_PATH + File.separator + key;
-        logger.debug("key " + key);
         
         makeDirectory(UPLOAD_DIR_ABS_PATH);
      
