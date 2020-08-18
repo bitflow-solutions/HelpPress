@@ -55,6 +55,20 @@ public class ContentsService {
 		
 		return item2;
 	}
+	
+	/**
+	 * 폴더 추가
+	 * @param params
+	 * @return
+	 */
+	@Transactional
+	public String newFolder(ContentsReq params) {
+		Contents item1 = new Contents();
+		item1.setTitle("");
+		Integer key = contentsrepo.save(item1).getId();
+		contentsrepo.delete(item1);
+		return String.format("%05d", key);
+	}
 
 	/**
 	 * 컨텐츠 삭제

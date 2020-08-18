@@ -5128,7 +5128,7 @@
 						"<span class='fancytree-title'" +
 						tooltip +
 						tabindex +
-						">" +
+						" key='" + node.key + "'>" +
 						(opts.escapeTitles
 							? FT.escapeHtml(node.title)
 							: node.title) +

@@ -75,28 +75,47 @@ function initEvents() {
 	$("#btn-collapse-all").click(function(e) {
 		collapseAll();
 	});
+	// (1) 파일 타입
 	$.contextMenu({
 	    selector: ".fancytree-ico-c > .fancytree-title",
 	    callback: function(key, options) {
-        	console.log("file " + key);
         },
 	    items: {
 	        rename: {name: "제목 변경", callback: editTitle },
 	        modify: {name: "도움말 수정", callback: editContent },
-	        deletecontent: {name: "도움말 삭제", callback: deleteContent }
-	    }
+	        deletecontent: {name: "도움말 삭제", callback: deleteContent },
+	        downloadcontent: {name: "다운로드", callback: downloadContent }
+	    },
+	    events: {
+			show : function(options){
+			  var key = $(this).attr('key');
+	    	  var _tree = $.ui.fancytree.getTree();
+			  var node = _tree.getNodeByKey(key);
+			  node.setActive();
+			  console.log('file ' + key);
+	        }           
+		}
 	});
+	// (2) 폴더 타입
 	$.contextMenu({
 	    selector: ".fancytree-folder > .fancytree-title",
 	    callback: function(key, options) {
-        	console.log("folder " + key);
         },
 	    items: {
+	        rename: {name: "제목 변경", callback: editTitle },
 	        newfolder: {name: "새 폴더", callback: appendChildFolder },
 	        newcontent: {name: "새 도움말", callback: appendChildContent },
-	        rename: {name: "제목 변경", callback: editTitle },
 	        deletefolder: {name: "폴더 삭제", callback: deleteFolder }
-	    }
+	    },
+	    events: {
+			show : function(options){
+			  var key = $(this).attr('key');
+	    	  var _tree = $.ui.fancytree.getTree();
+			  var node = _tree.getNodeByKey(key);
+			  node.setActive();
+			  console.log('folder ' + key);
+	        }           
+		}
 	});
 	$.contextMenu({
 		selector: "#tree",
@@ -157,13 +176,26 @@ function appendChildFolder() {
   if( !node ) {
     node = _tree.getRootNode();
   }
-  node.editCreateNode('child', { title: "새 폴더", folder: true });
-  saveTree();
+  $.ajax({
+	  url: "/api/v1/ecm/content/folder",
+	  method: "POST",
+	  data: { folder: true }
+  	})
+	.done(function(msg) {
+	  console.log('msg ' + JSON.stringify(msg));
+	  node.editCreateNode('child', {
+	    title: "새 폴더",
+	    folder: true,
+	    key: msg.result.key
+	  })
+	  saveTree();
+	})
+	.fail(function() {
+	})
+	.always(function() {
+  });
 }
 
-/**
- * @returns
- */
 function appendChildContent() {
   var _tree = $.ui.fancytree.getTree();
   var node = _tree.getActiveNode();
@@ -199,6 +231,21 @@ function deleteContent() {
   }
   node.remove();
   saveTree();
+}
+
+function downloadContent() {
+  var _tree = $.ui.fancytree.getTree();
+  var node = _tree.getActiveNode();
+  if( !node ) {
+    alert("부모 노드를 선택해주세요");
+    return;
+  }
+  var key = node.key;
+  $(".spinner-border").show();
+  $("#ifrm").attr("src", "/api/v1/ecm/release/" + key);
+  setTimeout(function() {
+	$(".spinner-border").hide();
+  }, 6000);
 }
 
 function deleteFolder() {

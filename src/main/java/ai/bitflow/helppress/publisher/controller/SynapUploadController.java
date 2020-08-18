@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
+
 /**
  * 사이냅에디터 이미지 업로드 API
  * @author 김성준
@@ -30,7 +32,6 @@ public class SynapUploadController {
 
 	@Value("${app.upload.root.path}")
 	private String UPLOAD_ROOT_PATH;
-	private final String IMG_UPLOAD_REL_PATH = "uploads";
     
 	@PostMapping("/uploadImage")
     @ResponseBody
@@ -45,7 +46,7 @@ public class SynapUploadController {
             throws IOException {
     	
     	String key = (String) request.getParameter("key");
-        String UPLOAD_DIR_ABS_PATH = UPLOAD_ROOT_PATH + File.separator + IMG_UPLOAD_REL_PATH + File.separator + key;
+        String UPLOAD_DIR_ABS_PATH = UPLOAD_ROOT_PATH + File.separator + ApplicationConstant.UPLOAD_REL_PATH + File.separator + key;
         
         makeDirectory(UPLOAD_DIR_ABS_PATH);
      
@@ -68,7 +69,7 @@ public class SynapUploadController {
         Map<String, Object> map = new HashMap<String, Object>();
      
         // 브라우저에서 접근가능한 경로를 uploadPath에 담아서 넘겨줍니다.
-        map.put("uploadPath", "uploads/" + key + "/" + saveFileName);
+        map.put("uploadPath", ApplicationConstant.UPLOAD_REL_PATH + "/" + key + "/" + saveFileName);
      
         return map;
     }

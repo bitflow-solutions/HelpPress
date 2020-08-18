@@ -12,5 +12,10 @@ public interface ApplicationConstant {
 	
 	String GROUP 	= "GROUP";
 	String CONTENT 	= "CONTENT";
+
+	String RELEASE_ALL 	= "ALL";
+	String RELEASE_PART = "PART";
+	
+	String UPLOAD_REL_PATH = "uploads";
 	
 }

@@ -31,7 +31,10 @@ public class FileDao {
 	
 	@Value("${app.upload.root.path}")
 	private String UPLOAD_ROOT_PATH;
-
+	
+	@Value("${app.ext.template.path}")
+	private String EXT_TEMPLATE_PATH;
+	
     @Autowired
     private SpringTemplateEngine tengine;
     
@@ -106,7 +109,7 @@ public class FileDao {
 	
     private FileTemplateResolver templateResolver() {
     	FileTemplateResolver resolver = new FileTemplateResolver();
-        resolver.setPrefix("./export/");
+        resolver.setPrefix(EXT_TEMPLATE_PATH);
         resolver.setSuffix(".html");
         resolver.setCacheable(false);
         return resolver;

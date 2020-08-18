@@ -33,7 +33,7 @@ public class ApiContentController {
 	private ContentsService cservice;
 	
 	/**
-	 * 컨텐츠 등록
+	 * 도움말 추가
 	 * @param params
 	 * @return
 	 */
@@ -53,12 +53,51 @@ public class ApiContentController {
 	}
 	
 	/**
+	 * 폴더 추가
+	 * @param params
+	 * @return
+	 */
+	@PostMapping("/folder")
+	public ContentsRes newFolder(ContentsReq params) {
+		ContentsRes ret = new ContentsRes();
+		String key = cservice.newFolder(params);
+		if (key!=null) {
+			ContentResult rst = new ContentResult();
+			rst.setKey(key);
+			ret.setResult(rst);
+		} else {
+			ret.setFailResponse();
+		}
+		return ret;
+	}
+	
+	/**
 	 * 컨텐츠 조회
 	 * @param id
 	 * @return
 	 */
 	@GetMapping("/{id}")
 	public ContentsRes get(@PathVariable String id) {
+		ContentsRes ret = new ContentsRes();
+		Contents item = cservice.getContents(id);
+		ContentResult result = new ContentResult();
+		if (item!=null) {
+			result.setTitle(item.getTitle());
+			result.setContents(item.getContent());
+		} else {
+			ret.setFailResponse(404);
+		}
+		ret.setResult(result);
+		return ret;
+	}
+	
+	/**
+	 * 컨텐츠 조회
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/{id}/download")
+	public ContentsRes download(@PathVariable String id) {
 		ContentsRes ret = new ContentsRes();
 		Contents item = cservice.getContents(id);
 		ContentResult result = new ContentResult();

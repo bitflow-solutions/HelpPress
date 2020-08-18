@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
+
 /**
  * 사이냅에디터 문서 불러오기(변환) API
  * @author 김성준
@@ -37,8 +39,8 @@ public class SynapImportController {
 	private String UPLOAD_ROOT_PATH;
 	@Value("${app.converter.path}")
 	private String SEDOC_CONVERTER_REL_PATH;
-	private final String TEMP_DOC_REL_PATH 	 = "uploads" + File.separator + "tempDocs";
-	private final String IMG_UPLOAD_REL_PATH = "uploads";
+	private final String TEMP_DOC_REL_PATH 	 = ApplicationConstant.UPLOAD_REL_PATH + File.separator + "tempDocs";
+	private final String IMG_UPLOAD_REL_PATH = ApplicationConstant.UPLOAD_REL_PATH;
  
 	
 	/**
@@ -85,9 +87,7 @@ public class SynapImportController {
         map.put("serializedData", serializedData);
         // 브라우저에서 접근가능한 경로를 importPath에 담아서 넘겨줍니다.
         // OUTPUT_DIR_REL_PATH 경로에 맞춰서 수정해야 합니다.
-        map.put("importPath", "uploads/" + key);
-        
-        logger.debug("importPath " + "uploads/" + key);
+        map.put("importPath", ApplicationConstant.UPLOAD_REL_PATH + "/" + key);
         
         return map;
     }
