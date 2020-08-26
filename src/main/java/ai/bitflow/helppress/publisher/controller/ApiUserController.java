@@ -87,18 +87,11 @@ public class ApiUserController {
 		return ret;
 	}
 	
-	@GetMapping("/logout") 
-	public GeneralRes logout(HttpServletRequest req, HttpServletResponse res, HttpSession sess) {
-		log.debug("logout");
-		GeneralRes ret = new GeneralRes();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null){ 
-			new SecurityContextLogoutHandler().logout(req, res, auth); 
-		}
-		ret.setSuccessResponse();
-		return ret;
-	}
-	
+	/**
+	 * 
+	 * @param params
+	 * @return
+	 */
 	@PutMapping("") 
 	public StringRes updateUser(UserReq params) {
 		log.debug("modifyUser");
@@ -117,6 +110,11 @@ public class ApiUserController {
 		return ret;
 	}
 	
+	/**
+	 * 
+	 * @param params
+	 * @return
+	 */
 	@DeleteMapping("") 
 	public StringRes deleteUser(UserReq params) {
 		log.debug("deleteUser");

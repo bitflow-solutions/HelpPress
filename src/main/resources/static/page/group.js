@@ -20,6 +20,27 @@ function getCategory(obj) {
 	}
 }
 
+function validateInput() {
+	if ($("#groupId").val().length<1) {
+	  alert("도움말그룹URI를 입력해주세요");
+	  return false; 
+	}
+	if ($("#name").val().length<1) {
+	  alert("도움말그룹명을 입력해주세요");
+	  return false; 
+	}
+	if ($("#orderNo").val().length<1) {
+	  alert("정렬순서를 입력해주세요");
+	  return false; 
+	}
+	var orderNo = parseInt($("#orderNo").val(), 10);
+	if (orderNo>255) {
+		alert("정렬순서 값은 255이하 이어야 합니다");
+		return false; 
+	}
+	return true;
+}
+
 $(function() {
 	$(".btn-delete").click(function () {
 		if (confirm("선택한 카테고리와 하위 컨텐츠들이 모두 삭제됩니다.\n정말 삭제하시겠습니까?")) {
@@ -38,6 +59,10 @@ $(function() {
 		}
 	});
 	$(".btn-modify").click(function () {
+		if (!validateInput()) {
+			return;
+		}
+		$(".spinner").show();
 		var url = "/api/v1/ecm/group/" + $("#groupId").val();
 		$.ajax({
 			url: url,
@@ -49,9 +74,18 @@ $(function() {
 				// 성공
 				location.reload();
 			}
-		});
+		})
+		.always(function() {
+			setTimeout(function() {
+				$(".spinner").hide();
+			}, 1000);
+	    });
 	});
 	$(".btn-create").click(function () {
+		if (!validateInput()) {
+			return;
+		}
+		$(".spinner").show();
 		var url = "/api/v1/ecm/group/" + $("#groupId").val();
 		$.ajax({
 			url: url,
@@ -63,10 +97,33 @@ $(function() {
 				// 성공
 				location.reload();
 			}
-		});
+		})
+		.always(function() {
+			setTimeout(function() {
+				$(".spinner").hide();
+			}, 1000);
+	    });
 	});
 	$("#category-wrapper li").click(function() {
 		$("#category-wrapper li").removeClass("on");
 		$(this).addClass("on");
+	});
+	$("#groupId").keyup(function(event) {
+		if (!(event.keyCode>=37 && event.keyCode<=40)) {
+			var inputVal = $(this).val();
+			$(this).val(inputVal.replace(/[^a-zA-Z0-9]/gi, ''));
+		}
+	});
+	$("#name").keyup(function(event) {
+		if (!(event.keyCode>=37 && event.keyCode<=40)) {
+			var inputVal = $(this).val();
+			$(this).val(inputVal.replace(/[^a-zA-Z0-9ㄱ-힣]/gi, ''));
+		}
+	});
+	$("#orderNo").keyup(function(event) {
+		if (!(event.keyCode>=37 && event.keyCode<=40)) {
+			var inputVal = $(this).val();
+			$(this).val(inputVal.replace(/[^0-9]/gi, ''));
+		}
 	});
 });

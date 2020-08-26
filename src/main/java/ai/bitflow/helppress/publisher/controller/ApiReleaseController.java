@@ -51,4 +51,15 @@ public class ApiReleaseController {
 		rservice.downloadOne(key, res);
 	}
 	
+	/**
+	 * 
+	 * @param key
+	 * @param res
+	 */
+	@GetMapping("/all/{id}") 
+	public void downloadFromHistory(@PathVariable Integer id, HttpServletResponse res) {
+		log.debug("downloadOne");
+		rservice.downloadFromHistory(id, res);
+	}
+	
 }

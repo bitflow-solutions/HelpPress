@@ -17,10 +17,10 @@ import lombok.ToString;
 public class User {
 	
 	@Id
-	@Column(nullable=false)
+	@Column(nullable=false, length=15)
 	private String username;
 	
-	@Column(nullable=false)
+	@Column(nullable=false, length=128)
 	private String password;
 	
 	@Transient

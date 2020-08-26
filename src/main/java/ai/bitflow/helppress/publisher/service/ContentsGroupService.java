@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,7 @@ public class ContentsGroupService {
 	 * 전체 카테고리 조회
 	 * @return
 	 */
+	@Cacheable(value="groups")
 	public List<ContentsGroup> getGroups() {
 		return grepo.findAllByOrderByOrderNo();
     }
@@ -64,6 +67,7 @@ public class ContentsGroupService {
 	 * @param params
 	 * @return
 	 */
+	@CacheEvict(value="groups")
 	@Transactional
     public String createGroup(ContentsGroupReq params) {
 		ContentsGroup item = new ContentsGroup();
@@ -90,6 +94,7 @@ public class ContentsGroupService {
 	 * @param params
 	 * @return
 	 */
+	@CacheEvict(value="groups")
 	@Transactional
     public ContentsGroup updateGroup(ContentsGroupReq params) {
 		Optional<ContentsGroup> row = grepo.findById(params.getGroupId());
@@ -127,6 +132,7 @@ public class ContentsGroupService {
 	 * 도움말그룹 삭제
 	 * @param id
 	 */
+	@CacheEvict(value="groups")
 	@Transactional
     public void deleteGroup(String id) {
 		grepo.deleteById(id);

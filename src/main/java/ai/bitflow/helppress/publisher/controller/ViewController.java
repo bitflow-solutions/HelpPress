@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
 import ai.bitflow.helppress.publisher.domain.ChangeHistory;
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
+import ai.bitflow.helppress.publisher.domain.ReleaseHistory;
 import ai.bitflow.helppress.publisher.domain.User;
 import ai.bitflow.helppress.publisher.service.ContentsGroupService;
 import ai.bitflow.helppress.publisher.service.ReleaseService;
@@ -99,7 +100,6 @@ public class ViewController {
 	public String group(Model mo, HttpServletRequest req) {
 		List<ContentsGroup> list = cservice.getGroups();
 		String add = req.getParameter("add");
-		logger.debug("add " + add);
 		mo.addAttribute("tab1", " active");
 		mo.addAttribute("list", list);
 		return "page/group";
@@ -112,7 +112,7 @@ public class ViewController {
 	 * @return
 	 */
 	@GetMapping("/content") 
-	public String content(Model mo, HttpSession sess) {
+	public String content(Model mo) {
 		mo.addAttribute("tab2", " active");
 		List<ContentsGroup> list = cservice.getGroups();
 		mo.addAttribute("list", list);
@@ -127,8 +127,8 @@ public class ViewController {
 	@GetMapping("/release") 
 	public String release(Model mo) {
 		mo.addAttribute("tab3", " active");
-		List<ChangeHistory> list = rservice.getHistories();
-		for (ChangeHistory item : list) {
+		List<ChangeHistory> hlist = rservice.getHistories();
+		for (ChangeHistory item : hlist) {
 			String statusKr = "";
 			if (ApplicationConstant.ADD.equals(item.getMethod())) {
 				statusKr += "(추가)";
@@ -139,7 +139,11 @@ public class ViewController {
 			}
 			item.setStatusKr(statusKr);
 		}
-		mo.addAttribute("list", list);
+		List<ReleaseHistory> rlist = rservice.getReleases();
+		
+		mo.addAttribute("hlist", hlist);
+		mo.addAttribute("rlist", rlist);
+		
 		File previewPath = new File(SRC_FOLDER);
 		mo.addAttribute("previewPath", previewPath.getAbsolutePath());
 		return "page/release";

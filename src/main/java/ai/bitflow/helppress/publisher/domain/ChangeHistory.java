@@ -30,8 +30,11 @@ public class ChangeHistory {
 	private String type;
 	@Column(length=10)
 	private String method;
+	@Column(length=15)
+	private String userid;
 	@Column(length=255)
 	private String filePath;
+	@Column(length=1)
 	private Character released;
 	@Column(length=255)
 	private String comment;

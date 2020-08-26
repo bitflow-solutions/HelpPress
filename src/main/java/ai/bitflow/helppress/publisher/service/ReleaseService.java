@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -64,12 +67,13 @@ public class ReleaseService {
 	 * @param res
 	 * @return
 	 */
+	@CacheEvict(value="histories")
 	@Transactional
 	public boolean downloadAll(Boolean release, HttpServletResponse res) {
 		
 		boolean released = release!=null?release:false;
 		String timestamp = sdf.format(Calendar.getInstance().getTime());
-		String DEST_FILENAME = "contents-all-release-" + timestamp + ".zip";
+		String DEST_FILENAME = "release-all-" + timestamp + ".zip";
 		if (released) {
         	ReleaseHistory item = new ReleaseHistory();
         	item.setType(ApplicationConstant.RELEASE_ALL);
@@ -81,10 +85,9 @@ public class ReleaseService {
 		if (!destFolder.exists()) {
 			destFolder.mkdirs();
 		}
+		
 		String destFilePath = DEST_FOLDER + DEST_FILENAME;
 		File destFile = new File(destFilePath);
-		logger.debug("SRC_FOLDER " + SRC_FOLDER);
-		logger.debug("destFilePath " + destFilePath);
 		ZipUtil.pack(new File(SRC_FOLDER), destFile);
 
 		FileInputStream fis = null;
@@ -133,7 +136,7 @@ public class ReleaseService {
 			destFolder.mkdirs();
 		}
 		String timestamp = sdf.format(Calendar.getInstance().getTime());
-		String DEST_FILENAME = "content-" + key + "-release-" + timestamp + ".zip";
+		String DEST_FILENAME = "release-" + key + "-" + timestamp + ".zip";
 		String destFilePath = DEST_FOLDER + DEST_FILENAME;
 		File destFile = new File(destFilePath);
 		try {
@@ -191,10 +194,69 @@ public class ReleaseService {
 
 	/**
 	 * 
+	 * @param id
+	 * @param res
+	 * @return
+	 */
+	public boolean downloadFromHistory(Integer id, HttpServletResponse res) {
+		
+    	Optional<ReleaseHistory> row = rhrepo.findById(id);
+		if (!row.isPresent()) {
+			return false;
+		}
+		
+		String DEST_FILENAME = row.get().getFileName();
+		String destFilePath = DEST_FOLDER + DEST_FILENAME;
+		File destFile = new File(destFilePath);
+
+		FileInputStream fis = null;
+		ServletOutputStream out = null;
+		
+		try {
+			fis = new FileInputStream(destFile); 			// file not found exception || 엑세스가 거부되었습니다
+			res.setHeader(HttpHeaders.PRAGMA, 				"no-cache");
+			res.setHeader(HttpHeaders.CONTENT_TYPE, 		"application/zip");
+			res.setHeader(HttpHeaders.CONTENT_LENGTH, 		"" + destFile.length());
+			res.setHeader(HttpHeaders.CONTENT_DISPOSITION, 	"attachment; filename=\"" + DEST_FILENAME + "\"");
+			out = res.getOutputStream();
+            FileCopyUtils.copy(fis, out);
+			return true;
+		} catch(FileNotFoundException e1){
+			e1.printStackTrace();
+			return false;
+        } catch(Exception e2){
+        	e2.printStackTrace();
+			return false;
+        } finally {
+            if(fis != null){
+                try{
+                    fis.close();
+                }catch(Exception e1){}
+            }
+            if (out!=null) {
+            	try{
+            		out.flush();
+            		out.close();
+            	} catch(Exception e2) {}
+            }
+        }
+	}
+
+	/**
+	 * 
 	 * @return
 	 */
 	public List<ChangeHistory> getHistories() {
-		return chrepo.findAllByOrderByUpdDtDesc();
+		return chrepo.findTop300ByOrderByUpdDtDesc();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@Cacheable(value="histories")
+	public List<ReleaseHistory> getReleases() {
+		return rhrepo.findTop300ByOrderByUpdDtDesc();
 	}
 	
 }

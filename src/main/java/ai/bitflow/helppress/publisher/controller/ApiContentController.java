@@ -1,5 +1,7 @@
 package ai.bitflow.helppress.publisher.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ public class ApiContentController {
 	 * @return
 	 */
 	@PostMapping("")
-	public ContentsRes newContent(ContentsReq params) {
+	public ContentsRes newContent(ContentsReq params, HttpSession sess) {
 		ContentsRes ret = new ContentsRes();
 		Contents res = cservice.newContent(params);
 		if (res!=null) {

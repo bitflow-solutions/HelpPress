@@ -10,6 +10,8 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,6 +51,7 @@ public class UserService implements UserDetailsService {
 		return ret;
 	}
 
+	@CacheEvict(value="users")
 	@Transactional
     public String addUser(UserReq params) {
         // 비밀번호 암호화
@@ -57,6 +60,7 @@ public class UserService implements UserDetailsService {
 		return urepo.save(params.toEntity()).getUsername();
     }
 	
+	@CacheEvict(value="users")
 	@Transactional
     public String updateUser(UserReq params) {
 		Optional<User> row = urepo.findById(params.getUsername());
@@ -70,6 +74,7 @@ public class UserService implements UserDetailsService {
 		}
     }
 	
+	@CacheEvict(value="users")
 	@Transactional
     public void deleteUser(UserReq params) {
 		Optional<User> row = urepo.findById(params.getUsername());
@@ -92,6 +97,7 @@ public class UserService implements UserDetailsService {
 	 * 전체 사용자 조회
 	 * @return
 	 */
+	@Cacheable(value="users")
 	public List<User> getUsers() {
 		return urepo.findAll();
     }
