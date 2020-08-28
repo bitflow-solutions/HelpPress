@@ -5,6 +5,9 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +37,9 @@ public class ApiContentController {
 	@Autowired
 	private ContentsService cservice;
 	
+	@Autowired 
+	private SimpMessagingTemplate broker;
+	
 	/**
 	 * 도움말 추가
 	 * @param params
@@ -48,6 +54,7 @@ public class ApiContentController {
 			rst.setKey(String.format("%05d", res.getId()));
 			rst.setTitle(res.getTitle());
 			ret.setResult(rst);
+ 			// broker.convertAndSend("/group", rst);
 		} else {
 			ret.setFailResponse();
 		}

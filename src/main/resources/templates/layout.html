@@ -8,7 +8,6 @@
 <link href="/img/favicon.ico" rel="shortcut icon" type="image/ico" />
 <link href="/bootstrap-4.5.2/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="/css/context.standalone.css" rel="stylesheet" type="text/css">
-<!-- <link href="/fontawesome5/css/all.css" rel="stylesheet" type="text/css"> -->
 <link href="/jquery/contextmenu/jquery.contextMenu.min.css" rel="stylesheet" type="text/css">
 <link href="/jquery/fancytree/skin-lion/ui.fancytree.css" rel="stylesheet" type="text/css">
 <link href="/SynapEditor_2.8.4/synapeditor/synapeditor.min.css" rel="stylesheet" type="text/css">
@@ -28,24 +27,33 @@
 		<div class="navbar-collapse collapse" id="navbarCollapse">
 			<ul class="navbar-nav mr-auto nav nav-pills">
         <li class="nav-item">
-          <a class="nav-link{{#tab1}}{{tab1}}{{/tab1}}" href="/group">도움말그룹 관리</a>
+          <a class="nav-link{{#tab1}}{{tab1}}{{/tab1}}" href="/group">도움말그룹</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link{{#tab2}}{{tab2}}{{/tab2}}" href="/content">도움말 관리</a>
+          <a class="nav-link{{#tab2}}{{tab2}}{{/tab2}}" href="/content">도움말관리</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link{{#tab3}}{{tab3}}{{/tab3}}" href="/release">배포 관리</a>
+        <!-- <li class="nav-item">
+          <a class="nav-link{{#tab3}}{{tab3}}{{/tab3}}" href="/release">배포관리</a>
         </li>
         <li class="nav-item">
           <a class="nav-link{{#tab4}}{{tab4}}{{/tab4}}" href="/user">관리자 관리</a>
-        </li>
+        </li> -->
       </ul>
 		</div>
-		<div class="form-inline my-2 my-lg-0">
-		  <a href="javascript:showProfile()" data-toggle="modal" data-target="#bf-modal-user">
-		    <i class="fas fa-user-circle" style="font-size: 20px; color: #888;"></i>
+		<div class="form-inline nav-right">
+		  <a href="/export" target="_blank">
+		  	<span class="material-icons icon-image-preview" style="font-size: 30px;">preview</span>
 		  </a>
-    </div>
+		  <a href="/release">
+		  	<span class="material-icons icon-image-preview" style="font-size: 30px;">archive</span>
+		  </a>
+		  <a href="/user">
+		  	<span class="material-icons icon-image-preview" style="font-size: 30px;">groups</span>
+		  </a>
+		  <a href="javascript:showProfile();" data-toggle="modal" data-target="#bf-modal-user">
+		  	<span class="material-icons icon-image-preview" style="font-size: 30px;">account_circle</span>
+		  </a>
+    	</div>
 	</nav>
 </header>
 
@@ -85,6 +93,8 @@
 <script src="/jquery/fancytree/jquery.fancytree-all.js"></script>
 <script src="/jquery/fancytree/modules/jquery.fancytree.edit.js"></script>
 <script src="/jquery/contextmenu/jquery.contextMenu.min.js"></script>
+<script src="/js/sockjs.min.js"></script>
+<script src="/js/stomp.min.js"></script>
 <script src="/bootstrap-4.5.2/js/bootstrap.bundle.min.js"></script>
 <script>
 var tree = {{#tree}}{{{tree}}}{{/tree}}{{^tree}}[]{{/tree}};

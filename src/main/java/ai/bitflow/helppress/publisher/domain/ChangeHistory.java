@@ -49,7 +49,7 @@ public class ChangeHistory {
 	private String updDtStr;
 	
 	public String getUpdDtStr() {
-		return updDt.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+		return updDt.format(DateTimeFormatter.ofPattern("yy.MM.dd HH:mm"));
 	}
 	
 }

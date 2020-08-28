@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,9 @@ public class ApiContentsGroupController {
 	@Autowired
 	private ContentsGroupService gservice;
 	
+	@Autowired 
+	private SimpMessagingTemplate broker;
+	
 	
 	/**
 	 * 도움말그룹 저장
@@ -53,6 +57,11 @@ public class ApiContentsGroupController {
 		return ret;
 	}
 	
+	/**
+	 * 하나의 도움말그룹 조회
+	 * @param groupId
+	 * @return
+	 */
 	@GetMapping("/{groupId}")
 	public ContentsGroupRes getGroup(@PathVariable String groupId) {
 		ContentsGroup res = gservice.getGroup(groupId);
@@ -85,6 +94,7 @@ public class ApiContentsGroupController {
 			rst.setGroupId(res.getGroupId());
 			rst.setTree(res.getTree());
 			ret.setResult(rst);
+			broker.convertAndSend("/group", rst);
 		}
 		return ret;
 	}

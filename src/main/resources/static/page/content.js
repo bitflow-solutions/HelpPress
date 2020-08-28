@@ -22,29 +22,33 @@ function initTree() {
         var node = data.node;
         node.setTitle(title);
         saveTree();
-        return true;
+        // return true;
       },
       beforeClose: function(e, data){
       },
-      activate: function(e, data){
-  	    console.log("activate");
-	    // var node = data.node;
-	  },
-	  click: function(e, data){
-	    console.log("click");
-	  },
       close: function(e, data){
     	initEvents();
       }
     },
-    activate: function (event, data) {},
+    activate: function(e, data){
+	  console.log("activate");
+	  // var node = data.node;
+	},
+	click: function(e, data){
+	  var node = data.node;
+	  if (!node.folder || node.folder===false) {
+	  	// 
+	  	loadPage(node.key);
+	  }
+    },
     lazyLoad: function (event, data) {},
   })
 }
 
 function initEvents() {
 	$(".btn-modify").click(function(e) {
-		// 도움망 수정완료 버튼 클릭
+		// 도움말 수정완료 버튼 클릭
+		$(".spinner-border").show();
 		var url = "/api/v1/ecm/content/" + selectedContentId;
 		$.ajax({
 			url: url,
@@ -61,13 +65,12 @@ function initEvents() {
 			loadPage(key);
 		  }
 		  alert('도움말을 수정하였습니다');
-		});
-	});
-	$(".fancytree-ico-c .fancytree-title").click(function(e) {
-		try {
-			var node = $.ui.fancytree.getNode(e);
-			loadPage(node.key);
-		} catch (ex) { console.log('err ' + ex.message); }
+		})
+		.always(function() {
+			setTimeout(function() {
+				$(".spinner-border").hide();
+			}, 1000);
+	    });
 	});
 	$("#btn-expand-all").click(function(e) {
 		expandAll();
@@ -136,8 +139,7 @@ function initEditor() {
     console.log('afterUploadImage ' + JSON.stringify(e));
     var fileType = e.fileType;
     var uploadPath = e.path;
-    // editor.getUploadedFiles()를 통해 업로드된 파일을 확인하려면 반드시 사용
-    console.log('filetype ' + fileType + ' uploadpath ' + uploadPath);
+    // console.log('filetype ' + fileType + ' uploadpath ' + uploadPath);
     e.editor.addUploadPath(fileType, uploadPath);
   });
   editor.setEventListener('beforeOpenDocument', function (e) {
@@ -164,9 +166,10 @@ function editContent() {
 }
 
 function loadPage(key) {
-	$("#editor-wrapper").hide();
-	$("#contents-detail").attr("src", key + ".html");
-	$("#contents-detail").show();
+  console.log("loadPage " + key);
+  $("#editor-wrapper").hide();
+  $("#contents-detail").attr("src", key + ".html");
+  $("#contents-detail").show();
 }
 
 function appendChildFolder() {
@@ -270,30 +273,9 @@ function editTitle() {
   node.editStart();
 }
 
-function saveTree() {
-  var _tree = $.ui.fancytree.getTree();
-  const tree = _tree.toDict(true);
-  console.log('saveTree ' + JSON.stringify(tree));
-  $.ajax({
-	  url: "/api/v1/ecm/group/" + selectedGroupId,
-	  method: "PUT",
-		data: { 
-		  tree: JSON.stringify(tree.children)
-		}
-  	})
-	.done(function(msg) {
-	  _tree.reload(JSON.parse(msg.result.tree));
-	  initEvents();
-	})
-	.fail(function() {
-	})
-	.always(function() {
-  });
-}
-
 function onSelectChanged(select) {
   selectedGroupId = select.options[select.selectedIndex].value;
-  if (!selectedGroupId && selectedGroupId.length<1) {
+  if (!selectedGroupId || selectedGroupId.length<1) {
 	  $("#tree").hide();
 	  $("#contents-detail").attr("src", "/empty-content.html");
   } else {
@@ -302,11 +284,11 @@ function onSelectChanged(select) {
 	  method: "GET"
 	})
 	.done(function(msg) {
-	  console.log('tree ' + msg.result.tree);
+	  console.log('msg.result.tree ' + msg.result.tree);
 	  var _tree = $.ui.fancytree.getTree();
+	  $("#tree").show();
 	  _tree.reload(JSON.parse(msg.result.tree));
 	  initEvents();
-	  $("#tree").show();
 	})
 	.fail(function() {
 	})
@@ -323,10 +305,52 @@ function collapseAll() {
   $.ui.fancytree.getTree().expandAll(false);
 }
 
+function saveTree() {
+  var _tree = $.ui.fancytree.getTree();
+  const tree = _tree.toDict(true);
+  console.log('saveTree ' + JSON.stringify(tree));
+  $.ajax({
+	  url: "/api/v1/ecm/group/" + selectedGroupId,
+	  method: "PUT",
+		data: { 
+		  tree: JSON.stringify(tree.children)
+		}
+  	})
+	.done(function(msg) {
+	  // _tree.reload(JSON.parse(msg.result.tree));
+	  // initEvents();
+	})
+	.fail(function() {
+	})
+	.always(function() {
+  });
+}
+
+function initSocket() {
+	var socket = new SockJS('ws');
+	var stompClient = Stomp.over(socket);
+	stompClient.debug = null;
+	stompClient.connect({}, function (frame) {
+        // console.log('Connected: ' + frame);
+        stompClient.subscribe('/group', function (msg) {
+          console.log("groupId " + JSON.parse(msg.body).groupId);
+          if (selectedGroupId===JSON.parse(msg.body).groupId) {
+            console.log("reloading group " + JSON.parse(msg.body).groupId);
+	        // console.log("msg " + JSON.parse(msg.body).tree);
+	        var _tree = $.ui.fancytree.getTree();
+	        // msg.body.groupId , msg.body.tree
+	        _tree.reload(JSON.parse(JSON.parse(msg.body).tree));
+		  	initEvents();
+	  	  }
+        });
+    });
+}
+
 $(function() {
 	initTree();
 	initEvents();
 	initEditor();
+	initSocket();
 });
 
 /*

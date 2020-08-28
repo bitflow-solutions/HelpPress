@@ -36,7 +36,7 @@ public class ReleaseHistory {
     private LocalDateTime updDt;
 	
 	public String getUpdDtStr() {
-		return updDt.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+		return updDt.format(DateTimeFormatter.ofPattern("yy.MM.dd HH:mm"));
 	}
 	
 }

@@ -20,15 +20,22 @@ dependencies {
 	implementation ('org.springframework.boot:spring-boot-starter-web') {
 	  exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
     }
-	implementation 'org.springframework.boot:spring-boot-starter-undertow:2.3.3.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-undertow'
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.security:spring-security-crypto:5.3.3.RELEASE'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation ('org.springframework.boot:spring-boot-starter-websocket') {
+	  exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+	
+	implementation 'org.springframework.security:spring-security-crypto:5.3.3.RELEASE'
 	implementation 'org.springframework.session:spring-session-core'
 	implementation 'com.vladmihalcea:hibernate-types-52:2.9.11'
 	runtimeOnly 'com.h2database:h2:1.4.200'
 	
+	implementation 'javax.websocket:javax.websocket-api:1.1'
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.11.2'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
 	implementation "org.apache.commons:commons-text:1.8"
 	implementation "org.jsoup:jsoup:1.13.1"
 	implementation "com.google.code.gson:gson:2.8.6"

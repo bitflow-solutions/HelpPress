@@ -1,4 +1,27 @@
-html, body { height: 100%; font-family: 'Noto Sans KR','Apple SD Gothic','∏º¿∫∞ÌµÒ','Nanum Gothic',sans-serif; font-weight: normal; overflow-y: hidden; }
+/* fallback */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(./materialicons.woff2) format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+html, body { height: 100%; font-family: 'Noto Sans KR','Apple SD Gothic','ÎßëÏùÄÍ≥†Îîï','Nanum Gothic',sans-serif; font-weight: normal; overflow-y: hidden; }
 a:hover { text-decoration: none; }
 .hide { display: none; }
 .navbar { z-index: 1; border-bottom: 1px solid #eee; padding: 0 16px; vertical-align: middle; height: 52px; }
@@ -9,6 +32,7 @@ a:hover { text-decoration: none; }
 .nav-item { min-width: 126px; text-align: center; }
 .bf-shadow { -moz-box-shadow: 3px 1px 3px 1px #999; -webkit-box-shadow: 3px 1px 3px 1px #999;
     box-shadow: 3px 1px 3px 1px #999; }
+.nav-right .material-icons { font-size: 32px; margin-top: 6px; }
 #bf-body-wrapper { height: 100%; }
 #editor-wrapper { display: none; }
 #emptyTree { padding: 10px 0 0 0; }
@@ -99,7 +123,7 @@ ul.fancytree-container { border: none; }
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
-
+span.fancytree-title { text-overflow: ellipsis; overflow-x: hidden; word-break: break-all; white-space: nowrap; max-width: calc(90% - 10px); }
 .modal-footer { border-top: 0; }
 .modal-header { border-bottom: 0; }
 
