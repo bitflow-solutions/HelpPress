@@ -9,7 +9,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 /**
- * 
+ * 웹소켓 처리 컨트롤러 
  * @author method76
  */
 @Controller
@@ -20,10 +20,9 @@ public class WebSocketController {
 	@Autowired 
 	private SimpMessagingTemplate broker;
 	
-	@MessageMapping("/hello")
+	@MessageMapping("/appendChild")
 	@SendTo("/group")
 	public String hello() throws Exception {
-		Thread.sleep(100); // delay
 		broker.convertAndSend("/group", "world");
 		return "Hello";
 	}

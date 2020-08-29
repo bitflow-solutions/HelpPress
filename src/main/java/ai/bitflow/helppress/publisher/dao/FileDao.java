@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 import ai.bitflow.helppress.publisher.domain.Contents;
@@ -43,6 +42,38 @@ public class FileDao {
     	this.tengine.setTemplateResolver(templateResolver()); 
 	}
 	
+    
+    public boolean newContentFile(Contents item, String idstring) {
+		
+		File dir = new File(UPLOAD_ROOT_PATH);
+		if (!dir.exists()) {
+			boolean success = dir.mkdirs();
+		}
+		 
+		BufferedWriter writer = null;
+		try {
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+					UPLOAD_ROOT_PATH + File.separator + idstring + ".html"), "UTF-8"));
+			writer.write(getHeader(item.getTitle()));
+			if (item.getContent()!=null) {
+				writer.write(item.getContent());
+			}
+			writer.write(getFooter());
+//			HtmlConverter.convertToPdf(html, new FileOutputStream(dest));
+
+		    return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (writer!=null) {
+				try {
+					writer.close();
+				} catch (IOException e) { }
+			}
+		}
+	}
+
 	/**
 	 * 도움말 HTML 파일 생성
 	 * @param item
@@ -103,6 +134,19 @@ public class FileDao {
 				String indexHtmlCodes = this.tengine.process("hp-index-redirection.html", ctx);
 				makeNewIndexRedirectionHtml(indexHtmlCodes);
 			}
+		}
+		return true;
+	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean deleteFile(String key) {
+		File html = new File(UPLOAD_ROOT_PATH + File.separator + key + ".html");
+		if (html.exists()) {
+			return html.delete();
 		}
 		return true;
 	}

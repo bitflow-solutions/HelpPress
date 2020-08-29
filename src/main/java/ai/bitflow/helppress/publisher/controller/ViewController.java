@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,15 +128,15 @@ public class ViewController {
 		mo.addAttribute("tab3", " active");
 		List<ChangeHistory> hlist = rservice.getHistories();
 		for (ChangeHistory item : hlist) {
-			String statusKr = "";
+			String status = "";
 			if (ApplicationConstant.ADD.equals(item.getMethod())) {
-				statusKr += "(추가)";
+				status += "(+)";
 			} else if (ApplicationConstant.MODIFY.equals(item.getMethod())) {
-				statusKr += "(변경)";
+				status += "(*)";
 			} else if (ApplicationConstant.DELETE.equals(item.getMethod())) {
-				statusKr += "(삭제)";
+				status += "(-)";
 			}
-			item.setStatusKr(statusKr);
+			item.setStatus(status);
 		}
 		List<ReleaseHistory> rlist = rservice.getReleases();
 		

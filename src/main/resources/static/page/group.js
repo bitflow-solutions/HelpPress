@@ -43,7 +43,7 @@ function validateInput() {
 
 $(function() {
 	$(".btn-delete").click(function () {
-		if (confirm("선택한 카테고리와 하위 컨텐츠들이 모두 삭제됩니다.\n정말 삭제하시겠습니까?")) {
+		if (confirm("선택한 도움말그룹과 하위 도움말들이 모두 삭제됩니다.\n정말로 삭제하시겠습니까?")) {
 			var url = "/api/v1/ecm/group/" + $("#groupId").val();
 			$.ajax({
 				url: url,

@@ -40,7 +40,7 @@ public class ChangeHistory {
 	private String comment;
 	
 	@Transient
-	private String statusKr;
+	private String status;
 	
 	@CreationTimestamp
     private LocalDateTime updDt;

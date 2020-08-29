@@ -2,10 +2,19 @@
 
 {{#style}}
 <style>
-#category-wrapper ul { padding: 0; }
-input[type="button"] + input[type="button"] { margin-right: 12px; }
 </style>
 {{/style}}
+
+<div class="row title-area">
+	<div class="col col-md-2">
+		<h5>▷ 도움말그룹</h5>
+	</div>
+	<div class="col col-md-10 form-group">
+		<input type="button" value="수정" class="btn btn-outline-primary btn-modify float-right hide">
+        <input type="button" value="삭제" class="btn btn-outline-primary btn-delete float-right hide">
+        <input type="button" value="등록" class="btn btn-outline-primary btn-create float-right">
+	</div>
+</div>
 
 <div id="bf-content-area" class="row">
 	
@@ -23,16 +32,9 @@ input[type="button"] + input[type="button"] { margin-right: 12px; }
 	</div>
 	
 	<div class="col col-md-10 bf-detail-area" id="bf-contents">
-		<div class="row">
-	      <div class="col-12 form-group">
-	        <input type="button" value="수정" class="btn btn-outline-primary btn-modify float-right hide">
-	        <input type="button" value="삭제" class="btn btn-outline-primary btn-delete float-right hide">
-	        <input type="button" value="등록" class="btn btn-outline-primary btn-create float-right">
-	      </div>
-		</div>
 	  <div class="row">
 	    <div class="col-12">
-			<form name="frm">
+			<form name="frm" class="input-frm">
 				<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
 				<div class="form-group row">
 			    <label for="groupId" class="col-sm-2 col-form-label">도움말그룹URI</label>
