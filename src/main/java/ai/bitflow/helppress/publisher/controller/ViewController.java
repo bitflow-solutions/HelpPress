@@ -22,13 +22,11 @@ import ai.bitflow.helppress.publisher.domain.User;
 import ai.bitflow.helppress.publisher.service.ContentsGroupService;
 import ai.bitflow.helppress.publisher.service.ReleaseService;
 import ai.bitflow.helppress.publisher.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 관리페이지 화면 컨트롤러 
  * @author 김성준
  */
-@Slf4j
 @Controller
 @RequestMapping("") 
 public class ViewController {
@@ -67,6 +65,7 @@ public class ViewController {
 	@GetMapping("/join") 
 	public String join(Model mo, HttpServletRequest req) {
 		List<User> list = uservice.getUsers();
+		logger.debug("listj " + list.toString());
 		if (list!=null && list.size()>0) {
 			return "redirect:/login";
 		} else {
@@ -83,6 +82,7 @@ public class ViewController {
 	@GetMapping("/login") 
 	public String login(Model mo, HttpServletRequest req) {
 		List<User> list = uservice.getUsers();
+		logger.debug("listl " + list.toString());
 		if (list==null || list.size()<1) {
 			return "redirect:/join";
 		} else {
@@ -127,17 +127,6 @@ public class ViewController {
 	public String release(Model mo) {
 		mo.addAttribute("tab3", " active");
 		List<ChangeHistory> hlist = rservice.getHistories();
-		for (ChangeHistory item : hlist) {
-			String status = "";
-			if (ApplicationConstant.ADD.equals(item.getMethod())) {
-				status += "(+)";
-			} else if (ApplicationConstant.MODIFY.equals(item.getMethod())) {
-				status += "(*)";
-			} else if (ApplicationConstant.DELETE.equals(item.getMethod())) {
-				status += "(-)";
-			}
-			item.setStatus(status);
-		}
 		List<ReleaseHistory> rlist = rservice.getReleases();
 		
 		mo.addAttribute("hlist", hlist);

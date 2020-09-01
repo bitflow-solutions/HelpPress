@@ -34,6 +34,8 @@ public class ChangeHistory {
 	private String userid;
 	@Column(length=255)
 	private String filePath;
+	@Column(length=255)
+	private String title;
 	@Column(length=1)
 	private Character released;
 	@Column(length=255)

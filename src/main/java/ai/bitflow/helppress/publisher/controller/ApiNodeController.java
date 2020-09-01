@@ -52,7 +52,7 @@ public class ApiNodeController {
 		if (username==null) {
 			ret.setFailResponse(401);
 		} else {
-			NodeUpdateResult res = nservice.newNode(params);
+			NodeUpdateResult res = nservice.newNode(params, username);
 			res.setUsername(username);
 			ret.setResult(res);
 			broker.convertAndSend("/node", res);
@@ -76,7 +76,7 @@ public class ApiNodeController {
 		if (username==null) {
 			ret.setFailResponse(401);
 		} else {
-			NodeUpdateResult res = nservice.deleteNode(params);
+			NodeUpdateResult res = nservice.deleteNode(params, username);
 			res.setUsername(username);
 			ret.setResult(res);
 			broker.convertAndSend("/node", res);			
@@ -100,12 +100,7 @@ public class ApiNodeController {
 		if (username==null) {
 			ret.setFailResponse(401);
 		} else {
-			NodeUpdateResult res = new NodeUpdateResult();
-			res.setUsername(username);
-			res.setKey(params.getKey());
-			res.setGroupId(params.getGroupId());
-			res.setTitle(params.getTitle());
-			res.setMethod("REN");
+			NodeUpdateResult res = nservice.renameNode(params, username);
 			ret.setResult(res);
 			broker.convertAndSend("/node", res);
 		}

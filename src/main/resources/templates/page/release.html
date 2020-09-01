@@ -4,10 +4,20 @@
 <style>
 input[type="button"] + input[type="button"] { margin-right: 12px; }
 #bf-content-area .col { overflow-y: auto; height: 100%; }
-.header-row { text-align: center; }
-.list-row .col { height: 100%; overflow-y: auto; }
+#bf-content-area .header-row > .col { padding-top: 10px; overflow-y: hidden; }
+.header-row { text-align: center; width: 100%; height: 72px; }
+.header-row table { width: 100%; }
+.header-row td { border: 1px solid #ddd; border-collapse: collapse; }
+.list-row { width: 100%; height: calc(100% - 150px); }
+.list-row .col { height: 100%; overflow-y: auto; padding-right: 0; }
 ul.list-wrapper { padding: 0; }
 ul.list-wrapper li { padding: 2px 10px; font-size: 14px; font-weight: 300; list-style-type: none; border-bottom: 1px solid #ccc; }
+.btn-wrapper { text-align: right; }
+.btn-wrapper input { margin-left: 6px; margin-right: 0; }
+input[type="button"] + input[type="button"] { margin-right: 0; }
+.list-table td { font-size: 12px; border: 1px solid #ddd; border-collapse: collapse; padding-left: 6px; padding-right: 6px; }
+.list-table .material-icons { float: left; color: #555; }
+.material-icons + div { margin: 2px 0 0 28px; }
 </style>
 {{/style}}
 
@@ -15,38 +25,92 @@ ul.list-wrapper li { padding: 2px 10px; font-size: 14px; font-weight: 300; list-
 	<div class="col col-sm-6">
 		<h5>▷ 배포관리</h5>
 	</div>
-	<div class="col col-sm-6 form-group">
+	<div class="col col-sm-6 btn-wrapper">
 		<input type="button" value="전체파일" class="btn btn-outline-primary" id="btn-download-all">
 		<input type="button" value="변경된파일" class="btn btn-outline-primary" onclick="alert('현재 버전에서는 지원하지 않습니다');">
 		<input type="button" value="내변경파일" class="btn btn-outline-primary" onclick="alert('현재 버전에서는 지원하지 않습니다');">
 	</div>
 </div>
 
-<div id="bf-content-area" class="row">
-	<div class="row header-row" style="width: 100%;">
-		<div class="col col-sm-6">
-	    <h5>배포이력</h5>	   
+<div id="bf-content-area">
+	<div class="row header-row">
+		<div class="col col-sm-4">
+	      <div class="row">
+      		<div class="col col-sm-12">
+		      <h5>미배포 변경사항</h5>
+	        </div>
+	      </div>
+	      <div class="row">
+      		<div class="col col-sm-12">
+      			<table>
+      				<thead>
+	      				<tr>
+	      					<col width="33%" />
+	      					<col width="33%" />
+	      					<col width="33%" />
+	      				</tr>
+      				</thead>
+      				<tbody>
+	    				<tr>
+	    					<td>파일명</td>
+	    					<td>최근변경자</td>
+	    					<td>최근변경일시</td>
+	    				</tr>
+    				</tbody>
+      			</table>
+	        </div>
+	      </div>
 		</div>
-		<div class="col col-sm-6">
-		  <h5>변경이력</h5>
+		<div class="col col-sm-4">
+	      <div class="row">
+      		<div class="col col-sm-12">
+		      <h5>변경이력</h5>
+	        </div>
+	      </div>
+	      <div class="row">
+      		<div class="col col-sm-12">
+      			<table>
+      				<thead>
+      					<col width="35%"/>
+      					<col width="30%"/>
+      					<col width="15%"/>
+      					<col width="20%"/>
+      				</thead>
+      				<tbody>
+    				<tr>
+    					<td>구분</td>
+    					<td>파일명</td>
+    					<td>변경자</td>
+    					<td>변경일시</td>
+    				</tr>
+    				</tbody>
+      			</table>
+	        </div>
+		  </div>
+		</div>
+		<div class="col col-sm-4">
+	      <div class="row">
+      		<div class="col col-sm-12">
+		      <h5>배포이력</h5>
+	        </div>
+	      </div>
+	      <div class="row">
+      		<div class="col col-sm-12">
+      			<table>
+    				<tr>
+    					<td>배포구분</td>
+    					<td>배포자</td>
+    					<td>다운로드일시</td>
+    				</tr>
+      			</table>
+	        </div>
+	      </div>     	   
 		</div>
 	</div>
 	
-	<div class="row list-row" style="width: 100%; height: 100%;">
-		
-		<div class="col col-sm-6">
-		  <ul class="list-wrapper release-wrapper"> 
-			{{#rlist}}
-			<li>
-			  <a href="javascript:downloadFromHistory({{id}})">
-			  <span><i class="far fa-file-code"></i>&nbsp;{{type}}</span><span style="float: right;">{{updDtStr}}</span>
-			  </a>
-			</li>
-			{{/rlist}}
-		  </ul>
-		</div>
-		
-		<div class="col col-sm-6">
+	<div class="row list-row">
+		<!-- 1) 변경된 파일 목록 -->
+		<div class="col col-sm-4">
 			<ul class="list-wrapper">
 				{{#hlist}}
 				<li>
@@ -56,6 +120,41 @@ ul.list-wrapper li { padding: 2px 10px; font-size: 14px; font-weight: 300; list-
 			</ul>
 		</div>
 		
+		<!-- 2) 변경된 이력 -->
+		<div class="col col-sm-4">
+			<table width="100%" class="list-table">
+  				<thead>
+  					<col width="35%"/>
+  					<col width="30%"/>
+  					<col width="15%"/>
+  					<col width="20%"/>
+  				</thead>
+  				<tbody>			
+				{{#hlist}}
+				<tr>
+					<td><span class="material-icons">{{status}}</span><div>{{#title}}{{title}}{{/title}}</div></td>
+					<td>{{#filePath}}{{filePath}}{{/filePath}}</td>
+					<td class="text-center">{{#userid}}{{userid}}{{/userid}}</td>
+					<td class="text-center">{{updDtStr}}</td>
+				</tr>
+				{{/hlist}}
+				</tbody>
+			</table>
+		</div>
+
+		<!-- 3) 배포 이력 -->
+		<div class="col col-sm-4">
+		  <ul class="list-wrapper release-wrapper"> 
+			{{#rlist}}
+			<li>
+			  <a href="javascript:downloadFromHistory({{id}})">
+			  <span><i class="far fa-file-code"></i>&nbsp;{{typeKr}}</span><span style="float: right;">{{updDtStr}}</span>
+			  </a>
+			</li>
+			{{/rlist}}
+		  </ul>
+		</div>
+
 	</div>
 
 </div>

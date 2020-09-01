@@ -145,6 +145,28 @@ function initEditor() {
   });
 }
 
+function saveTree() {
+  console.log('saveTree');
+  var _tree = $.ui.fancytree.getTree();
+  var tree = _tree.toDict(true);
+  $(".spinner-border").show();
+  $.ajax({
+	  url: "/api/v1/ecm/group/" + selectedGroupId,
+	  method: "PUT",
+		data: {  tree: JSON.stringify(tree.children) }
+  	})
+	.done(function(msg) {
+	  _tree.reload(JSON.parse(msg.result.tree));
+	})
+	.fail(function() {
+	})
+	.always(function() {
+		setTimeout(function() {
+			$(".spinner-border").hide();
+		}, 300);
+	});
+}
+
 function editContent() {
   console.log("editContent");
   var _tree = $.ui.fancytree.getTree();
@@ -175,12 +197,15 @@ function renameTitle(e, data) {
     var title = data.input.val();
     console.log('renameTitle ' + title);
     var node = data.node;
-    
+    var data = { groupId: selectedGroupId, key: node.key, title: title };
+    if (node.folder && node.folder===true) {
+    	data.folder = true;
+    }
     $(".spinner-border").show();
 	$.ajax({
 		url: URL_UPDATE_NODE,
 		method: "PUT",
-		data: { groupId: selectedGroupId, key: node.key, title: title }
+		data: data
 	})
 	.done(function(msg) {
 	  console.log('status ' + msg.status);
@@ -320,7 +345,7 @@ function deleteContent() {
   $.ajax({
 	  url: URL_UPDATE_NODE,
 	  method: "DELETE",
-	  data: { groupId: selectedGroupId, key: node.key }
+	  data: { groupId: selectedGroupId, key: node.key, title: node.title }
   	})
 	.done(function(msg) {
 	  if (msg.status==401) {
@@ -348,12 +373,10 @@ function deleteFolder() {
   if (childContentsArr) {
   	console.log('childContentsArr ' + JSON.stringify(childContentsArr));
   }
-  var data = { groupId: selectedGroupId, key: node.key, child: childContentsArr };
-  console.log('params ' + JSON.stringify(data));
   $.ajax({
 	  url: URL_UPDATE_NODE,
 	  method: "DELETE",
-	  data: { groupId: selectedGroupId, key: node.key, child: childContentsArr, folder: true }
+	  data: { groupId: selectedGroupId, key: node.key, child: childContentsArr, folder: true, title:  node.title }
   	})
 	.done(function(msg) {
 	  if (msg.status==401) {
@@ -418,24 +441,31 @@ function onSelectChanged(select) {
   if (!selectedGroupId || selectedGroupId.length<1) {
 	  $("#tree").hide();
 	  $("#contents-detail").attr("src", "/empty-content.html");
+	  location.href = "#";
   } else {
+	loadTree(selectedGroupId);
+  }
+}
+
+function loadTree(groupId) {
 	$.ajax({
-	  url: "/api/v1/ecm/group/" + selectedGroupId,
+	  url: "/api/v1/ecm/group/" + groupId,
 	  method: "GET"
 	})
 	.done(function(msg) {
+	console.log('msg ' + JSON.stringify(msg));
 	  var _tree = $.ui.fancytree.getTree();
 	  $("#tree").show();
-	  if (msg && msg.result && msg.result.tree) {
+	  if (msg && msg.result) {
 	  	_tree.reload(JSON.parse(msg.result.tree));
 	  	initEvents();
 	  }
+	  location.href = "#" + groupId;
 	})
 	.fail(function() {
 	})
 	.always(function() {
 	});
-  }
 }
 
 function expandAll() {
@@ -500,4 +530,11 @@ $(function() {
 	initEvents();
 	initEditor();
 	initSocket();
+	var hash = window.location.hash;
+	console.log('hash ' + hash);
+	if (hash.length>1) {
+		$("#sel_category").val(hash.substring(1));
+		onSelectChanged($("#sel_category").get(0));
+		// loadTree(hash.substring(1));
+	}
 });

@@ -14,10 +14,11 @@ $(function () {
 
 function downloadFromHistory(id) {
 	if (confirm("해당 버전을 다운로드 하시겠습니까?")) {
-	$(".spinner-border").show();
+		alert('다운로드 준비에 10초 이상 걸릴 수 있습니다');
+		$(".spinner-border").show();
 		$("#ifrm").attr("src", "/api/v1/ecm/release/all/" + id);
 		setTimeout(function() {
 			$(".spinner-border").hide();
-		}, 6000);
+		}, 10000);
 	}
 }

@@ -5,7 +5,10 @@
   font-weight: 400;
   src: url(./materialicons.woff2) format('woff2');
 }
-
+.bf-icon { background-image: url('/img/ic_icons.png'); width: 32px; height: 32px; background-size: cover;
+	background-repeat: no-repeat; padding-left: 32px; }
+.bf-icon.navi { }
+.bf-icon.preview { background-position: -32px 0; }
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -43,7 +46,6 @@ a:hover { text-decoration: none; }
 #bf-subject { font-weight: bold; float:left; margin-left: 12px; }
 .bf-detail-area { height: 100%; overflow-x: hidden; overflow-y: auto; padding: 15px; }
 #bf-content-area { width: 100%; height: 100%; margin: 0; }
-#bf-content-area > .row > .col { padding-top: 20px; }
 .treeview { background-color: white; padding: 12px 6px; }
 .col-form-label { text-align: right; color: #555; background-color: #f0f0f0; }
 .navbar-light .navbar-nav .nav-link { color: #555; }
@@ -59,7 +61,7 @@ input[type="button"] + input[type="button"] { margin-right: 12px; }
 #category-wrapper li.alert { border-bottom: 1px solid #ddd; border-right: 0; }
 .title-area { height: 53px; margin: 55px 0 0 0; border-bottom: 1px solid #ddd; }
 .title-area > .col > h5 { margin: 12px; }
-.title-area > .col > div, .title-area > .col > input { margin: 6px 12px; }
+.title-area > .col > div, .title-area > .col > input { margin: 6px; }
 input[type="button"] + input[type="button"] { margin-right: 12px; }
 input[type=text], input[type=password] { color: #3f51b5; border: 3px solid #ddd; }
 input[type=text]::placeholder, input[type=password]::placeholder { color: #ddd; }

@@ -9,6 +9,7 @@ public class DeleteNodeReq {
 
 	private String groupId;
 	private String key;
+	private String title;
 	private Boolean folder;
 	private List<String> child;
 	

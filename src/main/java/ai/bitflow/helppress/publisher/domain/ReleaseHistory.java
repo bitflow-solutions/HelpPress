@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -34,6 +35,9 @@ public class ReleaseHistory {
 	
 	@CreationTimestamp
     private LocalDateTime updDt;
+	
+	@Transient
+	private String typeKr;
 	
 	public String getUpdDtStr() {
 		return updDt.format(DateTimeFormatter.ofPattern("yy.MM.dd HH:mm"));

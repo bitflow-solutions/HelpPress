@@ -9,9 +9,11 @@ public interface ApplicationConstant {
 	String ADD 		= "ADD";
 	String MODIFY 	= "MOD";
 	String DELETE 	= "DEL";
+	String RENAME 	= "REN";
 	
 	String GROUP 	= "GROUP";
 	String CONTENT 	= "CONTENT";
+	String FOLDER 	= "FOLDER";
 
 	String RELEASE_ALL 	= "ALL";
 	String RELEASE_PART = "PART";

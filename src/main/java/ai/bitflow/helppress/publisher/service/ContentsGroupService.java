@@ -1,5 +1,6 @@
 package ai.bitflow.helppress.publisher.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
+import ai.bitflow.helppress.publisher.dao.ChangeHistoryDao;
 import ai.bitflow.helppress.publisher.dao.FileDao;
 import ai.bitflow.helppress.publisher.domain.ChangeHistory;
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
@@ -34,6 +37,9 @@ public class ContentsGroupService {
 	
 	@Autowired
 	private ChangeHistoryRepository hrepo;
+	
+	@Autowired
+	private ChangeHistoryDao chdao;
 	
 	@Autowired
 	private FileDao fdao;
@@ -67,9 +73,13 @@ public class ContentsGroupService {
 	 * @param params
 	 * @return
 	 */
-	@CacheEvict(value="groups")
+	@CacheEvict(value="groups", allEntries=true)
 	@Transactional
-    public String createGroup(ContentsGroupReq params) {
+    public String newGroup(ContentsGroupReq params, String userid) {
+		
+		String method = ApplicationConstant.ADD;
+		String type = ApplicationConstant.GROUP;
+		
 		ContentsGroup item = new ContentsGroup();
 		item.setGroupId(params.getGroupId());
 		item.setName(params.getName());
@@ -80,11 +90,7 @@ public class ContentsGroupService {
 		fdao.makeAllContentGroupHTML(list);
 		
 		// 변경이력 저장
-		ChangeHistory item3 = new ChangeHistory();
-		item3.setType("GROUP");
-		item3.setMethod("ADD");
-		item3.setFilePath(params.getGroupId() + ".html");
-		hrepo.save(item3);
+		chdao.addHistory(userid, type, method, params.getName(), params.getGroupId() + ".html");
 		
 		return ret;
 	}
@@ -94,9 +100,13 @@ public class ContentsGroupService {
 	 * @param params
 	 * @return
 	 */
-	@CacheEvict(value="groups")
+	@CacheEvict(value="groups", allEntries=true)
 	@Transactional
-    public ContentsGroup updateGroup(ContentsGroupReq params) {
+    public ContentsGroup updateGroup(ContentsGroupReq params, String userid) {
+		
+		String method = ApplicationConstant.MODIFY;
+		String type = ApplicationConstant.GROUP;
+		
 		Optional<ContentsGroup> row = grepo.findById(params.getGroupId());
 		ContentsGroup item1 = null;
 		if (!row.isPresent()) {
@@ -119,11 +129,9 @@ public class ContentsGroupService {
 		fdao.makeAllContentGroupHTML(list);
 		
 		// 변경이력 저장
-		ChangeHistory item3 = new ChangeHistory();
-		item3.setType("GROUP");
-		item3.setMethod("MOD");
-		item3.setFilePath(params.getGroupId() + ".html");
-		hrepo.save(item3);
+		if (params.getTree()==null) {
+			chdao.addHistory(userid, type, method, params.getName(), params.getGroupId() + ".html");
+		}
 		
 		return ret;
     }
@@ -132,7 +140,7 @@ public class ContentsGroupService {
 	 * 도움말그룹 삭제
 	 * @param id
 	 */
-	@CacheEvict(value="groups")
+	@CacheEvict(value="groups", allEntries=true)
 	@Transactional
     public void deleteGroup(String id) {
 		grepo.deleteById(id);
@@ -146,6 +154,7 @@ public class ContentsGroupService {
 		item3.setMethod("DEL");
 		item3.setFilePath(id + ".html");
 		hrepo.save(item3);
+		
     }
 	
 }

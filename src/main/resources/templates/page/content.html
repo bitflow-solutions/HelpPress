@@ -19,7 +19,7 @@
 	<div class="col col-md-5">
 		<div class="form-group row" style="margin-bottom: 0;padding: 0 15px;">
 		  <select class="form-control col-8" id="sel_category" onchange="onSelectChanged(this);">
-		    <option>----- 도움말그룹 선택 -----</option>
+		    <option value="">----- 도움말그룹 선택 -----</option>
 			{{#list}}
 		    <option value="{{groupId}}">{{#name}}{{name}}{{/name}}</option>
 			{{/list}}
@@ -67,28 +67,6 @@
 <script src="/SynapEditor_2.8.4/synapeditor/externals/SEShapeManager/SEShapeManager.min.js"></script>
 <script src="/page/content.js"></script>
 <script>
-function saveTree() {
-  console.log('saveTree');
-  var _tree = $.ui.fancytree.getTree();
-  var tree = _tree.toDict(true);
-  // remove partsel selected
-  $(".spinner-border").show();
-  $.ajax({
-	  url: "/api/v1/ecm/group/" + selectedGroupId,
-	  method: "PUT",
-		data: {  tree: JSON.stringify(tree.children) }
-  	})
-	.done(function(msg) {
-	  _tree.reload(JSON.parse(msg.result.tree));
-	})
-	.fail(function() {
-	})
-	.always(function() {
-		setTimeout(function() {
-			$(".spinner-border").hide();
-		}, 300);
-	});
-}
 </script>
 {{/script}}
 

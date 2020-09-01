@@ -2,6 +2,8 @@ package ai.bitflow.helppress.publisher.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
 import ai.bitflow.helppress.publisher.service.ContentsGroupService;
+import ai.bitflow.helppress.publisher.util.SpringUtil;
 import ai.bitflow.helppress.publisher.vo.req.ContentsGroupReq;
 import ai.bitflow.helppress.publisher.vo.res.ContentsGroupRes;
 import ai.bitflow.helppress.publisher.vo.res.GeneralRes;
@@ -46,13 +49,15 @@ public class ApiContentsGroupController {
 	 * @return
 	 */
 	@PostMapping("/{groupId}")
-	public GeneralRes postGroup(@PathVariable String groupId, ContentsGroupReq params) {
+	public GeneralRes newGroup(@PathVariable String groupId, ContentsGroupReq params, HttpSession sess) {
 		logger.debug("params " + params.toString());
 		params.setGroupId(groupId);
-		String res = gservice.createGroup(params);
+		String username = SpringUtil.getSessionUserid(sess);
 		GeneralRes ret = new GeneralRes();
-		if (res==null) {
-			ret.setFailResponse();
+		if (username==null) {
+			ret.setFailResponse(401);
+		} else {
+			String res = gservice.newGroup(params, username);
 		}
 		return ret;
 	}
@@ -82,14 +87,15 @@ public class ApiContentsGroupController {
 	 * @return
 	 */
 	@PutMapping("/{groupId}")
-	public ContentsGroupRes putGroup(@PathVariable String groupId, ContentsGroupReq params) {
+	public ContentsGroupRes putGroup(@PathVariable String groupId, ContentsGroupReq params, HttpSession sess) {
 		logger.debug("params " + params.toString());
 		params.setGroupId(groupId);
-		ContentsGroup res = gservice.updateGroup(params);
+		String username = SpringUtil.getSessionUserid(sess);
 		ContentsGroupRes ret = new ContentsGroupRes();
-		if (res==null) {
-			ret.setFailResponse();
+		if (username==null) {
+			ret.setFailResponse(401);
 		} else {
+			ContentsGroup res = gservice.updateGroup(params, username);
 			ContentsGroupResult rst = new ContentsGroupResult();
 			rst.setGroupId(res.getGroupId());
 			rst.setTree(res.getTree());

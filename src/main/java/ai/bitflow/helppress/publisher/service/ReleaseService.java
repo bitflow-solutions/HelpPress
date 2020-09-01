@@ -17,8 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -26,10 +24,9 @@ import org.zeroturnaround.zip.NameMapper;
 import org.zeroturnaround.zip.ZipUtil;
 
 import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
-import ai.bitflow.helppress.publisher.dao.FileDao;
+import ai.bitflow.helppress.publisher.dao.ChangeHistoryDao;
 import ai.bitflow.helppress.publisher.domain.ChangeHistory;
 import ai.bitflow.helppress.publisher.domain.ReleaseHistory;
-import ai.bitflow.helppress.publisher.repository.ChangeHistoryRepository;
 import ai.bitflow.helppress.publisher.repository.ReleaseHistoryRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,15 +48,12 @@ public class ReleaseService {
 	
 	@Value("${app.release.root.path}")
 	private String DEST_FOLDER;
-
-	@Autowired
-	private ChangeHistoryRepository chrepo;
 	
 	@Autowired
 	private ReleaseHistoryRepository rhrepo;
 	
 	@Autowired
-	private FileDao fdao;
+	private ChangeHistoryDao chdao;
 	
 	
 	/**
@@ -67,7 +61,6 @@ public class ReleaseService {
 	 * @param res
 	 * @return
 	 */
-	@CacheEvict(value="histories")
 	@Transactional
 	public boolean downloadAll(Boolean release, HttpServletResponse res) {
 		
@@ -247,16 +240,39 @@ public class ReleaseService {
 	 * @return
 	 */
 	public List<ChangeHistory> getHistories() {
-		return chrepo.findTop300ByOrderByUpdDtDesc();
+		List<ChangeHistory> ret = chdao.getHistories();
+		if (ret!=null && ret.size()>0) {
+			for (ChangeHistory item : ret) {
+				String status = "";
+				if (ApplicationConstant.ADD.equals(item.getMethod())) {
+					status = "post_add";
+				} else if (ApplicationConstant.MODIFY.equals(item.getMethod())) {
+					status = "update";
+				} else if (ApplicationConstant.DELETE.equals(item.getMethod())) {
+					status = "delete_outline";
+				} else  if (ApplicationConstant.RENAME.equals(item.getMethod())) {
+					status = "text_fields";
+				}
+				item.setStatus(status);
+			}
+		}
+		return ret;
 	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	@Cacheable(value="histories")
 	public List<ReleaseHistory> getReleases() {
-		return rhrepo.findTop300ByOrderByUpdDtDesc();
+		List<ReleaseHistory> ret = rhrepo.findTop300ByOrderByUpdDtDesc();
+		for (ReleaseHistory item : ret) {
+			if (ApplicationConstant.RELEASE_ALL.equals(item.getType())) {
+				item.setTypeKr("전체파일");
+			} else {
+				item.setTypeKr("변경파일");
+			}
+		}
+		return ret;
 	}
 	
 }
