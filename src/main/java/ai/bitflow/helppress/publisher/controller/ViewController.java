@@ -81,6 +81,11 @@ public class ViewController {
 	 */
 	@GetMapping("/login") 
 	public String login(Model mo, HttpServletRequest req) {
+		
+	    String referrer = req.getHeader("Referer");
+	    req.getSession().setAttribute("prevPage", referrer);
+	    logger.debug("prevPage " + referrer);
+	    
 		List<User> list = uservice.getUsers();
 		logger.debug("listl " + list.toString());
 		if (list==null || list.size()<1) {
@@ -98,7 +103,6 @@ public class ViewController {
 	@GetMapping("/group") 
 	public String group(Model mo, HttpServletRequest req) {
 		List<ContentsGroup> list = cservice.getGroups();
-		String add = req.getParameter("add");
 		mo.addAttribute("tab1", " active");
 		mo.addAttribute("list", list);
 		return "page/group";
@@ -125,10 +129,14 @@ public class ViewController {
 	 */
 	@GetMapping("/release") 
 	public String release(Model mo) {
+		
 		mo.addAttribute("tab3", " active");
-		List<ChangeHistory> hlist = rservice.getHistories();
+		
+		List<ChangeHistory> clist  = rservice.getAllChanges();
+		List<ChangeHistory> hlist  = rservice.getHistories();
 		List<ReleaseHistory> rlist = rservice.getReleases();
 		
+		mo.addAttribute("clist", clist);
 		mo.addAttribute("hlist", hlist);
 		mo.addAttribute("rlist", rlist);
 		

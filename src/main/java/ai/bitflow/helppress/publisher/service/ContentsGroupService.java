@@ -77,8 +77,8 @@ public class ContentsGroupService {
 	@Transactional
     public String newGroup(ContentsGroupReq params, String userid) {
 		
-		String method = ApplicationConstant.ADD;
-		String type = ApplicationConstant.GROUP;
+		String method = ApplicationConstant.METHOD_ADD;
+		String type = ApplicationConstant.TYPE_GROUP;
 		
 		ContentsGroup item = new ContentsGroup();
 		item.setGroupId(params.getGroupId());
@@ -90,8 +90,9 @@ public class ContentsGroupService {
 		fdao.makeAllContentGroupHTML(list);
 		
 		// 변경이력 저장
+		chdao.addHistory(userid, type, method, "온라인도움말", "index.html");
 		chdao.addHistory(userid, type, method, params.getName(), params.getGroupId() + ".html");
-		
+
 		return ret;
 	}
 	
@@ -104,8 +105,8 @@ public class ContentsGroupService {
 	@Transactional
     public ContentsGroup updateGroup(ContentsGroupReq params, String userid) {
 		
-		String method = ApplicationConstant.MODIFY;
-		String type = ApplicationConstant.GROUP;
+		String type = ApplicationConstant.TYPE_GROUP;
+		String method = ApplicationConstant.METHOD_MODIFY;
 		
 		Optional<ContentsGroup> row = grepo.findById(params.getGroupId());
 		ContentsGroup item1 = null;
@@ -138,22 +139,26 @@ public class ContentsGroupService {
 	
 	/**
 	 * 도움말그룹 삭제
+	 * Todo: 그룹 파일도 삭제
 	 * @param id
 	 */
 	@CacheEvict(value="groups", allEntries=true)
 	@Transactional
-    public void deleteGroup(String id) {
-		grepo.deleteById(id);
+    public void deleteGroup(String groupid, String userid) {
 		
-		List<ContentsGroup> list = grepo.findAll();
-		fdao.makeAllContentGroupHTML(list);
+		String type   = ApplicationConstant.TYPE_GROUP;
+		String method = ApplicationConstant.METHOD_DELETE;
 		
-		// 변경이력 저장
-		ChangeHistory item3 = new ChangeHistory();
-		item3.setType("GROUP");
-		item3.setMethod("DEL");
-		item3.setFilePath(id + ".html");
-		hrepo.save(item3);
+		Optional<ContentsGroup> row = grepo.findById(groupid);
+		
+		if (row.isPresent()) {
+			ContentsGroup item = row.get();
+			grepo.deleteById(groupid);
+			List<ContentsGroup> list = grepo.findAll();
+			fdao.makeAllContentGroupHTML(list);
+			// 변경이력 저장
+			chdao.addHistory(userid, type, method, item.getName(), groupid + ".html");
+		}
 		
     }
 	

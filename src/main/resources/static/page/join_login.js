@@ -12,8 +12,8 @@ function doLogin() {
 		})
 		.done(function(msg) {
 			console.log('msg ' + JSON.stringify(msg));
-			if (msg.status===200) {
-				location.href = "/content";
+			if (msg.status===200 && msg.result) {
+				location.href = msg.result;
 			} else {
 				$("#password").val("");
 				alert('아이디 또는 비밀번호가 일치하지 않습니다');

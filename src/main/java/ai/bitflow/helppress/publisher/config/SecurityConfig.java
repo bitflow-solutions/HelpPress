@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import ai.bitflow.helppress.publisher.service.UserService;
 import lombok.AllArgsConstructor;
@@ -62,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        .and()
 	        	.formLogin()
 	        	.loginPage("/login")
-                .defaultSuccessUrl("/content")
+                // .defaultSuccessUrl("/content")
             .and()
             	.logout()
             	.logoutUrl("/logout")
@@ -70,5 +71,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll();
 //        http.sessionManagement().maximumSessions(1).expiredUrl("/user/login?expired");
     }
+    
+//    @Bean
+//    public AuthenticationSuccessHandler successHandler() {
+//        return new LoginSuccessHandler();
+//    }
+    
 
 }

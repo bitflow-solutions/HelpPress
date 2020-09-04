@@ -34,19 +34,10 @@ public class ChangeHistoryDao {
 	 * @param title
 	 * @param filePath
 	 */
-	@CacheEvict(value="history", allEntries=true)
+	// @CacheEvict(value="history", allEntries=true)
     public void addHistory(String userid, String type, String method, String title, String filePath) {
 		
-//		LocalDateTime prevTime = LocalDateTime.now().withSecond(0).withNano(0);
-//		Optional<ChangeHistory> row2 = chrepo.findTopByTypeAndMethodAndFilePathAndUpdDtGreaterThanEqual
-//				(type, method, filePath, prevTime);
-		ChangeHistory item = null;
-//		if (row2.isPresent()) {
-//			item = row2.get();
-//		} else {
-			item = new ChangeHistory();
-//		}
-		
+		ChangeHistory item = new ChangeHistory();
 		item.setUserid(userid);
 		item.setType(type);
 		item.setTitle(title);
@@ -59,9 +50,14 @@ public class ChangeHistoryDao {
 	 * 변경이력 가져오기
 	 * @return
 	 */
-    @Cacheable(value="history")
+    // @Cacheable(value="history")
 	public List<ChangeHistory> getHistories() {
 		return chrepo.findTop300ByOrderByUpdDtDesc();
+	}
+	
+	public List<ChangeHistory> findAllChanged() {
+		List<Integer> list = chrepo.findAllChangedFileIds();
+		return chrepo.findAllByIdInOrderByUpdDtDesc(list);
 	}
 
 }

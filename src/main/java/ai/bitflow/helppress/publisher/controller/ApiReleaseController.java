@@ -61,4 +61,14 @@ public class ApiReleaseController {
 		rservice.downloadFromHistory(id, res);
 	}
 	
+	/**
+	 * 
+	 * @param res
+	 */
+	@GetMapping("/changed") 
+	public void downloadChanged(HttpServletResponse res) {
+		log.debug("downloadChanged");
+		rservice.downloadChanged(res);
+	}
+
 }

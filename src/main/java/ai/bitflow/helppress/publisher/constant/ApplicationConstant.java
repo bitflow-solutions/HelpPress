@@ -6,17 +6,17 @@ package ai.bitflow.helppress.publisher.constant;
  */
 public interface ApplicationConstant {
 
-	String ADD 		= "ADD";
-	String MODIFY 	= "MOD";
-	String DELETE 	= "DEL";
-	String RENAME 	= "REN";
+	String METHOD_ADD 	 = "ADD";
+	String METHOD_MODIFY = "MOD";
+	String METHOD_DELETE = "DEL";
+	String METHOD_RENAME = "REN";
 	
-	String GROUP 	= "GROUP";
-	String CONTENT 	= "CONTENT";
-	String FOLDER 	= "FOLDER";
+	String TYPE_GROUP 	 = "GROUP";
+	String TYPE_CONTENT  = "CONTENT";
+	String TYPE_FOLDER 	 = "FOLDER";
 
-	String RELEASE_ALL 	= "ALL";
-	String RELEASE_PART = "PART";
+	String RELEASE_ALL 	 = "ALL";
+	String RELEASE_PART  = "PART";
 	
 	String UPLOAD_REL_PATH = "uploads";
 	

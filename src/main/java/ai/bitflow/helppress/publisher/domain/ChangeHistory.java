@@ -54,4 +54,14 @@ public class ChangeHistory {
 		return updDt.format(DateTimeFormatter.ofPattern("yy.MM.dd HH:mm"));
 	}
 	
+	public ChangeHistory(Integer id, String filePath) {
+		this.id = id;
+		this.filePath = filePath;
+	}
+	
+	public ChangeHistory(String filePath, LocalDateTime updDt) {
+		this.filePath = filePath;
+		this.updDt = updDt;
+	}
+	
 }

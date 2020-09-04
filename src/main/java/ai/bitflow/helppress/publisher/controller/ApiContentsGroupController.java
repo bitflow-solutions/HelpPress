@@ -63,7 +63,7 @@ public class ApiContentsGroupController {
 	}
 	
 	/**
-	 * 하나의 도움말그룹 조회
+	 * 도움말그룹 조회
 	 * @param groupId
 	 * @return
 	 */
@@ -111,14 +111,14 @@ public class ApiContentsGroupController {
 	 * @return
 	 */
 	@DeleteMapping("/{groupId}")
-	public GeneralRes deleteGroup(@PathVariable String groupId) {
+	public GeneralRes deleteGroup(@PathVariable String groupId, HttpSession sess) {
 		logger.debug("params " + groupId);
 		GeneralRes ret = new GeneralRes();
-		try {
-			gservice.deleteGroup(groupId);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			ret.setFailResponse();
+		String username = SpringUtil.getSessionUserid(sess);
+		if (username==null) {
+			ret.setFailResponse(401);
+		} else {
+			gservice.deleteGroup(groupId, username);
 		}
 		return ret;
 	}

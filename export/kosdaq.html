@@ -22,7 +22,7 @@ a.button.on { background-color: var(--mark-back-color); color: white; }
   <a href="javascript:void(0);" class="logo" style="cursor: default;">
     <img src="./resources/img/ic-logo-dbfi.png" style="margin-top: 8px;"/><span style="margin-left: 40px;">DB HTS 도움말</span>
   </a>
-  <a href="./domestic.html" class="button ">국내주식</a><a href="./international.html" class="button on">해외주식1</a><!-- <mark>국내주식</mark> -->
+  <a href="./nasdaq.html" class="button ">나스닥</a><a href="./kosdaq.html" class="button on">코스닥</a><!-- <mark>국내주식</mark> -->
   <div class="floating-export-wrapper">
     <i id="btn-print" class="fas fa-print"></i>
     <i id="btn-pdf" class="far fa-file-pdf"></i>
@@ -78,7 +78,7 @@ a.button.on { background-color: var(--mark-back-color); color: white; }
  
 <script>
 /*<![CDATA[*/
-var SOURCE = "[{\"key\":\"00007\",\"partsel\":false,\"selected\":false,\"title\":\"[1000] \uC0C8 \uB3C4\uC6C0\uB9D0\"},{\"folder\":true,\"key\":\"00008\",\"partsel\":false,\"selected\":false,\"title\":\"[1001] \uC0C8 \uD3F4\uB35411\"},{\"key\":\"00009\",\"partsel\":false,\"selected\":false,\"title\":\"[1002] \uC0C8 \uB3C4\uC6C0\uB9D012\"},{\"folder\":true,\"key\":\"00010\",\"partsel\":false,\"selected\":false,\"title\":\"[1003] \uC0C8 \uD3F4\uB35413\"}]"; // [{"expanded":true,"folder":true,"key":"_3","partsel":false,"selected":false,"title":"국내주식이란","children":[{"key":"0001","partsel":false,"selected":false,"title":"국내주식의 특징"},{"key":"0002","partsel":false,"selected":false,"title":"신용거래"},{"key":"0003","partsel":false,"selected":false,"title":"춘향휴게소"},{"key":"0004","partsel":false,"selected":false,"title":"INTERVAL"}]},{"expanded":true,"folder":true,"key":"_3","partsel":false,"selected":false,"title":"해외주식이란","children":[{"key":"0008","partsel":false,"selected":false,"title":"새 도움말"},{"expanded":true,"folder":true,"key":"_2","partsel":false,"selected":false,"title":"개 폴더","children":[{"key":"0009","partsel":false,"selected":false,"title":"새 도움말"}]},{"folder":true,"key":"_2","partsel":false,"selected":false,"title":"새 폴더"}]}];
+var SOURCE = "[{\"expanded\":true,\"folder\":true,\"key\":\"00003\",\"partsel\":false,\"selected\":false,\"title\":\"[00010] \uAD6D\uB0B4\uC8FC\uC2DD\",\"children\":[{\"key\":\"00004\",\"partsel\":false,\"selected\":false,\"title\":\"[00011] \uC785\uCD9C\uAE08\"}]},{\"key\":\"00005\",\"partsel\":false,\"selected\":false,\"title\":\"[00021] \uC2E0\uC6A9\uAC70\uB798\"}]"; // [{"expanded":true,"folder":true,"key":"_3","partsel":false,"selected":false,"title":"국내주식이란","children":[{"key":"0001","partsel":false,"selected":false,"title":"국내주식의 특징"},{"key":"0002","partsel":false,"selected":false,"title":"신용거래"},{"key":"0003","partsel":false,"selected":false,"title":"춘향휴게소"},{"key":"0004","partsel":false,"selected":false,"title":"INTERVAL"}]},{"expanded":true,"folder":true,"key":"_3","partsel":false,"selected":false,"title":"해외주식이란","children":[{"key":"0008","partsel":false,"selected":false,"title":"새 도움말"},{"expanded":true,"folder":true,"key":"_2","partsel":false,"selected":false,"title":"개 폴더","children":[{"key":"0009","partsel":false,"selected":false,"title":"새 도움말"}]},{"folder":true,"key":"_2","partsel":false,"selected":false,"title":"새 폴더"}]}];
 window.alert = function(message) {
 	var x = document.getElementById("snackbar");
 	x.className = "show";

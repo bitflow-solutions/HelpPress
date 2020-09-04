@@ -130,8 +130,8 @@ public class FileDao {
 			item1.setClassName("");
 			if (i==0) {
 				ctx.setVariable("targetHtml", item1.getGroupId() + ".html");
-//				this.tengine.setTemplateResolver(new ClassLoaderTemplateResolver());
 				String indexHtmlCodes = this.tengine.process("hp-index-redirection.html", ctx);
+				// 첫번째 도움말그룹으로 포워딩 할 index.html 생성
 				makeNewIndexRedirectionHtml(indexHtmlCodes);
 			}
 		}
@@ -190,6 +190,11 @@ public class FileDao {
 		}
 	}
 	
+	/**
+	 * 첫번째 도움말 그룹으로 포워딩 할 index.html 파일 생성
+	 * @param htmlCodes
+	 * @return
+	 */
 	public boolean makeNewIndexRedirectionHtml(String htmlCodes) {
 		
 		File dir = new File(UPLOAD_ROOT_PATH);
@@ -216,6 +221,9 @@ public class FileDao {
 	}
 
 	private String getHeader(String title) {
+		if (title==null) {
+			title = "온라인도움말";
+		}
 		return "<!doctype html><html><head><meta charset=\"utf-8\">"
 				 + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no\">"
 				 + "<title>" + title + "</title></head><body>";

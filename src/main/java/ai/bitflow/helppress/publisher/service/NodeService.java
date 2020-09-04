@@ -42,7 +42,7 @@ public class NodeService {
 	@Transactional
 	public NodeUpdateResult newNode(NewNodeReq params, String userid) {
 		
-		String method = ApplicationConstant.ADD;
+		String method = ApplicationConstant.METHOD_ADD;
 		String title = "";
 		
 		NodeUpdateResult ret = new NodeUpdateResult();
@@ -72,9 +72,9 @@ public class NodeService {
 		String type = "";
 		String filePath = null;
 		if (params.getFolder()==null || params.getFolder()==false) {
-			type = "CONTENT";
+			type = ApplicationConstant.TYPE_CONTENT;
 		} else {
-			type = "FOLDER";
+			type = ApplicationConstant.TYPE_FOLDER;
 		}
 		filePath = groupid + ".html";
 		
@@ -97,7 +97,7 @@ public class NodeService {
 	@Transactional
 	public NodeUpdateResult deleteNode(DeleteNodeReq params, String userid) {
 		
-		String method = ApplicationConstant.DELETE;
+		String method = ApplicationConstant.METHOD_DELETE;
 		String type = "";
 		
 		NodeUpdateResult ret = new NodeUpdateResult();
@@ -111,7 +111,7 @@ public class NodeService {
 		
 		if (params.getFolder()==null || params.getFolder()==false) {
 			// 1. 도움말인 경우
-			type = "CONTENT";
+			type = ApplicationConstant.TYPE_CONTENT;
 			item2.setType(type);
 			item2.setFilePath(params.getKey() + ".html");
 			// 1) 테이블 행삭제
@@ -124,7 +124,7 @@ public class NodeService {
 			boolean success = fdao.deleteFile(params.getKey());
 			// 3) Todo: 첨부 이미지 폴더 삭제
 		} else {
-			type = "FOLDER";
+			type = ApplicationConstant.TYPE_FOLDER;
 			item2.setType(type);
 			// 2. 폴더인 경우: 하위 노드도 삭제
 			if (params.getChild()!=null && params.getChild().size()>0) {
@@ -143,7 +143,7 @@ public class NodeService {
 		
 		// 변경이력 저장 - 도움말 또는 그룹
 		chdao.addHistory(userid, type, method, params.getTitle(), item2.getFilePath());
-		chdao.addHistory(userid, type, ApplicationConstant.MODIFY, params.getTitle(), ret.getGroupId() + ".html");
+		chdao.addHistory(userid, type, ApplicationConstant.METHOD_MODIFY, params.getTitle(), ret.getGroupId() + ".html");
 		
 		return ret;
 	}
@@ -152,14 +152,14 @@ public class NodeService {
 		
 		NodeUpdateResult ret = new NodeUpdateResult();
 		
-		String method = ApplicationConstant.RENAME;
+		String method = ApplicationConstant.METHOD_RENAME;
 		String type = "";
 		String filePath = params.getGroupId() + ".html";
 		
 		if (params.getFolder()!=null && params.getFolder()==true) {
-			type = ApplicationConstant.FOLDER;
+			type = ApplicationConstant.TYPE_FOLDER;
 		} else {
-			type = ApplicationConstant.CONTENT;
+			type = ApplicationConstant.TYPE_CONTENT;
 		}
 		
 		// 변경이력 저장
