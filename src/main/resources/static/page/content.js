@@ -1,4 +1,4 @@
-var editor, selectedGroupId, selectedContentId;
+var editor, selectedGroupId, selectedContentId, selectedContentTitle;
 var SOURCE = [];
 const URL_UPDATE_NODE = "/api/v1/ecm/node";
 
@@ -45,13 +45,14 @@ function initTree() {
 function initEvents() {
 	$(".btn-modify").click(function(e) {
 		// 도움말 수정완료 버튼 클릭
+		$(".btn-modify").hide();
 		$(".spinner-border").show();
 		var url = "/api/v1/ecm/content/" + selectedContentId;
 		$.ajax({
 			url: url,
 			method: "PUT",
 			data: { 
-				title: $("#bf-subject-input").val(),
+				title: selectedContentTitle,
 				content: editor.getPublishingHtml(),
 			}
 		})
@@ -172,6 +173,8 @@ function editContent() {
   var _tree = $.ui.fancytree.getTree();
   var node = _tree.getActiveNode();
   selectedContentId = node.key;
+  selectedContentTitle = node.title;
+  console.log('selectedContentTitle' + selectedContentTitle);
   var url = "/api/v1/ecm/content/" + node.key;
   $.ajax({
 	url: url,
@@ -458,7 +461,6 @@ function loadTree(groupId) {
 	  $("#tree").show();
 	  if (msg && msg.result) {
 	  	_tree.reload(JSON.parse(msg.result.tree));
-	  	initEvents();
 	  }
 	  location.href = "#" + groupId;
 	})
@@ -490,7 +492,6 @@ function initSocket() {
 	        var _tree = $.ui.fancytree.getTree();
 	        // msg.body.groupId , msg.body.tree
 	        _tree.reload(JSON.parse(JSON.parse(msg.body).tree));
-		  	initEvents();
 	  	  }
         });
         stompClient.subscribe('/node', function (rawmsg) {

@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import ai.bitflow.helppress.publisher.domain.ChangeHistory;
@@ -18,7 +19,6 @@ public interface ChangeHistoryRepository extends JpaRepository <ChangeHistory, I
 	public Optional<ChangeHistory> findTopByTypeAndMethodAndFilePathAndUpdDtGreaterThanEqual
 			(String type, String method, String filePath, LocalDateTime time);
 	
-	// Todo: MAX(id)를 그룹바이 한 다음 해당 ROW들을 IN으로 가져옴
 	@Query(value =
 	        "SELECT "
 	        + " MAX(id) as id"
@@ -26,6 +26,15 @@ public interface ChangeHistoryRepository extends JpaRepository <ChangeHistory, I
 	        + " GROUP BY filePath"
 	        + " ORDER BY MAX(updDt) DESC")
 	public List<Integer> findAllChangedFileIds();
+	
+	@Query(value =
+	        "SELECT "
+	        + " MAX(id) as id"
+	        + " FROM ChangeHistory WHERE released IS NULL" 
+	        + " AND userid = :userid"
+	        + " GROUP BY filePath"
+	        + " ORDER BY MAX(updDt) DESC")
+	public List<Integer> findAllChangedFileIdsByMe(@Param("userid") String userid);
 	
 	public List<ChangeHistory> findAllByIdInOrderByUpdDtDesc(List<Integer> ids);
 	

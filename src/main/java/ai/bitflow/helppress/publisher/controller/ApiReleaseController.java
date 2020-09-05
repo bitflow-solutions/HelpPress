@@ -1,6 +1,7 @@
 package ai.bitflow.helppress.publisher.controller;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ai.bitflow.helppress.publisher.service.ReleaseService;
+import ai.bitflow.helppress.publisher.util.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -34,9 +36,12 @@ public class ApiReleaseController {
 	 * @return
 	 */
 	@GetMapping("/all") 
-	public void downloadAll(@RequestParam Boolean release, HttpServletResponse res) {
+	public void downloadAll(@RequestParam Boolean release, HttpServletResponse res, HttpSession sess) {
 		log.debug("downloadAll " + release);
-		rservice.downloadAll(release, res);
+		String username = SpringUtil.getSessionUserid(sess);
+		if (username!=null && username.length()>0) {
+			rservice.downloadAll(release, res, username);
+		}
 	}
 	
 	/**
@@ -57,7 +62,7 @@ public class ApiReleaseController {
 	 */
 	@GetMapping("/all/{id}") 
 	public void downloadFromHistory(@PathVariable Integer id, HttpServletResponse res) {
-		log.debug("downloadOne");
+		log.debug("downloadFromHistory");
 		rservice.downloadFromHistory(id, res);
 	}
 	
@@ -66,9 +71,25 @@ public class ApiReleaseController {
 	 * @param res
 	 */
 	@GetMapping("/changed") 
-	public void downloadChanged(HttpServletResponse res) {
+	public void downloadChanged(@RequestParam Boolean release, HttpServletResponse res, HttpSession sess) {
 		log.debug("downloadChanged");
-		rservice.downloadChanged(res);
+		String username = SpringUtil.getSessionUserid(sess);
+		if (username!=null && username.length()>0) {
+			rservice.downloadChanged(release, res, username, null);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param res
+	 */
+	@GetMapping("/changedbyme") 
+	public void downloadChangedByMe(HttpServletResponse res, HttpSession sess) {
+		log.debug("downloadChangedByMe");
+		String username = SpringUtil.getSessionUserid(sess);
+		if (username!=null && username.length()>0) {
+			rservice.downloadChanged(false, res, username, username);
+		}
 	}
 
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
 import ai.bitflow.helppress.publisher.domain.ChangeHistory;
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
 import ai.bitflow.helppress.publisher.domain.ReleaseHistory;
@@ -22,6 +22,7 @@ import ai.bitflow.helppress.publisher.domain.User;
 import ai.bitflow.helppress.publisher.service.ContentsGroupService;
 import ai.bitflow.helppress.publisher.service.ReleaseService;
 import ai.bitflow.helppress.publisher.service.UserService;
+import ai.bitflow.helppress.publisher.util.SpringUtil;
 
 /**
  * 관리페이지 화면 컨트롤러 
@@ -81,11 +82,6 @@ public class ViewController {
 	 */
 	@GetMapping("/login") 
 	public String login(Model mo, HttpServletRequest req) {
-		
-	    String referrer = req.getHeader("Referer");
-	    req.getSession().setAttribute("prevPage", referrer);
-	    logger.debug("prevPage " + referrer);
-	    
 		List<User> list = uservice.getUsers();
 		logger.debug("listl " + list.toString());
 		if (list==null || list.size()<1) {
@@ -128,17 +124,21 @@ public class ViewController {
 	 * @return
 	 */
 	@GetMapping("/release") 
-	public String release(Model mo) {
+	public String release(Model mo, HttpSession sess) {
 		
 		mo.addAttribute("tab3", " active");
 		
+		String username = SpringUtil.getSessionUserid(sess);
+
 		List<ChangeHistory> clist  = rservice.getAllChanges();
 		List<ChangeHistory> hlist  = rservice.getHistories();
 		List<ReleaseHistory> rlist = rservice.getReleases();
+		List<ChangeHistory> mlist  = rservice.getAllChangesByMe(username);
 		
 		mo.addAttribute("clist", clist);
 		mo.addAttribute("hlist", hlist);
 		mo.addAttribute("rlist", rlist);
+		mo.addAttribute("mlist", mlist);
 		
 		File previewPath = new File(SRC_FOLDER);
 		mo.addAttribute("previewPath", previewPath.getAbsolutePath());

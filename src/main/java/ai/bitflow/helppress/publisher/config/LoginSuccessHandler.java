@@ -37,21 +37,18 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler i
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 		
 		if (savedRequest==null) {
-//			super.onAuthenticationSuccess(request, response, authentication);
 			return;
 		}
 		
 		String targetUrlParameter = getTargetUrlParameter();
 		if (isAlwaysUseDefaultTargetUrl()
 				|| (targetUrlParameter!=null && StringUtils.hasText(request.getParameter(targetUrlParameter)))) {
-//			super.onAuthenticationSuccess(request, response, authentication);
 			return;
 		}
 		
 		clearAuthenticationAttributes(request);
 		String targetUrl = savedRequest.getRedirectUrl()==null ? "/" : savedRequest.getRedirectUrl();
 		request.getSession(true).setAttribute("redirectUrl", targetUrl);
-//		super.onAuthenticationSuccess(request, response, authentication);
 		
 	}
     

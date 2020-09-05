@@ -5,11 +5,9 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +16,6 @@ import ai.bitflow.helppress.publisher.domain.Contents;
 import ai.bitflow.helppress.publisher.service.ContentsService;
 import ai.bitflow.helppress.publisher.util.SpringUtil;
 import ai.bitflow.helppress.publisher.vo.req.ContentsReq;
-import ai.bitflow.helppress.publisher.vo.res.ContentsGroupRes;
 import ai.bitflow.helppress.publisher.vo.res.ContentsRes;
 import ai.bitflow.helppress.publisher.vo.res.result.ContentResult;
 import lombok.extern.slf4j.Slf4j;
@@ -82,6 +79,7 @@ public class ApiContentController {
 	 */
 	@PutMapping("/{id}")
 	public ContentsRes updateContent(ContentsReq params, @PathVariable String id, HttpSession sess) {
+		logger.debug("params " + params.toString());
 		ContentsRes ret = new ContentsRes();
 		ContentResult result = new ContentResult();
 		String username = SpringUtil.getSessionUserid(sess);

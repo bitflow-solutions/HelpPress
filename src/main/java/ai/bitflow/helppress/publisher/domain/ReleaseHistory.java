@@ -32,6 +32,8 @@ public class ReleaseHistory {
 	private String fileName;
 	@Column(length=255)
 	private String comment;
+	@Column(length=15)
+	private String userid;
 	
 	@CreationTimestamp
     private LocalDateTime updDt;

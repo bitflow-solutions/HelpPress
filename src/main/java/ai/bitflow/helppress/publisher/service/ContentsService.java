@@ -94,8 +94,9 @@ public class ContentsService implements ApplicationConstant {
 			// 변경이력 저장
 			String type     = TYPE_CONTENT;
 			String method   = METHOD_MODIFY;
-			String filePath = String.format("%05d", item2.getId()) + ".html";
-			chdao.addHistory(userid, type, method, null, filePath);
+			String filePath = key + ".html";
+			// 중복제거
+			chdao.addHistory(userid, type, method, params.getTitle(), filePath);
 		
 			return String.valueOf(item2.getId());
 		}

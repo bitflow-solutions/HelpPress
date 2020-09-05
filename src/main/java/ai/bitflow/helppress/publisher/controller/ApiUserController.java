@@ -24,10 +24,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ai.bitflow.helppress.publisher.config.LoginSuccessHandler;
 import ai.bitflow.helppress.publisher.service.UserService;
 import ai.bitflow.helppress.publisher.vo.req.UserReq;
-import ai.bitflow.helppress.publisher.vo.res.GeneralRes;
 import ai.bitflow.helppress.publisher.vo.res.StringRes;
 import lombok.extern.slf4j.Slf4j;
 

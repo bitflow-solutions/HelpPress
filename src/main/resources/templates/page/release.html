@@ -27,8 +27,8 @@ input[type="button"] + input[type="button"] { margin-right: 0; }
 	</div>
 	<div class="col col-sm-6 btn-wrapper">
 		<input type="button" value="전체파일" class="btn btn-outline-primary" id="btn-download-all">
-		<input type="button" value="변경된파일" class="btn btn-outline-primary" id="btn-download-changed">
-		<input type="button" value="내변경파일" class="btn btn-outline-primary" onclick="alert('현재 버전에서는 지원하지 않습니다');">
+		<input type="button" value="변경된파일" class="btn btn-outline-primary" id="btn-download-changed" {{^clist}}disabled{{/clist}}>
+		<input type="button" value="내변경파일" class="btn btn-outline-primary" id="btn-download-changed-by-me" {{^mlist}}disabled{{/mlist}}>
 	</div>
 </div>
 
@@ -63,6 +63,11 @@ input[type="button"] + input[type="button"] { margin-right: 0; }
 						<td class="text-center"><span class="material-icons">{{status}}</span></td>
 						<td>{{#filePath}}{{filePath}}{{/filePath}}</td>
 						<td class="text-center">{{updDtStr}}</td>
+					</tr>
+					{{/clist}}
+    				{{^clist}}
+					<tr>
+						<td class="text-center" colspan="3">내역이 없습니다</td>
 					</tr>
 					{{/clist}}
 					</tbody>
@@ -101,13 +106,18 @@ input[type="button"] + input[type="button"] { margin-right: 0; }
     				</thead>
     				<tbody>
     				{{#hlist}}
-					<tr>
+					<tr {{^released}}style="background-color: #ffcc;"{{/released}}>
 						<td class="text-center"><span class="material-icons">{{status}}</span></td>
 						<td class="text-center">{{type}}</td>
 						<td>{{#title}}{{title}}{{/title}}</td>
 						<td>{{#filePath}}{{filePath}}{{/filePath}}</td>
 						<td class="text-center">{{#userid}}{{userid}}{{/userid}}</td>
 						<td class="text-center">{{updDtStr}}</td>
+					</tr>
+					{{/hlist}}
+    				{{^hlist}}
+					<tr>
+						<td class="text-center" colspan="6">내역이 없습니다</td>
 					</tr>
 					{{/hlist}}
 					</tbody>
@@ -117,7 +127,7 @@ input[type="button"] + input[type="button"] { margin-right: 0; }
 		</div>
 		
 		<!-- 3) 배포이력 -->
-		<div class="col col-sm-3" style="padding-right: 0px;">
+		<div class="col col-sm-3" style="padding-right: 0px;overflow-x: hidden;">
 	      <div class="row">
       		<div class="col col-sm-12">
 		      <h5>배포이력</h5>
@@ -144,10 +154,15 @@ input[type="button"] + input[type="button"] { margin-right: 0; }
 						<td>
 					  		<a href="javascript:downloadFromHistory({{id}})"><span><i class="far fa-file-code"></i>&nbsp;{{typeKr}}</span></a>
 				  		</td>
-				  		<td>{{userid}}</td>
+				  		<td>{{#userid}}{{userid}}{{/userid}}</td>
 				  		<td>{{updDtStr}}</td>
 					  </a>
 					</re>
+					{{/rlist}}
+    				{{^rlist}}
+					<tr>
+						<td class="text-center" colspan="3">내역이 없습니다</td>
+					</tr>
 					{{/rlist}}
 					</tbody>
       			</table>

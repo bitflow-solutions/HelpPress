@@ -62,16 +62,20 @@ public class ReleaseService {
 	 * @return
 	 */
 	@Transactional
-	public boolean downloadAll(Boolean release, HttpServletResponse res) {
+	public boolean downloadAll(Boolean release, HttpServletResponse res, String userid) {
 		
 		boolean released = release!=null?release:false;
 		String timestamp = sdf.format(Calendar.getInstance().getTime());
 		String DEST_FILENAME = "release-all-" + timestamp + ".zip";
+		
+		// 배포이력 저장
 		if (released) {
         	ReleaseHistory item = new ReleaseHistory();
         	item.setType(ApplicationConstant.RELEASE_ALL);
         	item.setFileName(DEST_FILENAME);
+        	item.setUserid(userid);
         	rhrepo.save(item);
+        	chdao.releaseAll();
         }
 		
 		File destFolder = new File(DEST_FOLDER);
@@ -197,7 +201,7 @@ public class ReleaseService {
 		if (!row.isPresent()) {
 			return false;
 		}
-		
+				
 		String DEST_FILENAME = row.get().getFileName();
 		String destFilePath = DEST_FOLDER + DEST_FILENAME;
 		File destFile = new File(destFilePath);
@@ -240,9 +244,16 @@ public class ReleaseService {
 	 * @param res
 	 * @return
 	 */
-	public boolean downloadChanged(HttpServletResponse res) {
+	@Transactional
+	public boolean downloadChanged(Boolean released, HttpServletResponse res, String downloader, String userid) {
 		
-		List<ChangeHistory> list = chdao.findAllChanged();
+		List<ChangeHistory> list = null;
+		if (userid!=null) {
+			list = chdao.findAllChangedByMe(userid);
+		} else {
+			list = chdao.findAllChanged();
+		}
+		
 		if (list==null || list.size()<1) {
 			return true;
 		}
@@ -261,7 +272,7 @@ public class ReleaseService {
 			e.printStackTrace();
 			return false;
 		}
-
+		
 		int i = 0;
 		for (ChangeHistory item : list) {
 			
@@ -291,17 +302,21 @@ public class ReleaseService {
 					if (resourceDir.exists() && resourceDir.isDirectory()) {
 						// 도움말 하위 폴더
 						ZipUtil.addEntry(resourceDir, destFile, ApplicationConstant.UPLOAD_REL_PATH + File.separator + key);
-//						ZipUtil.pack(new File(resourcePath), destFile, new NameMapper() {
-//							@Override
-//							public String map(String name) {
-//								 return ApplicationConstant.UPLOAD_REL_PATH + File.separator + key + File.separator + name;
-//							}
-//						});
 					}					
 				}
 			}
 			i++;
 		}
+		
+		// 배포이력 저장
+		if (released) {
+        	ReleaseHistory item = new ReleaseHistory();
+        	item.setType(ApplicationConstant.RELEASE_PART);
+        	item.setFileName(DEST_FILENAME);
+        	item.setUserid(downloader);
+        	rhrepo.save(item);
+    		chdao.releasePart(list);
+        }
 		
 		FileInputStream fis = null;
 		ServletOutputStream out = null;
@@ -354,6 +369,11 @@ public class ReleaseService {
 			}
 			item.setStatus(status);
 		}
+		return ret;
+	}
+	
+	public List<ChangeHistory> getAllChangesByMe(String userid) {
+		List<ChangeHistory> ret = chdao.findAllChangedByMe(userid);
 		return ret;
 	}
 	

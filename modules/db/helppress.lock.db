@@ -1,6 +1,6 @@
 #FileLock
-#Fri Sep 04 09:19:19 KST 2020
+#Sat Sep 05 15:53:03 KST 2020
 hostName=DESKTOP-DEV
-id=174567b5e18d149dedac765d0d5a3538c52a912fc89
+id=1745d0a31dd0b7366b86d28037316a7fe91cda1188b
 method=file
-server=192.168.0.37\:52880
+server=172.16.200.163\:64012
