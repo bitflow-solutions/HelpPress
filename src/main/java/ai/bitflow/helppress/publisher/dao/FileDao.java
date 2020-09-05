@@ -23,7 +23,6 @@ import ai.bitflow.helppress.publisher.domain.Contents;
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 public class FileDao {
 
@@ -45,12 +44,19 @@ public class FileDao {
 	
     private FileTemplateResolver templateResolver() {
     	FileTemplateResolver resolver = new FileTemplateResolver();
+    	resolver.setCharacterEncoding("UTF-8");
         resolver.setPrefix(EXT_TEMPLATE_PATH);
         resolver.setSuffix(".html");
         resolver.setCacheable(false);
         return resolver;
     }
     
+    /**
+     * 도움말 파일 생성
+     * @param item
+     * @param idstring
+     * @return
+     */
     public boolean newContentFile(Contents item, String idstring) {
 		
 		File dir = new File(UPLOAD_ROOT_PATH);
