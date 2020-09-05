@@ -315,7 +315,11 @@ public class ReleaseService {
         	item.setFileName(DEST_FILENAME);
         	item.setUserid(downloader);
         	rhrepo.save(item);
-    		chdao.releasePart(list);
+        	if (userid!=null) {
+        		chdao.releasePart(list);
+        	} else {
+        		chdao.releaseAll();
+        	}
         }
 		
 		FileInputStream fis = null;

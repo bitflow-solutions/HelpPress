@@ -18,6 +18,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 
+import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
 import ai.bitflow.helppress.publisher.domain.Contents;
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,13 @@ public class FileDao {
     	this.tengine.setTemplateResolver(templateResolver()); 
 	}
 	
+    private FileTemplateResolver templateResolver() {
+    	FileTemplateResolver resolver = new FileTemplateResolver();
+        resolver.setPrefix(EXT_TEMPLATE_PATH);
+        resolver.setSuffix(".html");
+        resolver.setCacheable(false);
+        return resolver;
+    }
     
     public boolean newContentFile(Contents item, String idstring) {
 		
@@ -60,7 +68,6 @@ public class FileDao {
 			}
 			writer.write(getFooter());
 //			HtmlConverter.convertToPdf(html, new FileOutputStream(dest));
-
 		    return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -90,14 +97,13 @@ public class FileDao {
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-					UPLOAD_ROOT_PATH + File.separator + String.format("%05d" , item.getId()) + ".html"), "UTF-8"));
+					UPLOAD_ROOT_PATH + String.format("%05d" , item.getId()) + ".html"), "UTF-8"));
 			writer.write(getHeader(item.getTitle()));
 			if (item.getContent()!=null) {
 				writer.write(item.getContent());
 			}
 			writer.write(getFooter());
 //			HtmlConverter.convertToPdf(html, new FileOutputStream(dest));
-
 		    return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -144,21 +150,32 @@ public class FileDao {
 	 * @return
 	 */
 	public boolean deleteFile(String key) {
-		File html = new File(UPLOAD_ROOT_PATH + File.separator + key + ".html");
+		File html = new File(UPLOAD_ROOT_PATH + key + ".html");
 		if (html.exists()) {
 			return html.delete();
 		}
 		return true;
 	}
 	
-    private FileTemplateResolver templateResolver() {
-    	FileTemplateResolver resolver = new FileTemplateResolver();
-        resolver.setPrefix(EXT_TEMPLATE_PATH);
-        resolver.setSuffix(".html");
-        resolver.setCacheable(false);
-        return resolver;
-    }
-	
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean deleteFileAndFolder(String key) {
+		File html = new File(UPLOAD_ROOT_PATH + File.separator + key + ".html");
+		if (html.exists()) {
+			return html.delete();
+		}
+		File resDir = new File(UPLOAD_ROOT_PATH + ApplicationConstant.UPLOAD_REL_PATH + File.separator + key);
+		if (resDir.exists() && resDir.isDirectory()) {
+			logger.debug("deleting");
+			resDir.delete();
+			logger.debug("delete success");
+		}
+		return true;
+	}
+
 	/**
 	 * 
 	 * @param item

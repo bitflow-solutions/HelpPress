@@ -109,8 +109,8 @@ input[type="button"] + input[type="button"] { margin-right: 0; }
 					<tr {{^released}}style="background-color: #ffcc;"{{/released}}>
 						<td class="text-center"><span class="material-icons">{{status}}</span></td>
 						<td class="text-center">{{type}}</td>
-						<td>{{#title}}{{title}}{{/title}}</td>
-						<td>{{#filePath}}{{filePath}}{{/filePath}}</td>
+						<td class="text-left">{{#title}}{{title}}{{/title}}</td>
+						<td class="text-left">{{#filePath}}{{filePath}}{{/filePath}}</td>
 						<td class="text-center">{{#userid}}{{userid}}{{/userid}}</td>
 						<td class="text-center">{{updDtStr}}</td>
 					</tr>

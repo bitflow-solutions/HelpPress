@@ -100,9 +100,9 @@ public class SynapImportController {
      */
     private int executeConverter(String inputFilePath, String outputFilePath) {
     	
-        String FONT_DIR_ABS_PATH 		= SEDOC_CONVERTER_REL_PATH + File.separator + "fonts";
-        String TEMP_DIR_ABS_PATH 		= SEDOC_CONVERTER_REL_PATH + File.separator + "temp";
-        String SEDOC_CONVERTER_ABS_PATH = SEDOC_CONVERTER_REL_PATH + File.separator + "sedocConverter.exe";// window server용
+        String FONT_DIR_ABS_PATH 		= SEDOC_CONVERTER_REL_PATH + "fonts";
+        String TEMP_DIR_ABS_PATH 		= SEDOC_CONVERTER_REL_PATH + "temp";
+        String SEDOC_CONVERTER_ABS_PATH = SEDOC_CONVERTER_REL_PATH + "sedocConverter.exe"; // window server용
      
         makeDirectory(TEMP_DIR_ABS_PATH);
         makeDirectory(FONT_DIR_ABS_PATH);
