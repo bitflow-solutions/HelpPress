@@ -17,16 +17,14 @@
 		<h5>▷ 도움말관리</h5>
 	</div>
 	<div class="col col-md-5">
-		<div class="form-group row" style="margin-bottom: 0;padding: 0 15px;">
+		<div class="form-group row" style="padding: 0 15px; margin: 6px auto;">
 		  <select class="form-control col-8" id="sel_category" onchange="onSelectChanged(this);">
 		    <option value="">----- 도움말그룹 선택 -----</option>
 			{{#list}}
 		    <option value="{{groupId}}">{{#name}}{{name}}{{/name}}</option>
 			{{/list}}
 		  </select>
-			<div class="col-4" style="text-align: center;">
-		    <i id="btn-expand-all" class="far fa-plus-square"></i>&nbsp;&nbsp;<i id="btn-collapse-all" class="far fa-minus-square"></i>
-		  </div>
+	      <input type="button" id="btn-expand-all" value="+"><input type="button" id="btn-collapse-all" value="-">
 		</div>
 	</div>
 	<div class="col col-md-4">
