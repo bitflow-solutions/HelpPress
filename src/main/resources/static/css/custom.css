@@ -44,7 +44,7 @@ a:hover { text-decoration: none; }
 #sel_category { font-size: 16px; border: 2px solid #888; border-radius: 9px; padding: 4px 12px; background-color: #7ecef4; color: white; }
 #contents-detail { border: 0; }
 #bf-subject { font-weight: bold; float:left; margin-left: 12px; }
-.bf-detail-area { height: 100%; overflow-x: hidden; overflow-y: auto; padding: 15px; }
+.bf-detail-area { height: calc(100% - 60px); overflow-x: hidden; overflow-y: auto; padding: 15px; }
 #bf-content-area { width: 100%; height: 100%; margin: 0; }
 .treeview { background-color: white; padding: 12px 6px; }
 .col-form-label { text-align: right; color: #555; background-color: #f0f0f0; }

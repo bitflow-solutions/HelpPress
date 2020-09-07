@@ -9,6 +9,9 @@
   border-radius: 0; -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.5); box-shadow: 1px 1px 2px rgba(0,0,0,.5); }
 .context-menu-item { font-size: 13px; font-family: '맑은고딕'; }
 #btn-edit { display: none; }
+#contents-detail {
+	width: 595px;
+}
 </style>
 {{/style}}
 
@@ -42,10 +45,10 @@
 	
 	<!-- 컨텐츠 상세내용 -->
 	<div class="col col-md-9 bf-detail-area" id="bf-contents" style="overflow-y: hidden;">
-	  <div class="row" style="height: calc(100%);">
+	  <div class="row" style="height: 100%;">
 	    <iframe id="contents-detail" class="col-12" width="100%" height="100%" src="/empty-content.html"></iframe>
 		<div id="editor-wrapper" class="col-12" style="height: 100%;">
-	      <div class="row" style="height: calc(100% - 55px);">
+	      <div class="row" style="height: 100%;">
 	        <div class="col-12 form-group" style="height: 100%;">
 			  <textarea id="synapEditor" name="content"></textarea>
 			</div>
