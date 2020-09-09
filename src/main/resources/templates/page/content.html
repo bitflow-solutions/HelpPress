@@ -4,30 +4,33 @@
 <style>
 #bf-content-area, #synapEditor, #new_synapEditor { min-height: 480px; }
 #btn-create { float: right; }
+.bf-menu-section { background-image: url('/img/bg-tree-gray.jpg'); }
 .bf-menu-section i { font-size: 22px; color: #888; margin-top: 8px; cursor: pointer; }
 .context-menu-list.context-menu-root {
   border-radius: 0; -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.5); box-shadow: 1px 1px 2px rgba(0,0,0,.5); }
 .context-menu-item { font-size: 13px; font-family: '맑은고딕'; }
 #btn-edit { display: none; }
-#contents-detail {
-	width: 595px;
-}
+#contents-detail { width: 595px; }
+.select-row { padding: 0; margin: 3px auto; }
+.select-row i { cursor: pointer; color: #05854A; font-size: 26px; margin-top: 4px; }
+#tree > ul { height: 100%; }
 </style>
 {{/style}}
 
 <div class="row title-area">
-	<div class="col col-md-3">
-		<h5>▷ 도움말관리</h5>
+	<div class="col col-sm-3 text-left">
+		<h6><i class="material-icons">double_arrow</i><div>도움말작성</div></h6>
 	</div>
 	<div class="col col-md-5">
-		<div class="form-group row" style="padding: 0 15px; margin: 6px auto;">
+		<div class="form-group row select-row">
 		  <select class="form-control col-8" id="sel_category" onchange="onSelectChanged(this);">
 		    <option value="">----- 도움말그룹 선택 -----</option>
 			{{#list}}
 		    <option value="{{groupId}}">{{#name}}{{name}}{{/name}}</option>
 			{{/list}}
 		  </select>
-	      <input type="button" id="btn-expand-all" value="+"><input type="button" id="btn-collapse-all" value="-">
+		  <i id="btn-expand-all" class="material-icons" title="확대">add_circle_outline</i>
+		  <i id="btn-collapse-all" class="material-icons" title="축소">remove_circle_outline</i>
 		</div>
 	</div>
 	<div class="col col-md-4">

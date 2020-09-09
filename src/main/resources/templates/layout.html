@@ -18,6 +18,8 @@
 <link href="/SynapEditor_2.8.4/synapeditor/synapeditor.min.css"
 	rel="stylesheet" type="text/css">
 <link href="/css/custom.css" rel="stylesheet" type="text/css">
+<style>
+</style>
 {{{layout.style}}}
 </head>
 <body>
@@ -25,8 +27,9 @@
 		<nav
 			class="navbar navbar-expand-md fixed-top justify-content-between navbar-light bg-light bf-shadow">
 			<a class="navbar-brand" href="/"> <img
-				src="/img/ic-logo-dbfi.png" class="d-inline-block align-top"
-				alt="company logo" style="height: 30px;">&nbsp;&nbsp;온라인도움말
+				src="/img/logo.svg" class="d-inline-block align-top"
+				alt="company logo" style="height: 35.6px;">
+				<div>온라인 매뉴얼</div>
 			</a>
 			<button class="navbar-toggler collapsed" type="button"
 				data-toggle="collapse" data-target="#navbarCollapse"
@@ -40,20 +43,21 @@
 						class="nav-link{{#tab1}}{{tab1}}{{/tab1}}" href="/group">도움말그룹</a>
 					</li>
 					<li class="nav-item"><a
-						class="nav-link{{#tab2}}{{tab2}}{{/tab2}}" href="/content">도움말관리</a>
+						class="nav-link{{#tab2}}{{tab2}}{{/tab2}}" href="/content">도움말작성</a>
 					</li>
 				</ul>
 			</div>
 			<div class="form-inline nav-right">
-				<a href="/export" target="_blank"> <span
-					class="material-icons icon-image-preview" style="font-size: 30px;">preview</span>
-				</a> <a href="/release"> <span
-					class="material-icons icon-image-preview" style="font-size: 30px;">archive</span>
-				</a> <a href="/user"> <span
-					class="material-icons icon-image-preview" style="font-size: 30px;margin-right:12px;">group_add</span>
+				<a href="/export" target="_blank"> 
+					<i class="material-icons icon-image-preview" style="font-size: 30px;" title="미리보기">preview</i>
 				</a> 
-				<a href="javascript:showProfile();" data-toggle="modal"
-					data-target="#bf-modal-user">
+				<a href="/release">
+					<i class="material-icons icon-image-preview{{#tab3}}{{tab3}}{{/tab3}}" style="font-size: 30px;" title="배포관리">archive</i>
+				</a> 
+				<a href="/user"> 
+					<i class="material-icons icon-image-preview{{#tab4}}{{tab4}}{{/tab4}}" style="font-size: 30px;margin-right:12px;" title="사용자관리">group_add</i>
+				</a> 
+				<a href="javascript:showProfile();" data-toggle="modal"data-target="#bf-modal-user">
 					{{userid}}님
 				</a>
 			</div>
@@ -75,7 +79,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					로그아웃 하시겠습니까?
+					<p>온라인 매뉴얼에서</p><p>로그아웃 하시겠습니까?</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-outline-secondary"

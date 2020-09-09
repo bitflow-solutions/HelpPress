@@ -6,8 +6,8 @@
 {{/style}}
 
 <div class="row title-area">
-	<div class="col col-sm-6">
-		<h5><i class="bf-icon navi"></i> 도움말그룹</h5>
+	<div class="col col-sm-6 text-left">
+		<h6><i class="material-icons">double_arrow</i><div>도움말그룹</div></h6>
 	</div>
 	<div class="col col-sm-6 form-group">
 		<input type="button" value="수정완료" class="btn btn-outline-primary btn-modify float-right hide">
@@ -18,20 +18,20 @@
 
 <div id="bf-content-area" class="row">
 	
-	<div id="category-wrapper" class="col col-md-2">
-		<ul>
-			{{#list}}
-			<a href="javascript:void(0);" onclick="getCategory(this);" bf-name="{{#name}}{{name}}{{/name}}"  bf-category-id="{{groupId}}" bf-order="{{orderNo}}">
-				<li class="alert alert-light"><i class="far fa-folder"></i>&nbsp;&nbsp;{{#name}}{{name}}{{/name}}</li>
-			</a>
-			{{/list}}
-		  <a href="javascript:void(0);" onclick="getCategory();" >
-	        <li class="alert alert-light on">+ 새 도움말그룹</li>
-	      </a>
-		</ul>
+	<div id="category-wrapper" class="col col-md-3">
+	  <ul>
+		{{#list}}
+		<a href="javascript:void(0);" onclick="getCategory(this);" bf-name="{{#name}}{{name}}{{/name}}"  bf-category-id="{{groupId}}" bf-order="{{orderNo}}">
+			<li class="alert alert-light"><i class="far fa-folder"></i>&nbsp;&nbsp;{{#name}}{{name}}{{/name}}</li>
+		</a>
+		{{/list}}
+	  </ul>
+	  <a href="javascript:void(0);" onclick="getCategory();">
+	    <button class="btn btn-primary"><i class="material-icons">create</i><span>새 도움말그룹</span></button>
+      </a>
 	</div>
 	
-	<div class="col col-md-10 bf-detail-area" id="bf-contents">
+	<div class="col col-md-9 bf-detail-area" id="bf-contents">
 	  <div class="row">
 	    <div class="col-12">
 			<form name="frm" class="input-frm">

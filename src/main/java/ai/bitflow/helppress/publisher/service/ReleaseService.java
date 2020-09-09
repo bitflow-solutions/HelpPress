@@ -28,14 +28,12 @@ import ai.bitflow.helppress.publisher.dao.ChangeHistoryDao;
 import ai.bitflow.helppress.publisher.domain.ChangeHistory;
 import ai.bitflow.helppress.publisher.domain.ReleaseHistory;
 import ai.bitflow.helppress.publisher.repository.ReleaseHistoryRepository;
-import lombok.extern.slf4j.Slf4j;
 
 
 /**
  * 배포 파일 처리 서비스
  * @author 김성준
  */
-@Slf4j
 @Service
 public class ReleaseService {
 
@@ -430,6 +428,13 @@ public class ReleaseService {
 			}
 		}
 		return ret;
+	}
+	
+	/**
+	 * 불필요 작업 히스토리 삭제
+	 */
+	public void deleteUnusedHistories() {
+		chdao.deleteUnused();
 	}
 	
 }

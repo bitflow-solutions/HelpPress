@@ -1,5 +1,6 @@
 package ai.bitflow.helppress.publisher.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -49,6 +50,28 @@ public class ChangeHistoryDao {
 	public List<ChangeHistory> findAllChanged() {
 		List<Integer> list = chrepo.findAllChangedFileIds();
 		return chrepo.findAllByIdInOrderByUpdDtDesc(list);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public void deleteUnused() {
+		List<ChangeHistory> list = chrepo.findAllByReleasedOrderByUpdDtAsc('Y');
+		List<ChangeHistory> sublist = new ArrayList<ChangeHistory>();
+		int size = list.size();
+		logger.debug("The row count to delete candidate " + size);
+		if (size>100) {
+			logger.debug("Deleting " + (size - 100) + " rows");
+			for (ChangeHistory item : list) {
+				sublist.add(item);
+				size--;
+				if (size<101) {
+					break;
+				}
+			}
+			chrepo.deleteAll(sublist);
+		}
 	}
 	
 	public List<ChangeHistory> findAllChangedByMe(String userid) {

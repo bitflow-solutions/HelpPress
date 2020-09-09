@@ -6,12 +6,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.ApplicationPidFileWriter;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * 
  * @author metho
  */
 @EnableCaching
+@EnableScheduling
 @SpringBootApplication
 public class HelpPressApplication { // extends Application
 

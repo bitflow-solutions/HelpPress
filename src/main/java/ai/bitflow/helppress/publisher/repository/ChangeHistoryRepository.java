@@ -38,4 +38,6 @@ public interface ChangeHistoryRepository extends JpaRepository <ChangeHistory, I
 	
 	public List<ChangeHistory> findAllByIdInOrderByUpdDtDesc(List<Integer> ids);
 	
+	public List<ChangeHistory> findAllByReleasedOrderByUpdDtAsc(char released);
+
 }
