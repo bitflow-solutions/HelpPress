@@ -2,23 +2,20 @@
 
 {{#style}}
 <style>
-#tree, #tree > ul { height: 100%; border: none; outline: none; }
-span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { border: none; outline: none; }
 .tree-wrapper { background-image: url('/img/bg-tree-gray.jpg'); border-right: 1px solid #ccc; overflow-y: auto; }
 .context-menu-list.context-menu-root {
   border-radius: 0; -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.5); box-shadow: 1px 1px 2px rgba(0,0,0,.5); }
 .context-menu-item { font-size: 13px; font-family: '맑은고딕'; }
-#btn-edit { display: none; }
 .contents-grid-wrapper { height: 100%; }
 .contents-wrapper { width: 595px; border: 0; padding-left: 16px; overflow-y: hidden; height: 100%; }
 #contents-detail { border: 0; }
 .select-row { padding: 0; margin: 3px auto; }
 .select-row i { cursor: pointer; color: #05854A; font-size: 26px; margin-top: 4px; }
-/* #bf-content-area, #synapEditor, #new_synapEditor { min-height: 480px; } */
 #btn-create { float: right; }
 #sel_category { float: left; margin-right: 12px; height: 32px; font-size: 13px; }
 .tree-btn { padding: 6px; min-width: 32px; font-size: 16px; }
 #sel_category, .tree-btn, .callout .button-group { margin-bottom: 0; }
+#editor-wrapper { display: none; }
 </style>
 {{/style}}
 
@@ -43,11 +40,12 @@ span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytr
 		  <i class="button success hollow fi-minus tree-btn" id="btn-collapse-all" title="전체메뉴접기"></i>
 	</div>
 	<div class="cell small-4">
-	  <div class="button-group float-right">
-		  <a class="button small secondary hollow btn-modify" id="btn-edit" >수정완료</a>
-		  <a class="button small success hollow btn-delete" href="javascript:void(0);">삭제</a>
-		  <a class="button small success hollow btn-create" href="javascript:void(0);">등록</a>
-	  </div>	
+  	  	<div class="button-group float-right">
+		  <a class="button small success hollow" href="javascript:void(0);" id="btn-delete">삭제</a>
+		  <a class="button small primary hollow" href="javascript:void(0);" id="btn-download">다운로드</a>
+		  <a class="button small primary" href="javascript:void(0);" id="btn-modify">수정</a>
+		  <a class="button small primary" href="javascript:void(0);" id="btn-modify-complete">수정완료</a>
+		</div>
 	</div>
   </div>
 </div>
@@ -61,9 +59,9 @@ span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytr
 	
 	<!-- 컨텐츠 상세내용 --> <!-- 706px for A4 -->
 	<div class="cell small-9 contents-wrapper">
-	  <div class="grid-x" style="height: calc(100% - 66px);">
+	  <div class="grid-x" style="height: calc(100% - 65px);">
 	    <iframe id="contents-detail" class="cell" width="100%" height="100%" src="/empty-content.html"></iframe>
-		<div id="editor-wrapper" class="cell hide" style="height: 100%;">
+		<div id="editor-wrapper" class="cell" style="height: 100%;">
 	      <div class="row" style="height: 100%;">
 	        <div class="col-12 form-group" style="height: 100%;">
 			  <textarea id="synapEditor" name="content"></textarea>

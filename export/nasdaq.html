@@ -1,84 +1,101 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
 <title>DB금융투자 HTS 도움말</title>
-<link href="./resources/img/favicon.ico" rel="shortcut icon" type="image/ico" />
-<link href="./resources/css/mini-default.min.css" rel="stylesheet" type="text/css">
-<link href="./resources/fontawesome5/css/all.css" rel="stylesheet" type="text/css">
-<link href="./resources/jquery/fancytree/skin-lion/ui.fancytree.css" rel="stylesheet" type="text/css">
+<link href="./resources/img/favicon.ico" rel="shortcut icon"
+	type="image/ico" />
+<link href="./resources/css/mini-default.min.css" rel="stylesheet"
+	type="text/css">
+<link href="./resources/fontawesome5/css/all.css" rel="stylesheet"
+	type="text/css">
+<link href="./resources/jquery/fancytree/skin-lion/ui.fancytree.css"
+	rel="stylesheet" type="text/css">
 <link href="./resources/css/custom.css" rel="stylesheet" type="text/css">
 <style>
-header > ul { float: right; display: inline-flex; }
-header > ul > li { list-style-type: none; }
-a.button.on { background-color: var(--mark-back-color); color: white; }
+header>ul {
+	float: right;
+	display: inline-flex;
+}
+
+header>ul>li {
+	list-style-type: none;
+}
+
+a.button.on {
+	background-color: var(--mark-back-color);
+	color: white;
+}
 </style>
 </head>
 <body>
 
-<header>
-  <a href="javascript:void(0);" class="logo" style="cursor: default;">
-    <img src="./resources/img/ic-logo-dbfi.png" style="margin-top: 8px;"/><span style="margin-left: 40px;">DB HTS 도움말</span>
-  </a>
-  <a href="./nasdaq.html" class="button on">나스닥</a><a href="./kosdaq.html" class="button null">코스닥</a><!-- <mark>국내주식</mark> -->
-  <div class="floating-export-wrapper">
-    <i id="btn-print" class="fas fa-print"></i>
-    <i id="btn-pdf" class="far fa-file-pdf"></i>
-   </div>
-</header>
-
-<div id="bf-body-wrapper" class="container">
-	<div id="bf-content-area" class="row">
-		<div class="col col-20 bf-menu-section">
-		  <div class="row tree-menu">
-        <div class="col-sm-10" style="position: relative;">
-  		    <input placeholder="메뉴검색" type="search" id="search-bar" oninput="search()" maxlength="30">
-  		    <i id="ic-search" class="fas fa-search"></i>
- 		    </div>
-		    <div class="col-sm-2" style="text-align: right;">
-		      <i id="btn-expand-all" class="far fa-plus-square"></i><br>
-		      <i id="btn-collapse-all" class="far fa-minus-square"></i>
-		    </div>
-		  </div>
-		  <div id="tree">
-		  </div>
+	<header>
+		<a href="javascript:void(0);" class="logo" style="cursor: default;">
+			<img src="./resources/img/ic-logo-dbfi.png" style="margin-top: 8px;" /><span
+			style="margin-left: 40px;">온라인도움말</span>
+		</a> <a href="./domestic.html"
+			class="button ">국내주식</a><a href="./inter.html"
+			class="button ">해외주식</a><a href="./nasdaq.html"
+			class="button on">나스닥</a>
+		<div class="floating-export-wrapper">
+			<i id="btn-print" class="fas fa-print"></i> <i id="btn-pdf"
+				class="far fa-file-pdf"></i>
 		</div>
-		<div class="col col-80 bf-detail-area" id="bf-contents" style="overflow-y: hidden;">
-		  <div id="footer-copyright">
-		    <div>
-		      <img src="./img/ic-db-bottom.png"/>
-	      </div>
-	      <div>© 2020 DB금융투자 All Rights Reserved.</div>
-      </div>
-		  <iframe id="contents-detail" name="ifrm" width="100%" height="100%"></iframe>
+	</header>
+
+	<div id="bf-body-wrapper" class="container">
+		<div id="bf-content-area" class="row">
+			<div class="col col-sm-3 bf-menu-section" style="padding: 0;">
+				<div class="row tree-menu">
+					<div class="col-sm-10" style="position: relative;">
+						<input placeholder="메뉴검색" type="search" id="search-bar"
+							oninput="search()" maxlength="30"> <i id="ic-search"
+							class="fas fa-search"></i>
+					</div>
+					<div class="col-sm-2" style="text-align: right;">
+						<i id="btn-expand-all" class="far fa-plus-square"></i><br> <i
+							id="btn-collapse-all" class="far fa-minus-square"></i>
+					</div>
+				</div>
+				<div id="tree"></div>
+			</div>
+			<div class="col col-sm-9 bf-detail-area" id="bf-contents"
+				style="overflow-y: hidden; background-color: white; padding: 0;">	
+				<div id="footer-copyright">© 2020, DB금융투자 All Rights Reserved.</div>
+				<iframe id="contents-detail" name="ifrm" width="100%" height="100%"></iframe>
+			</div>
 		</div>
 	</div>
-</div>
+	</div>
 
-<!-- Modal -->
-<div class="modal fade" id="bf-modal-folder" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-    </div>
-  </div>
-</div>
+	<!-- Modal -->
+	<div class="modal fade" id="bf-modal-folder" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content"></div>
+		</div>
+	</div>
 
-<div id="snackbar"></div>
+	<div id="snackbar"></div>
 
-<div class="spinner-border" role="status" style="display: none;">
-  <span class="sr-only">Loading...</span>
-</div>
+	<div class="spinner-border" role="status" style="display: none;">
+		<span class="sr-only">Loading...</span>
+	</div>
 
-<script src="./resources/jquery/jquery-3.5.1.min.js"></script>
-<script src="./resources/jquery/jquery-ui.min.js"></script>
-<script src="./resources/jquery/fancytree/jquery.fancytree.min.js"></script>
-<script src="./resources/jquery/fancytree/modules/jquery.fancytree.filter.js"></script>
- 
-<script>
-/*<![CDATA[*/
-var SOURCE = "[{\"folder\":true,\"key\":\"00001\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB3541\"},{\"key\":\"00002\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D02\"}]"; // [{"expanded":true,"folder":true,"key":"_3","partsel":false,"selected":false,"title":"국내주식이란","children":[{"key":"0001","partsel":false,"selected":false,"title":"국내주식의 특징"},{"key":"0002","partsel":false,"selected":false,"title":"신용거래"},{"key":"0003","partsel":false,"selected":false,"title":"춘향휴게소"},{"key":"0004","partsel":false,"selected":false,"title":"INTERVAL"}]},{"expanded":true,"folder":true,"key":"_3","partsel":false,"selected":false,"title":"해외주식이란","children":[{"key":"0008","partsel":false,"selected":false,"title":"새 도움말"},{"expanded":true,"folder":true,"key":"_2","partsel":false,"selected":false,"title":"개 폴더","children":[{"key":"0009","partsel":false,"selected":false,"title":"새 도움말"}]},{"folder":true,"key":"_2","partsel":false,"selected":false,"title":"새 폴더"}]}];
+	<script src="./resources/jquery/jquery-3.5.1.min.js"></script>
+	<script src="./resources/jquery/jquery-ui.min.js"></script>
+	<script src="./resources/jquery/fancytree/jquery.fancytree.min.js"></script>
+	<script
+		src="./resources/jquery/fancytree/modules/jquery.fancytree.filter.js"></script>
+
+	<script>
+
+	/*<![CDATA[*/
+var SOURCE = null;
 window.alert = function(message) {
 	var x = document.getElementById("snackbar");
 	x.className = "show";
@@ -86,7 +103,7 @@ window.alert = function(message) {
 	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 }
 function loadContents(id) {
-	$(".loader").show();
+	$(".spinner").show();
 	location.href = "/doc#" + id;
 }
 function search(id) {
@@ -135,9 +152,9 @@ function collapseAll() {
 function initTree() {
   $('#tree').fancytree({
 	  extensions: ["filter"],
-	  filter: {  // override default settings
+	  filter: {  		// override default settings
 	    counter: false, // No counter badges
-	    mode: "hide"  // "dimm": Grayout unmatched nodes, "hide": remove unmatched nodes
+	    mode: "hide"  	// "dimm": Grayout unmatched nodes, "hide": remove unmatched nodes
 	  },
     checkbox: false,
     selectMode: 3,

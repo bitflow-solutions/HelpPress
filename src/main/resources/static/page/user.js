@@ -1,17 +1,19 @@
 function getUser(obj) {
+	$(".btn-list-item").removeClass("primary").addClass("success").addClass("hollow");
 	if (obj) {
+		$(obj).removeClass("success").removeClass("hollow").addClass("primary");
 		// 수정
-		$(".btn-create").hide();
-		$(".btn-modify").show();
-		$(".btn-delete").show();
+		$("#btn-create").hide();
+		$("#btn-modify").show();
+		$("#btn-delete").show();
 		$("#username").val($(obj).attr("bf-name"));
 		$("#password").val("");
 		$("#username").attr("readonly", true);
 	} else {
 		// 등록
-		$(".btn-modify").hide();
-		$(".btn-delete").hide();
-		$(".btn-create").show();
+		$("#btn-modify").hide();
+		$("#btn-delete").hide();
+		$("#btn-create").show();
 		$("#username").val("");
 		$("#password").val("");
 		$("#username").attr("readonly", false);
@@ -19,7 +21,7 @@ function getUser(obj) {
 }
 
 $(function() {
-	$(".btn-delete").click(function () {
+	$("#btn-delete").click(function () {
 		if (confirm("선택한 관리자가 삭제됩니다.\n정말 삭제하시겠습니까?")) {
 			var url = "/api/v1/ecm/user";
 			$.ajax({
@@ -36,7 +38,7 @@ $(function() {
 			});
 		}
 	});
-	$(".btn-modify").click(function () {
+	$("#btn-modify").click(function () {
 		if ($("#username").val().length<1) {
 			alert("관리자ID를 입력해주세요");
 			return;
@@ -64,7 +66,7 @@ $(function() {
 			}
 		});
 	});
-	$(".btn-create").click(function () {
+	$("#btn-create").click(function () {
 		if ($("#username").val().length<1) {
 			alert("관리자ID를 입력해주세요");
 			return;

@@ -18,21 +18,33 @@ function initTree() {
       edit: function(e, data){
       },
       save: function(e, data) {
-      	console.log('save');
-        return renameTitle(e, data);
+      	console.log('save ' + e + ' ' + data);
+        renameTitle(e, data);
+        return true;
       },
       beforeClose: function(e, data){
+      	  console.log("beforeClose");
       },
       close: function(e, data){
-    	// initEvents();
+    	  console.log("close");
       }
     },
     activate: function(e, data){
 	  console.log("activate");
 	  var node = data.node;
 	  if (!node.folder || node.folder===false) {
+	  	$("#btn-delete").show();
+	  	$("#btn-download").show();
+	  	$("#btn-modify").show();
+	  	$("#btn-modify-complete").hide();
 	  	// 도움말 표시
 	  	loadPage(node.key);
+	  } else {
+	    // 폴더인 경우
+	  	$("#btn-delete").show();
+	  	$("#btn-download").hide();
+	  	$("#btn-modify").hide();
+	  	$("#btn-modify-complete").hide();
 	  }
 	},
 	click: function(e, data){
@@ -43,9 +55,9 @@ function initTree() {
 }
 
 function initEvents() {
-	$(".btn-modify").click(function(e) {
+	$("#btn-modify").click(function(e) {
 		// 도움말 수정완료 버튼 클릭
-		$(".btn-modify").hide();
+		$("#btn-modify").hide();
 		$(".spinner").show();
 		var url = "/api/v1/ecm/content/" + selectedContentId;
 		$.ajax({
@@ -82,7 +94,7 @@ function initEvents() {
 	    callback: function(key, options) {
         },
 	    items: {
-	        rename: {name: "제목 변경", callback: editTitle },
+	        rename: {name: "제목 변경 [f2]", callback: editTitle },
 	        modify: {name: "도움말 수정", callback: editContent },
 	        deletecontent: {name: "도움말 삭제", callback: deleteContent },
 	        downloadcontent: {name: "다운로드", callback: downloadContent }
@@ -103,7 +115,7 @@ function initEvents() {
 	    callback: function(key, options) {
         },
 	    items: {
-	        rename: {name: "제목 변경", callback: editTitle },
+	        rename: {name: "제목 변경 [f2]", callback: editTitle },
 	        newfolder: {name: "새 폴더", callback: appendChildFolder },
 	        newcontent: {name: "새 도움말", callback: appendChildContent },
 	        deletefolder: {name: "폴더 삭제", callback: deleteFolder }
@@ -184,14 +196,14 @@ function editContent() {
     editor.openHTML(msg.result.contents);
     $("#contents-detail").hide();
 	$("#editor-wrapper").show();
-    $("#btn-edit").show();
+    $("#btn-modify").show();
   });
 }
 
 function loadPage(key) {
   console.log("loadPage " + key);
   $("#editor-wrapper").hide();
-  $("#btn-edit").hide();
+  $("#btn-modify").hide();
   $("#contents-detail").attr("src", key + ".html");
   $("#contents-detail").show();
 }

@@ -39,7 +39,8 @@ a.button.on {
 			style="margin-left: 40px;">온라인도움말</span>
 		</a> <a href="./domestic.html"
 			class="button ">국내주식</a><a href="./inter.html"
-			class="button on">해외주식</a>
+			class="button on">해외주식</a><a href="./nasdaq.html"
+			class="button null">나스닥</a>
 		<div class="floating-export-wrapper">
 			<i id="btn-print" class="fas fa-print"></i> <i id="btn-pdf"
 				class="far fa-file-pdf"></i>
@@ -102,7 +103,7 @@ window.alert = function(message) {
 	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 }
 function loadContents(id) {
-	$(".loader").show();
+	$(".spinner").show();
 	location.href = "/doc#" + id;
 }
 function search(id) {

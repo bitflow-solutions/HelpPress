@@ -39,7 +39,8 @@ a.button.on {
 			style="margin-left: 40px;">온라인도움말</span>
 		</a> <a href="./domestic.html"
 			class="button on">국내주식</a><a href="./inter.html"
-			class="button null">해외주식</a>
+			class="button null">해외주식</a><a href="./nasdaq.html"
+			class="button null">나스닥</a>
 		<div class="floating-export-wrapper">
 			<i id="btn-print" class="fas fa-print"></i> <i id="btn-pdf"
 				class="far fa-file-pdf"></i>
@@ -94,7 +95,7 @@ a.button.on {
 	<script>
 
 	/*<![CDATA[*/
-var SOURCE = "[{\"expanded\":true,\"folder\":true,\"key\":\"00001\",\"partsel\":false,\"selected\":false,\"title\":\"[00010] \uAD6D\uB0B4\uC8FC\uC2DD\",\"children\":[{\"key\":\"00003\",\"partsel\":false,\"selected\":false,\"title\":\"KOSPI\"}]},{\"key\":\"00002\",\"partsel\":false,\"selected\":false,\"title\":\"[00020] \uB098\uC2A4\uB2E5\"},{\"key\":\"00004\",\"partsel\":false,\"selected\":false,\"title\":\"[00030] \uB098\uC2A4\uD53C\"},{\"key\":\"00005\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D0\"},{\"folder\":true,\"key\":\"00006\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB354\"}]";
+var SOURCE = "[{\"expanded\":true,\"folder\":true,\"key\":\"00001\",\"partsel\":false,\"selected\":false,\"title\":\"[00010] \uAD6D\uB0B4\uC8FC\uC2DD\",\"children\":[{\"key\":\"00003\",\"partsel\":false,\"selected\":false,\"title\":\"KOSPI\"}]},{\"key\":\"00002\",\"partsel\":false,\"selected\":false,\"title\":\"[00020] \uB098\uC2A4\uB2E51123\"},{\"key\":\"00004\",\"partsel\":false,\"selected\":false,\"title\":\"[00030] \uB098\uC2A4\uD53C\"}]";
 window.alert = function(message) {
 	var x = document.getElementById("snackbar");
 	x.className = "show";
@@ -102,7 +103,7 @@ window.alert = function(message) {
 	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 }
 function loadContents(id) {
-	$(".loader").show();
+	$(".spinner").show();
 	location.href = "/doc#" + id;
 }
 function search(id) {

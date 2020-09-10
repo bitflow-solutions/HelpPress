@@ -1,17 +1,19 @@
 function getCategory(obj) {
+	$(".btn-list-item").removeClass("primary").addClass("success").addClass("hollow");
 	if (obj) {
+		$(obj).removeClass("success").removeClass("hollow").addClass("primary");
 		console.log("" + $(obj).attr("bf-order") + " " + $(obj).attr("bf-category-id") + " " + $(obj).attr("bf-name"));
-		$(".btn-create").hide();
-		$(".btn-modify").show();
-		$(".btn-delete").show();
+		$("#btn-create").hide();
+		$("#btn-modify").show();
+		$("#btn-delete").show();
 		$("#orderNo").val($(obj).attr("bf-order"));
 		$("#groupId").val($(obj).attr("bf-category-id"));
 		$("#name").val($(obj).attr("bf-name"));
 		$("#groupId").attr("readonly", true);
 	} else {
-		$(".btn-modify").hide();
-		$(".btn-delete").hide();
-		$(".btn-create").show();
+		$("#btn-modify").hide();
+		$("#btn-delete").hide();
+		$("#btn-create").show();
 		$("#orderNo").val("");
 		$("#groupId").val("");
 		$("#name").val("");
@@ -41,7 +43,7 @@ function validateInput() {
 }
 
 $(function() {
-	$(".btn-delete").click(function () {
+	$("#btn-delete").click(function () {
 		if (confirm("선택한 도움말그룹과 하위 도움말들이 모두 삭제됩니다.\n정말로 삭제하시겠습니까?")) {
 			var url = "/api/v1/ecm/group/" + $("#groupId").val();
 			$.ajax({
@@ -57,7 +59,7 @@ $(function() {
 			});
 		}
 	});
-	$(".btn-modify").click(function () {
+	$("#btn-modify").click(function () {
 		if (!validateInput()) {
 			return;
 		}
@@ -80,7 +82,7 @@ $(function() {
 			}, 1000);
 	    });
 	});
-	$(".btn-create").click(function () {
+	$("#btn-create").click(function () {
 		if (!validateInput()) {
 			return;
 		}
