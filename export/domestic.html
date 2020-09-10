@@ -38,7 +38,8 @@ a.button.on {
 			<img src="./resources/img/ic-logo-dbfi.png" style="margin-top: 8px;" /><span
 			style="margin-left: 40px;">온라인도움말</span>
 		</a> <a href="./domestic.html"
-			class="button on">국내주식</a>
+			class="button on">국내주식</a><a href="./inter.html"
+			class="button null">해외주식</a>
 		<div class="floating-export-wrapper">
 			<i id="btn-print" class="fas fa-print"></i> <i id="btn-pdf"
 				class="far fa-file-pdf"></i>
@@ -101,7 +102,7 @@ window.alert = function(message) {
 	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 }
 function loadContents(id) {
-	$(".spinner-border").show();
+	$(".loader").show();
 	location.href = "/doc#" + id;
 }
 function search(id) {

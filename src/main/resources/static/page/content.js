@@ -46,7 +46,7 @@ function initEvents() {
 	$(".btn-modify").click(function(e) {
 		// 도움말 수정완료 버튼 클릭
 		$(".btn-modify").hide();
-		$(".spinner-border").show();
+		$(".spinner").show();
 		var url = "/api/v1/ecm/content/" + selectedContentId;
 		$.ajax({
 			url: url,
@@ -66,7 +66,7 @@ function initEvents() {
 		})
 		.always(function() {
 			setTimeout(function() {
-				$(".spinner-border").hide();
+				$(".spinner").hide();
 			}, 500);
 	    });
 	});
@@ -150,7 +150,7 @@ function saveTree() {
   console.log('saveTree');
   var _tree = $.ui.fancytree.getTree();
   var tree = _tree.toDict(true);
-  $(".spinner-border").show();
+  $(".spinner").show();
   $.ajax({
 	  url: "/api/v1/ecm/group/" + selectedGroupId,
 	  method: "PUT",
@@ -163,7 +163,7 @@ function saveTree() {
 	})
 	.always(function() {
 		setTimeout(function() {
-			$(".spinner-border").hide();
+			$(".spinner").hide();
 		}, 300);
 	});
 }
@@ -204,7 +204,7 @@ function renameTitle(e, data) {
     if (node.folder && node.folder===true) {
     	data.folder = true;
     }
-    $(".spinner-border").show();
+    $(".spinner").show();
 	$.ajax({
 		url: URL_UPDATE_NODE,
 		method: "PUT",
@@ -221,7 +221,7 @@ function renameTitle(e, data) {
 	})
 	.always(function() {
 		setTimeout(function() {
-			$(".spinner-border").hide();
+			$(".spinner").hide();
 		}, 500);
     });
 }
@@ -421,10 +421,10 @@ function downloadContent() {
     return;
   }
   var key = node.key;
-  $(".spinner-border").show();
+  $(".spinner").show();
   $("#ifrm").attr("src", "/api/v1/ecm/release/" + key);
   setTimeout(function() {
-	$(".spinner-border").hide();
+	$(".spinner").hide();
   }, 6000);
 }
 

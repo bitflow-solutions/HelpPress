@@ -1,53 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>로그인::온라인도움말</title>
-<link rel="shortcut icon" type="image/ico" href="/img/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/bootstrap-4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/css/mini-default.min.css">
-<link rel="stylesheet" type="text/css" href="/css/install.css">
+<title>온라인매뉴얼 :: 로그인</title>
+<link href="/favicon.ico" rel="shortcut icon" type="image/ico" />
+<link rel="stylesheet" href="css/foundation.css">
+<link rel="stylesheet" href="foundation-icons/foundation-icons.css" />
+<link rel="stylesheet" href="css/global.css">
+<style>
+.login-wrapper { height: 100%; }
+.login-left { background-image: url('/img/bg-login.jpg'); color: #333; padding: 40px; background-size: cover; }
+.login-left h6 { font-weight: bold; margin-top: 8px; }
+.login-frm-wrapper { border-left: 1px solid #ccc; }
+.grid-padding-x > .cell.login-card { padding: 0; height: 100%; }
+</style>
 </head>
 <body>
 
-<div class="container">
-  <div class="d-flex justify-content-center h-100">
-    <div class="card row">
-      <div class="card-left col-sm-3">
-        <img src="/img/bg-cms-login-left.jpg" style="width: 100%;"/>
+<div class="login-body-wrapper grid-y medium-grid-frame">
+
+    <div class="grid-x login-wrapper">
+      <div class="cell small-9 login-left">
+      	<img src="/img/logo.svg" class="float-left"><h6>온라인매뉴얼</h6>
       </div>
-      <div class="card-content-wrapper col-sm-9">
-        <div class="card-header">
-          <h3>로그인</h3>
-        </div>
-        <div class="card-body">
-          <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
-          <fieldset>
-            <div class="row">
-              <div class="col-5">
-                <label for="username">아이디</label>
-              </div>
-              <div class="col-7">
-                <input type="text" id="username" name="username" placeholder="아이디" maxlength="15" />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5">
-                <label for="password">비밀번호</label>
-              </div>
-              <div class="col-7">
-                <input type="password" id="password" name="password" placeholder="비밀번호" onkeydown="onLoginEnterPressed();" maxlength="15" />
-              </div>
-            </div>
-             <div class="row">
-               <div class="col-12 button-wrapper">
-                 <button id="btn-login" class="primary">로그인</button>
-               </div>
-              </div>
-          </fieldset>
+      <div class="cell small-3 login-frm-wrapper">
+        <div class="card-divider">
+      		<h6><i class="fi-unlock"></i> 로그인</h6>
+        </div>	
+        <div class="card-section text-left">
+          	<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
+			<label>아이디
+	          <input type="text" id="username" name="username" placeholder="아이디" maxlength="15" />
+	        </label>
+	        <label>비밀번호
+	          <input type="password" id="password" name="password" placeholder="비밀번호" onkeydown="onLoginEnterPressed();" maxlength="15" />
+	        </label>
+	        <br>
+	        <a id="btn-login" href="javascript:void(0);" class="button success expanded">로그인</a>
         </div>
       </div>
     </div>
-  </div>
+    
+	<div class="cell shrink footer">
+	  <div class="grid-x">
+		  <div class="footer-text cell small-10 text-center">© 2020, DB금융투자 Co., Ltd. All Right Reserved.</div>
+		  <div class="cell small-2"><img src="/img/logo.svg" style="width: 105px; margin-right: 36px;" class="float-right"></div>
+	  </div>
+	</div>
+
 </div>
 
 <div class="spinner primary"></div>

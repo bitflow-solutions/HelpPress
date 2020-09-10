@@ -21,14 +21,17 @@ input[type="button"] + input[type="button"] { margin-right: 0; }
 </style>
 {{/style}}
 
-<div class="row title-area">
-	<div class="col col-sm-6">
-		<h5>▷ 배포관리</h5>
-	</div>
-	<div class="col col-sm-6 btn-wrapper">
-		<input type="button" value="전체파일" class="btn btn-outline-primary" id="btn-download-all">
-		<input type="button" value="변경된파일" class="btn btn-outline-primary" id="btn-download-changed" {{^clist}}disabled{{/clist}}>
-		<input type="button" value="내변경파일" class="btn btn-outline-primary" id="btn-download-changed-by-me" {{^mlist}}disabled{{/mlist}}>
+<div class="callout secondary small clearfix">
+	<nav role="navigation" class="nav float-left">
+	  <ul class="breadcrumbs">
+	    <li>홈</li>
+	    <li>배포관리</li>
+	  </ul>
+	</nav>
+	<div class="button-group float-right">
+		<a class="button small success hollow" id="btn-download-all">전체파일</a>
+		<a class="button small success hollow" id="btn-download-changed" {{^clist}}disabled{{/clist}}>변경된파일</a>
+		<a class="button small success hollow" id="btn-download-changed-by-me" {{^mlist}}disabled{{/mlist}}>내변경파일</a>
 	</div>
 </div>
 

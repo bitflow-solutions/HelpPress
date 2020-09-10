@@ -99,7 +99,7 @@ public class ViewController {
 	@GetMapping("/group") 
 	public String group(Model mo, HttpServletRequest req) {
 		List<ContentsGroup> list = cservice.getGroups();
-		mo.addAttribute("tab1", " active");
+		mo.addAttribute("tab1", "is-active");
 		mo.addAttribute("list", list);
 		return "page/group";
 	}
@@ -112,7 +112,7 @@ public class ViewController {
 	 */
 	@GetMapping("/content") 
 	public String content(Model mo) {
-		mo.addAttribute("tab2", " active");
+		mo.addAttribute("tab2", "is-active");
 		List<ContentsGroup> list = cservice.getGroups();
 		mo.addAttribute("list", list);
 		return "page/content";
@@ -126,7 +126,7 @@ public class ViewController {
 	@GetMapping("/release") 
 	public String release(Model mo, HttpSession sess) {
 		
-		mo.addAttribute("tab3", " active");
+		mo.addAttribute("tab3", "is-active");
 		
 		String username = SpringUtil.getSessionUserid(sess);
 
@@ -152,7 +152,7 @@ public class ViewController {
 	 */
 	@GetMapping("/user") 
 	public String user(Model mo) {
-		mo.addAttribute("tab4", " active");
+		mo.addAttribute("tab4", "is-active");
 		List<User> list = uservice.getUsers();
 		for (User item : list) {
 			item.setUserid(item.getUsername());

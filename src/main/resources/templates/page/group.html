@@ -5,51 +5,59 @@
 </style>
 {{/style}}
 
-<div class="row title-area">
-	<div class="col col-sm-6 text-left">
-		<h6><i class="material-icons">double_arrow</i><div>도움말그룹</div></h6>
-	</div>
-	<div class="col col-sm-6 form-group">
-		<input type="button" value="수정완료" class="btn btn-outline-primary btn-modify float-right hide">
-        <input type="button" value="삭제" class="btn btn-outline-primary btn-delete float-right hide">
-        <input type="button" value="등록" class="btn btn-outline-primary btn-create float-right">
+<div class="callout secondary small clearfix">
+	<nav role="navigation" class="nav float-left">
+	  <ul class="breadcrumbs">
+	    <li>홈</li>
+	    <li>도움말그룹</li>
+	  </ul>
+	</nav>
+	<div class="button-group float-right">
+	  <a class="button small success hollow float-right btn-delete" href="javascript:doLogout();">삭제</a>
+	  <a class="button small success hollow float-right btn-modify">수정완료</a>
+	  <a class="button small success hollow float-right btn-create" href="javascript:doLogout();">등록</a>	
 	</div>
 </div>
 
-<div id="bf-content-area" class="row">
+<div class="grid-x">
 	
-	<div id="category-wrapper" class="col col-md-3">
-	  <ul>
-		{{#list}}
-		<a href="javascript:void(0);" onclick="getCategory(this);" bf-name="{{#name}}{{name}}{{/name}}"  bf-category-id="{{groupId}}" bf-order="{{orderNo}}">
-			<li class="alert alert-light"><i class="far fa-folder"></i>&nbsp;&nbsp;{{#name}}{{name}}{{/name}}</li>
-		</a>
-		{{/list}}
-	  </ul>
-	  <a href="javascript:void(0);" onclick="getCategory();">
-	    <button class="btn btn-primary"><i class="material-icons">create</i><span>새 도움말그룹</span></button>
-      </a>
+	<div id="group-list-wrapper" class="cell small-3">
+		<ul>
+		  {{#list}}
+		  <li>
+		  <a class="cell button success hollow expanded" href="javascript:getCategory(this);" bf-name="{{#name}}{{name}}{{/name}}" bf-category-id="{{groupId}}" bf-order="{{orderNo}}">{{#name}}{{name}}{{/name}}</a>
+		  </li>
+		  {{/list}}
+		  <li>
+		  <a class="cell button success expanded" href="javascript:getCategory();">
+		    <i class="fi-pencil"></i>&nbsp;그룹추가
+	      </a>
+	      </li>
+      </ul>
 	</div>
 	
-	<div class="col col-md-9 bf-detail-area" id="bf-contents">
-	  <div class="row">
-	    <div class="col-12">
+	<div class="cell small-9 bf-detail-area" id="bf-contents">
+	  <div class="grid-x">
+		  <div class="cell small-6">
+		  	<img src="/img/bg-group-square.jpg" style="border: 1px solid #ccc" />
+		  </div>
+	    <div class="cell small-6">
 			<form name="frm" class="input-frm">
 				<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
 				<div class="form-group row">
-			    <label for="groupId" class="col-sm-2 col-form-label">도움말그룹URI</label>
+			    <label for="groupId" class="col-sm-2 col-form-label"><i class="fi-link"></i>&nbsp;도움말그룹URI</label>
 			    <div class="col-sm-10">
 			      <input type="text" id="groupId" class="form-control" placeholder="영소문자 (공백없음)" value="{{#item}}{{item.uri}}{{/item}}" maxlength="20">
 			    </div>
 			  </div>
 	        <div class="form-group row">
-	          <label for="name" class="col-sm-2 col-form-label">도움말그룹명</label>
+	          <label for="name" class="col-sm-2 col-form-label"><i class="fi-torso"></i>&nbsp;도움말그룹명</label>
 	          <div class="col-sm-10">
 	            <input type="text" id="name" class="form-control" placeholder="한글이름" value="{{#item}}{{item.name}}{{/item}}" maxlength="20">
 	          </div>
 				</div>
 		        <div class="form-group row">
-		          <label for="orderNo" class="col-sm-2 col-form-label">정렬순서</label>
+		          <label for="orderNo" class="col-sm-2 col-form-label"><i class="fi-list-number"></i>&nbsp;정렬순서</label>
 		          <div class="col-sm-10">
 		            <input type="text" id="orderNo" class="form-control" placeholder="숫자 (0~255)" value="{{#item}}{{item.orderNo}}{{/item}}" maxlength="3">
 		          </div>

@@ -5,59 +5,67 @@
 </style>
 {{/style}}
 
-<div class="row title-area">
-	<div class="col col-md-3">
-		<h5>▷ 사용자관리</h5>
-	</div>
-	<div class="col col-md-5">
-	</div>
-	<div class="col col-md-4 form-group">
-        <input type="button" value="수정완료" class="btn btn-outline-primary btn-modify float-right hide">
-        {{#notOnlyOne}}
-        <input type="button" value="삭제" class="btn btn-outline-primary btn-delete float-right hide">
-        {{/notOnlyOne}}
-        <input type="button" value="등록" class="btn btn-outline-primary btn-create float-right">
+<div class="callout secondary small clearfix">
+	<nav role="navigation" class="nav float-left">
+	  <ul class="breadcrumbs">
+	    <li>홈</li>
+	    <li>사용자관리</li>
+	  </ul>
+	</nav>
+	<div class="button-group float-right">
+	  {{#notOnlyOne}}
+	  <a class="button small success hollow float-right btn-delete">삭제</a>
+      {{/notOnlyOne}}
+	  <a class="button small success hollow float-right btn-modify" href="javascript:doLogout();">수정완료</a>
+	  <a class="button small success hollow float-right btn-create" href="javascript:doLogout();">등록</a>	
 	</div>
 </div>
 
-<div id="bf-content-area" class="row">
+<div class="grid-x">
 	
-	<div id="category-wrapper" class="col col-md-2">
+	<div id="group-list-wrapper" class="cell small-3">
 		<ul>
-			{{#list}}
-			<a href="javascript:void(0);" onclick="getUser(this);" bf-name="{{#userid}}{{userid}}{{/userid}}">
-				<li class="alert alert-light"><i class="far fa-user"></i>&nbsp;&nbsp;{{#userid}}{{userid}}{{/userid}}</li>
+		  {{#list}}
+		  <li>
+	        <a class="cell button success hollow expanded" href="javascript:getUser(this);" bf-name="{{#userid}}{{userid}}{{/userid}}">
+				{{#userid}}{{userid}}{{/userid}}
 			</a>
-			{{/list}}
-		  <a href="javascript:void(0);" onclick="getUser();" >
-	        <li class="alert alert-light on">+ 관리자 추가</li>
+		  </li>
+		  {{/list}}
+		  <li>
+		  <a class="cell button success expanded" href="javascript:getUser();">
+		    <i class="fi-pencil"></i>&nbsp;관리자추가
 	      </a>
-		</ul>
+	      </li>
+      </ul>
 	</div>
-	
-	<div class="col col-md-10 bf-detail-area" id="bf-contents">
-	  <div class="row">
-	    <div class="col-12">
+		
+	<div class="cell small-9 bf-detail-area" id="bf-contents">
+	  <div class="grid-x">
+		  <div class="cell small-6">
+		  	<img src="/img/bg-user-square.jpg" style="border: 1px solid #ccc" />
+		  </div>
+	      <div class="cell small-6">
 			<form name="frm" class="input-frm">
 				<div class="form-group row">
-			    <label for="groupId" class="col-sm-2 col-form-label">관리자ID</label>
+			    <label for="groupId" class="col-sm-2 col-form-label"><i class="fi-torso"></i> 사용자ID</label>
 			    <div class="col-sm-10">
 			      <input type="text" id="username" class="form-control" placeholder="관리자ID (영숫자, 최대 15자)" maxlength="15">
 			    </div>
 			  </div>
 	        <div class="form-group row">
-	          <label for="password" class="col-sm-2 col-form-label">비밀번호</label>
+	          <label for="password" class="col-sm-2 col-form-label"><i class="fi-unlock"></i> 비밀번호</label>
 	          <div class="col-sm-10">
 	            <input type="password" id="password" class="form-control" placeholder="비밀번호 (영수특수문자, 최대 15자)" maxlength="15">
 	          </div>
 					</div>
 					<div class="form-group row">
-	          <label for="password2" class="col-sm-2 col-form-label">비밀번호 확인</label>
+	          <label for="password2" class="col-sm-2 col-form-label"><i class="fi-unlock"></i> 비밀번호 확인</label>
 	          <div class="col-sm-10">
 	            <input type="password" id="password2" class="form-control" placeholder="비밀번호 확인 (영수특수문자, 최대 15자)" maxlength="15">
 	          </div>
 	        </div>
-			  </form>
+			</form>
 		  </div>
 	  </div>
 	</div>

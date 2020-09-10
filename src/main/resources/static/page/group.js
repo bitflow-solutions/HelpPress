@@ -1,6 +1,5 @@
 function getCategory(obj) {
 	if (obj) {
-		document.frm.action = "/api/v1/ecm/group/" + $(obj).attr("bf-category-id");
 		console.log("" + $(obj).attr("bf-order") + " " + $(obj).attr("bf-category-id") + " " + $(obj).attr("bf-name"));
 		$(".btn-create").hide();
 		$(".btn-modify").show();
