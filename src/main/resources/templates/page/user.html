@@ -2,6 +2,8 @@
 
 {{#style}}
 <style>
+.left-section { background-image: url('/img/bg-user-left.jpg');
+	border: 1px solid #ccc; border-left: 0; }
 </style>
 {{/style}}
 
@@ -14,28 +16,34 @@
 	</nav>
 	<div class="button-group float-right">
 	  {{#notOnlyOne}}
-	  <a class="button small success hollow" href="javascript:void(0);" id="btn-delete">삭제</a>
+	  <a class="button small alert" href="javascript:void(0);" id="btn-delete">삭제</a>
       {{/notOnlyOne}}
-	  <a class="button small primary" href="javascript:void(0);" id="btn-modify">수정완료</a>
+	  <a class="button small success" href="javascript:void(0);" id="btn-modify">수정완료</a>
 	  <a class="button small primary" href="javascript:void(0);" id="btn-create">등록</a>	
 	</div>
 </div>
 
-<div class="grid-x">
+<div class="grid-x contents-area">
 	
-	<div class="cell small-3">
-		<img src="/img/bg-user-square.jpg" style="border: 1px solid #ccc" />
+	<div class="cell small-3 left-section">
 	</div>
 	
 	<div class="cell small-3" id="group-list-wrapper">
+		<table>
+		  <thead>
+		    <tr>
+		      <th>사용자 선택</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	{{#list}}
+		    <tr>
+		      <td class="btn-list-item" onclick="getUser(this);" bf-name="{{#userid}}{{userid}}{{/userid}}">{{#userid}}{{userid}}{{/userid}}</td>
+		    </tr>
+		    {{/list}}
+		    </tbody>
+		</table>
 		<ul>
-			{{#list}}
-			<li>
-				<a class="cell button success hollow expanded btn-list-item" href="javascript:void(0);" onclick="getUser(this);" bf-name="{{#userid}}{{userid}}{{/userid}}">
-					{{#userid}}{{userid}}{{/userid}}
-				</a>
-			</li>
-			{{/list}}
 			<li>
 				<a class="cell button success expanded" href="javascript:void(0);" onclick="getUser();" >
 					<i class="fi-pencil"></i>&nbsp;사용자추가
@@ -45,26 +53,20 @@
 	</div>
 		
 	<div class="cell small-6 bf-detail-area" id="bf-contents">
-		<form name="frm" class="input-frm">
-			<div class="form-group row">
-			   <label for="groupId" class="col-sm-2 col-form-label"><i class="fi-torso"></i> 사용자ID</label>
-			   <div class="col-sm-10">
-			     <input type="text" id="username" class="form-control" placeholder="관리자ID (영숫자, 최대 15자)" maxlength="15">
-			   </div>
+		<div>
+		   <label for="groupId"><i class="fi-torso"></i> 사용자ID</label>
+		   <div class="col-sm-10">
+		     <input type="text" id="username" class="form-control" placeholder="관리자ID (영숫자, 최대 15자)" maxlength="15">
+		   </div>
+			<label for="password"><i class="fi-unlock"></i> 비밀번호</label>
+			<div class="col-sm-10">
+			  <input type="password" id="password" class="form-control" placeholder="비밀번호 (영수특수문자, 최대 15자)" maxlength="15">
 			</div>
-			<div class="form-group row">
-				<label for="password" class="col-sm-2 col-form-label"><i class="fi-unlock"></i> 비밀번호</label>
-				<div class="col-sm-10">
-				  <input type="password" id="password" class="form-control" placeholder="비밀번호 (영수특수문자, 최대 15자)" maxlength="15">
-				</div>
-			</div>
-			<div class="form-group row">
-			  <label for="password2" class="col-sm-2 col-form-label"><i class="fi-unlock"></i> 비밀번호 확인</label>
-			  <div class="col-sm-10">
-			    <input type="password" id="password2" class="form-control" placeholder="비밀번호 확인 (영수특수문자, 최대 15자)" maxlength="15">
-			  </div>
-			</div>
-		</form>
+		  <label for="password2"><i class="fi-unlock"></i> 비밀번호 확인</label>
+		  <div class="col-sm-10">
+		    <input type="password" id="password2" class="form-control" placeholder="비밀번호 확인 (영수특수문자, 최대 15자)" maxlength="15">
+		  </div>
+		</div>
 	</div>
 	
 </div>

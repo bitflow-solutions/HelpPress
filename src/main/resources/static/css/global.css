@@ -5,7 +5,7 @@ a:hover { color: #05854A; }
 [type='text'], [type='password'], [type='date'], [type='datetime'], [type='datetime-local'], [type='month'], [type='week'], [type='email'], [type='number'], [type='search'], [type='tel'], [type='time'], [type='url'], [type='color'], textarea
 { border-radius: 3px; }
 .menu input, .menu select, .menu a, .menu button { font-size: 13.33px; }
-.button { min-width: 74px; border-radius: 3px; border-color: #05854A; }
+.button { min-width: 74px; border-radius: 3px; /* border-color: #555; */ }
 .button.success { background-color: #05854A; color: white; }
 .button.hollow { background-color: white; }
 .button.success.hollow { border: 1px solid #05854A; color: #05854A; }
@@ -49,6 +49,12 @@ label { color: #05854A; }
 .bf-detail-area { padding-left: 8px; padding-right: 16px; }
 .bf-detail-area .cell.small-6:first-child { padding-right: 8px; }
 .bf-detail-area .cell.small-6:nth-child(2) { padding-left: 8px; } 
+.bf-detail-area > div { border: 1px solid #ccc; border-radius: 6px;padding: 16px; }
+table th, table td { border: 1px solid #ccc; border-collapse: collapse; }
+table th { text-align: center; }
+table td.btn-list-item:hover { background-color: #77b2d8; cursor: pointer; }
+.btn-list-item.primary { background-color: #1779ba; color: white; }
+.contents-area { height: calc(100% - 60px); }
 
 
 .spinner {

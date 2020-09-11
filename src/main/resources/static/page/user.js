@@ -1,7 +1,7 @@
 function getUser(obj) {
-	$(".btn-list-item").removeClass("primary").addClass("success").addClass("hollow");
+	$(".btn-list-item").removeClass("primary");
 	if (obj) {
-		$(obj).removeClass("success").removeClass("hollow").addClass("primary");
+		$(obj).addClass("primary");
 		// 수정
 		$("#btn-create").hide();
 		$("#btn-modify").show();
