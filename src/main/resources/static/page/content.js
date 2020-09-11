@@ -1,5 +1,6 @@
 var editor, selectedGroupId, selectedContentId, selectedContentTitle;
 var SOURCE = [];
+var _tree = null;
 const URL_UPDATE_NODE = "/api/v1/ecm/node";
 
 function initTree() {
@@ -30,7 +31,6 @@ function initTree() {
       }
     },
     activate: function(e, data){
-	  console.log("activate");
 	  var node = data.node;
 	  if (!node.folder || node.folder===false) {
 	  	$("#btn-delete").show();
@@ -51,11 +51,13 @@ function initTree() {
 		console.log("click");
     },
     lazyLoad: function (event, data) {},
-  })
+  });
+  _tree = $.ui.fancytree.getTree();
 }
 
 function initEvents() {
-	$("#btn-modify").click(function(e) {
+	$("#btn-modify").click(editContent);
+	$("#btn-modify-complete").click(function(e) {
 		// 도움말 수정완료 버튼 클릭
 		$("#btn-modify").hide();
 		$(".spinner").show();
@@ -82,6 +84,9 @@ function initEvents() {
 			}, 500);
 	    });
 	});
+	$("#btn-delete").click(deleteContent);
+	$("#btn-download").click(downloadContent);
+	
 	$("#btn-expand-all").click(function(e) {
 		expandAll();
 	});
@@ -94,7 +99,7 @@ function initEvents() {
 	    callback: function(key, options) {
         },
 	    items: {
-	        rename: {name: "제목 변경 [f2]", callback: editTitle },
+	        rename: {name: "제목 변경 (F2)", callback: editTitle },
 	        modify: {name: "도움말 수정", callback: editContent },
 	        deletecontent: {name: "도움말 삭제", callback: deleteContent },
 	        downloadcontent: {name: "다운로드", callback: downloadContent }
@@ -102,7 +107,7 @@ function initEvents() {
 	    events: {
 			show : function(options){
 			  var key = $(this).attr('key');
-	    	  var _tree = $.ui.fancytree.getTree();
+	    	  
 			  var node = _tree.getNodeByKey(key);
 			  node.setActive();
 			  console.log('file ' + key);
@@ -115,15 +120,15 @@ function initEvents() {
 	    callback: function(key, options) {
         },
 	    items: {
-	        rename: {name: "제목 변경 [f2]", callback: editTitle },
+	        rename: {name: "제목 변경 (F2)", callback: editTitle },
 	        newfolder: {name: "새 폴더", callback: appendChildFolder },
 	        newcontent: {name: "새 도움말", callback: appendChildContent },
-	        deletefolder: {name: "폴더 삭제", callback: deleteFolder }
+	        deleteContent: {name: "폴더 삭제", callback: deleteContent }
 	    },
 	    events: {
 			show : function(options){
 			  var key = $(this).attr('key');
-	    	  var _tree = $.ui.fancytree.getTree();
+	    	  
 			  var node = _tree.getNodeByKey(key);
 			  node.setActive();
 			  console.log('folder ' + key);
@@ -160,7 +165,7 @@ function initEditor() {
 
 function saveTree() {
   console.log('saveTree');
-  var _tree = $.ui.fancytree.getTree();
+  
   var tree = _tree.toDict(true);
   $(".spinner").show();
   $.ajax({
@@ -182,7 +187,6 @@ function saveTree() {
 
 function editContent() {
   console.log("editContent");
-  var _tree = $.ui.fancytree.getTree();
   var node = _tree.getActiveNode();
   selectedContentId = node.key;
   selectedContentTitle = node.title;
@@ -196,14 +200,16 @@ function editContent() {
     editor.openHTML(msg.result.contents);
     $("#contents-detail").hide();
 	$("#editor-wrapper").show();
-    $("#btn-modify").show();
+    $("#btn-modify-complete").show();
+    $("#btn-modify").hide();
+    $("#btn-download").hide();
+    $("#btn-delete").hide();
   });
 }
 
 function loadPage(key) {
   console.log("loadPage " + key);
   $("#editor-wrapper").hide();
-  $("#btn-modify").hide();
   $("#contents-detail").attr("src", key + ".html");
   $("#contents-detail").show();
 }
@@ -240,7 +246,7 @@ function renameTitle(e, data) {
 
 function appendRootFolder() {
   console.log("appendRootFolder");
-  var _tree = $.ui.fancytree.getTree();
+  
   var parent = _tree.getRootNode();
   $.ajax({
 	  url: URL_UPDATE_NODE,
@@ -268,7 +274,7 @@ function appendRootFolder() {
 
 function appendChildFolder() {
   console.log("appendChildFolder");
-  var _tree = $.ui.fancytree.getTree();
+  
   var parent = _tree.getActiveNode();
   if( !parent ) {
     parent = _tree.getRootNode();
@@ -298,7 +304,7 @@ function appendChildFolder() {
 }
 
 function appendChildContent() {
-  var _tree = $.ui.fancytree.getTree();
+  
   var parent = _tree.getActiveNode();
   if( !parent ) {
     parent = _tree.getRootNode();
@@ -328,7 +334,7 @@ function appendChildContent() {
 }
 
 function appendRootContent() {
-  var _tree = $.ui.fancytree.getTree();
+  
   var parent = _tree.getRootNode();
   $.ajax({
 	  url: URL_UPDATE_NODE,
@@ -355,56 +361,57 @@ function appendRootContent() {
 }
 
 function deleteContent() {
-  var _tree = $.ui.fancytree.getTree();
-  var node = _tree.getActiveNode();
-  $.ajax({
-	  url: URL_UPDATE_NODE,
-	  method: "DELETE",
-	  data: { groupId: selectedGroupId, key: node.key, title: node.title }
-  	})
-	.done(function(msg) {
-	  if (msg.status==401) {
-	  	location.href = "/logout";
-	  } else {
-	  	node.remove();
-        saveTree();
-	  }
-	})
-	.fail(function() {
-	})
-	.always(function() {
-  });
-}
-
-/**
- * 폴더 삭제
- */
-function deleteFolder() {
-  var _tree = $.ui.fancytree.getTree();
-  var node = _tree.getActiveNode();
-  // recursive) node.getChildren();
-  var childContentsArr = [];
-  getChildrenRecursive(node, childContentsArr);
-  if (childContentsArr) {
-  	console.log('childContentsArr ' + JSON.stringify(childContentsArr));
-  }
-  $.ajax({
-	  url: URL_UPDATE_NODE,
-	  method: "DELETE",
-	  data: { groupId: selectedGroupId, key: node.key, child: childContentsArr, folder: true, title:  node.title }
-  	})
-	.done(function(msg) {
-	  if (msg.status==401) {
-	  	location.href = "/logout";
-	  } else {
-	    node.remove();
-        saveTree();
-	  }
-	})
-	.fail(function() {
-	})
-	.always(function() {
-  });
+	var node = _tree.getActiveNode();
+	if (node) {
+	  	if (node.folder==true) {
+	  	  // 폴더인 경우
+	  	  if (confirm("도움말폴더와 하위 도움말들이 삭제됩니다. 진행 하시겠습니까?")) {
+		  	  // recursive) node.getChildren();
+			  var childContentsArr = [];
+			  getChildrenRecursive(node, childContentsArr);
+			  if (childContentsArr) {
+			  	console.log('childContentsArr ' + JSON.stringify(childContentsArr));
+			  }
+			  $.ajax({
+				  url: URL_UPDATE_NODE,
+				  method: "DELETE",
+				  data: { groupId: selectedGroupId, key: node.key, child: childContentsArr, folder: true, title:  node.title }
+			  	})
+				.done(function(msg) {
+				  if (msg.status==401) {
+				  	location.href = "/logout";
+				  } else {
+				    node.remove();
+			        saveTree();
+				  }
+				})
+				.fail(function() {
+				})
+				.always(function() {
+			  });
+		  }
+	  	} else {
+	  	  if (confirm("도움말이 삭제됩니다. 진행 하시겠습니까?")) {
+			  $.ajax({
+				  url: URL_UPDATE_NODE,
+				  method: "DELETE",
+				  data: { groupId: selectedGroupId, key: node.key, title: node.title }
+			  	})
+				.done(function(msg) {
+				  if (msg.status==401) {
+				  	location.href = "/logout";
+				  } else {
+				  	node.remove();
+			        saveTree();
+				  }
+				})
+				.fail(function() {
+				})
+				.always(function() {
+			  });
+		  }
+		}
+	}
 }
 
 function getChildrenRecursive(node, arr) {
@@ -426,7 +433,7 @@ function getChildrenRecursive(node, arr) {
 }
 
 function downloadContent() {
-  var _tree = $.ui.fancytree.getTree();
+  
   var node = _tree.getActiveNode();
   if( !node ) {
     alert("도움말을 선택해주세요");
@@ -442,7 +449,7 @@ function downloadContent() {
 
 function editTitle() {
   console.log('editTitle');
-  var _tree = $.ui.fancytree.getTree();
+  
   var node = _tree.getActiveNode();
   if( !node ) {
     alert("도움말을 선택해주세요");
@@ -469,7 +476,7 @@ function loadTree(groupId) {
 	})
 	.done(function(msg) {
 	console.log('msg ' + JSON.stringify(msg));
-	  var _tree = $.ui.fancytree.getTree();
+	  
 	  $("#tree").show();
 	  if (msg && msg.result) {
 	  	_tree.reload(JSON.parse(msg.result.tree));
@@ -501,7 +508,7 @@ function initSocket() {
           if (selectedGroupId===JSON.parse(msg.body).groupId) {
             console.log("reloading group " + JSON.parse(msg.body).groupId);
 	        // console.log("msg " + JSON.parse(msg.body).tree);
-	        var _tree = $.ui.fancytree.getTree();
+	        
 	        // msg.body.groupId , msg.body.tree
 	        _tree.reload(JSON.parse(JSON.parse(msg.body).tree));
 	  	  }
@@ -511,7 +518,7 @@ function initSocket() {
           var msg = JSON.parse(rawmsg.body);
           if (selectedGroupId===msg.groupId) {
             console.log("reloading group " + msg.groupId);
-            var _tree = $.ui.fancytree.getTree();
+            
             if (msg.method=="ADD") {
             	var existingNode = _tree.getNodeByKey(msg.key);
             	console.log('existingNode ' + existingNode);
@@ -526,7 +533,10 @@ function initSocket() {
             	parent.addNode(child, 'child');
             }else if (msg.method=="DEL") {
 			  var node = _tree.getNodeByKey(msg.key);
-			  node.remove();
+			  if (node) {
+			  	node.remove();
+		  	  }
+		  	  // Todo: 첫번쨰 노드 선택되도록
 			}else if (msg.method=="REN") {
 			  var node = _tree.getNodeByKey(msg.key);
 			  node.setTitle(msg.title);

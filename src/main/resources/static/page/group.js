@@ -1,7 +1,7 @@
 function getCategory(obj) {
-	$(".btn-list-item").removeClass("primary").addClass("success").addClass("hollow");
+	$(".btn-list-item").removeClass("primary");
 	if (obj) {
-		$(obj).removeClass("success").removeClass("hollow").addClass("primary");
+		$(obj).addClass("primary");
 		console.log("" + $(obj).attr("bf-order") + " " + $(obj).attr("bf-category-id") + " " + $(obj).attr("bf-name"));
 		$("#btn-create").hide();
 		$("#btn-modify").show();
