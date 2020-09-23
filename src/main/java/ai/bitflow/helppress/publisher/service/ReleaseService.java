@@ -391,13 +391,13 @@ public class ReleaseService {
 				String status = "";
 				String type   = "";
 				if (ApplicationConstant.METHOD_ADD.equals(item.getMethod())) {
-					status = "post_add";
+					status = "fi-plus";
 				} else if (ApplicationConstant.METHOD_MODIFY.equals(item.getMethod())) {
-					status = "update";
+					status = "fi-pencil";
 				} else if (ApplicationConstant.METHOD_DELETE.equals(item.getMethod())) {
-					status = "delete_outline";
+					status = "fi-minus";
 				} else  if (ApplicationConstant.METHOD_RENAME.equals(item.getMethod())) {
-					status = "text_fields";
+					status = "fi-text-color";
 				}
 				item.setStatus(status);
 				if (ApplicationConstant.TYPE_FOLDER.equals(item.getType())) {

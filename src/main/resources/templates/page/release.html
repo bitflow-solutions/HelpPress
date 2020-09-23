@@ -8,6 +8,7 @@
 .list-row .col { height: 100%; overflow-y: auto; padding-right: 0; }
 .list-table td { font-size: 12px; border: 1px solid #ddd; border-collapse: collapse; padding-left: 6px; padding-right: 6px; }
 .contents-area div.cell { height: 100%; overflow-y: auto; }
+.callout a.button { display: block; }
 </style>
 {{/style}}
 
@@ -25,11 +26,16 @@
 	</div>
 </div>
 
+<div class="grid-x">
+	<div class="cell small-3"><h5 class="text-center">배포이력</h5></div>
+	<div class="cell small-3"><h5 class="text-center">변경파일</h5></div>
+	<div class="cell small-6"><h5 class="text-center">변경이력</h5></div>
+</div>
+
 <div class="grid-x contents-area">
 
 	<!-- 1) 미배포 변경사항 -->
 	<div class="cell small-3 left-section">
-		<h5>배포이력</h5>
 		<table class="list-table">
 			<colgroup>
 				<col width="33%" />
@@ -38,19 +44,19 @@
 			</colgroup>
 			<thead>
 				<tr>
-					<td>배포구분</td>
-					<td>배포자</td>
-					<td>다운로드일시</td>
+					<th>배포구분</th>
+					<th>배포자</th>
+					<th>다운로드일시</th>
 				</tr>
 			</thead>
 			<tbody>
 				{{#rlist}}
 				<tr>
-					<td>
+					<td class="text-center">
 				  		<a href="javascript:downloadFromHistory({{id}})"><span><i class="far fa-file-code"></i>&nbsp;{{typeKr}}</span></a>
 				 		</td>
-				 		<td>{{#userid}}{{userid}}{{/userid}}</td>
-				 		<td>{{updDtStr}}</td>
+				 		<td class="text-center" >{{#userid}}{{userid}}{{/userid}}</td>
+				 		<td class="text-center" >{{updDtStr}}</td>
 				</tr>
 				{{/rlist}}
 							{{^rlist}}
@@ -64,7 +70,6 @@
 	
 	<!-- 2) 변경이력 -->
 	<div class="cell small-3">
-      <h5>미배포 변경사항</h5>
 		<table class="list-table">
 			<colgroup>
 				<col width="20%" />
@@ -81,7 +86,7 @@
 			<tbody>
    				{{#clist}}
 				<tr>
-					<td class="text-center"><span class="material-icons">{{status}}</span></td>
+					<td class="text-center"><i class="{{status}}"></i></td>
 					<td>{{#filePath}}{{filePath}}{{/filePath}}</td>
 					<td class="text-center">{{updDtStr}}</td>
 				</tr>
@@ -97,7 +102,6 @@
 	
 	<!-- 3) 배포이력 -->
 	<div class="cell small-6">
-      <h5>변경이력</h5>
 	  <table class="list-table">
 		<colgroup>
 			<col width="8%"/>
@@ -120,7 +124,7 @@
 		<tbody>
 			{{#hlist}}
 			<tr {{^released}}style="background-color: #ffcc;"{{/released}}>
-				<td class="text-center"><span class="material-icons">{{status}}</span></td>
+				<td class="text-center"><i class="{{status}}"></i></td>
 				<td class="text-center">{{type}}</td>
 				<td class="text-left">{{#title}}{{title}}{{/title}}</td>
 				<td class="text-left">{{#filePath}}{{filePath}}{{/filePath}}</td>

@@ -57,9 +57,13 @@ function initTree() {
 
 function initEvents() {
 	$("#btn-modify").click(editContent);
+	$("#btn-delete").click(deleteContent);
+	$("#btn-download").click(downloadContent);
+	$("#btn-expand-all").click(expandAll);
+	$("#btn-collapse-all").click(collapseAll);
 	$("#btn-modify-complete").click(function(e) {
 		// 도움말 수정완료 버튼 클릭
-		$("#btn-modify").hide();
+		$("#btn-modify-complete").hide();
 		$(".spinner").show();
 		var url = "/api/v1/ecm/content/" + selectedContentId;
 		$.ajax({
@@ -76,6 +80,9 @@ function initEvents() {
 		  if (key && key.length>0) {
 			loadPage(key);
 		  }
+		  $("#btn-modify").show();
+		  $("#btn-delete").show();
+		  $("#btn-download").show();
 		  alert('도움말을 수정하였습니다');
 		})
 		.always(function() {
@@ -84,15 +91,7 @@ function initEvents() {
 			}, 500);
 	    });
 	});
-	$("#btn-delete").click(deleteContent);
-	$("#btn-download").click(downloadContent);
 	
-	$("#btn-expand-all").click(function(e) {
-		expandAll();
-	});
-	$("#btn-collapse-all").click(function(e) {
-		collapseAll();
-	});
 	// (1) 파일 타입
 	$.contextMenu({
 	    selector: ".fancytree-ico-c > .fancytree-title",
@@ -163,9 +162,8 @@ function initEditor() {
   });
 }
 
-function saveTree() {
-  console.log('saveTree');
-  
+function saveTree(node) {
+  console.log('saveTree ' + node);
   var tree = _tree.toDict(true);
   $(".spinner").show();
   $.ajax({
@@ -174,7 +172,12 @@ function saveTree() {
 		data: {  tree: JSON.stringify(tree.children) }
   	})
 	.done(function(msg) {
-	  _tree.reload(JSON.parse(msg.result.tree));
+	  _tree.reload(JSON.parse(msg.result.tree))
+	  .done(function() {
+	    if (node) {
+	    	$("span[key=" + node.key + "]").click();
+	    }
+	  });
 	})
 	.fail(function() {
 	})
@@ -402,7 +405,19 @@ function deleteContent() {
 				  	location.href = "/logout";
 				  } else {
 				  	node.remove();
-			        saveTree();
+				  	var firstNode = null;
+			        _tree.visit(function(node) {
+					  if (typeof(node.folder)=='undefined') {
+				          firstNode = node;
+			        	  console.log('node ' + node.key + ' ' + node.folder);
+			        	  return false;
+			          }
+					});
+					if (firstNode===null) {
+		        	  saveTree();
+				    } else {
+				      saveTree(firstNode);
+				    }
 				  }
 				})
 				.fail(function() {
@@ -433,7 +448,6 @@ function getChildrenRecursive(node, arr) {
 }
 
 function downloadContent() {
-  
   var node = _tree.getActiveNode();
   if( !node ) {
     alert("도움말을 선택해주세요");
@@ -444,7 +458,7 @@ function downloadContent() {
   $("#ifrm").attr("src", "/api/v1/ecm/release/" + key);
   setTimeout(function() {
 	$(".spinner").hide();
-  }, 6000);
+  }, 3000);
 }
 
 function editTitle() {

@@ -1,4 +1,5 @@
 html, body, .bf-body-wrapper { height: 100%; }
+.bf-body-wrapper { padding-bottom: 40px; }
 a { color: #333333; }
 a:hover { color: #05854A; }
 *:focus { outline: none; border: none; }
@@ -33,7 +34,7 @@ span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytr
 .callout a.button { display: none; }
 .fancytree-treefocus span.fancytree-selected span.fancytree-title, .fancytree-treefocus span.fancytree-active span.fancytree-title { 
 	background-color: #05854A!important; }
-.cell.shrink.footer { background-color: white; border-top: 1px solid #ccc; z-index: 1; 
+.cell.shrink.footer { background-color: white; border-top: 1px solid #ccc; z-index: 1; position: absolute; bottom: 0; 
 	height: 48px; padding-top: 7px; background-image: url('/img/bg-footer-right.jpg');
 	background-position: top right; background-repeat: no-repeat; }
 .footer-text { font-size: 11px; color: #555; margin-top: 8px; }
