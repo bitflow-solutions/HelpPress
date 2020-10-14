@@ -35,6 +35,7 @@ function initTree() {
 	  if (!node.folder || node.folder===false) {
 	  	$("#btn-delete").show();
 	  	$("#btn-download").show();
+	  	$("#btn-pdf-upload").show();
 	  	$("#btn-modify").show();
 	  	$("#btn-modify-complete").hide();
 	  	// 도움말 표시
@@ -43,6 +44,7 @@ function initTree() {
 	    // 폴더인 경우
 	  	$("#btn-delete").show();
 	  	$("#btn-download").hide();
+	  	$("#btn-pdf-upload").hide();
 	  	$("#btn-modify").hide();
 	  	$("#btn-modify-complete").hide();
 	  }
@@ -61,6 +63,9 @@ function initEvents() {
 	$("#btn-download").click(downloadContent);
 	$("#btn-expand-all").click(expandAll);
 	$("#btn-collapse-all").click(collapseAll);
+	$("#btn-pdf-upload").click(function(e) {
+	  $("#pdf-file").click();
+	});
 	$("#btn-modify-complete").click(function(e) {
 		// 도움말 수정완료 버튼 클릭
 		$("#btn-modify-complete").hide();

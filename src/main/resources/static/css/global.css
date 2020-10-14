@@ -35,7 +35,7 @@ span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytr
 .fancytree-treefocus span.fancytree-selected span.fancytree-title, .fancytree-treefocus span.fancytree-active span.fancytree-title { 
 	background-color: #05854A!important; }
 .cell.shrink.footer { background-color: white; border-top: 1px solid #ccc; z-index: 1; position: absolute; bottom: 0; 
-	height: 48px; padding-top: 7px; background-image: url('/img/bg-footer-right.jpg');
+	height: 48px; padding-top: 7px; background-image: url('../img/bg-footer-right.jpg');
 	background-position: top right; background-repeat: no-repeat; }
 .footer-text { font-size: 11px; color: #555; margin-top: 8px; }
 label { color: #05854A; }
@@ -56,7 +56,17 @@ table th { text-align: center; }
 table td.btn-list-item:hover { background-color: #77b2d8; cursor: pointer; }
 .btn-list-item.primary { background-color: #1779ba; color: white; }
 .contents-area { height: calc(100% - 60px); }
-
+.top-bar { background-color: white; border-bottom: 1px solid rgba(10, 10, 10, 0.25); }
+.top-bar, .top-bar ul { background-color: white; }
+.top-bar-right li:last-child { margin-left: 3px; }
+.menu .menu-text { width: 252px; padding: 0 1rem; display: inline-flex; }
+.logo-img { background-image: url('../img/logo.svg'); width: 120px; height: 36px; }
+.logo-text { margin-top: 12px; }
+.menu .is-active { background-image: url('/img/bg-underline.gif'); background-position: bottom; background-repeat: no-repeat; }
+.menu .is-active > a { background-color: inherit; color: #05854A; }
+.accordion-menu li { width: inherit; }
+.breadcrumbs { margin: 0; }
+.callout .nav { width: inherit; margin-top: 7px; margin-left: 16px; }
 
 .spinner {
   margin: 100px auto;

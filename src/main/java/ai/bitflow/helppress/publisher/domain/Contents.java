@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
@@ -26,6 +27,9 @@ public class Contents {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(insertable=false, updatable=false)
 	private Integer id;
+	// html, pdf
+	@ColumnDefault("html")
+	private String type;
 	@Lob
 	private String content;
 	@Column(length=50)

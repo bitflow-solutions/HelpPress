@@ -53,6 +53,10 @@ dependencies {
 	testImplementation 'org.mapstruct:mapstruct-processor:1.3.1.Final'
 }
 
+processResources {
+    exclude('static/**/*')
+}
+
 test {
 	useJUnitPlatform()
 	exclude '**/*Test*'

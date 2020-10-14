@@ -21,7 +21,6 @@ import org.thymeleaf.templateresolver.FileTemplateResolver;
 import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
 import ai.bitflow.helppress.publisher.domain.Contents;
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
 public class FileDao {
