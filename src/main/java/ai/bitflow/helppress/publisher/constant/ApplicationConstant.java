@@ -13,6 +13,8 @@ public interface ApplicationConstant {
 	
 	String TYPE_GROUP 	 = "GROUP";
 	String TYPE_CONTENT  = "CONTENT";
+	String TYPE_PDF  	 = "PDF";
+	String TYPE_HTML  	 = "HTML";
 	String TYPE_FOLDER 	 = "FOLDER";
 
 	String RELEASE_ALL 	 = "ALL";

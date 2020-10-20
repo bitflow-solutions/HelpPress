@@ -46,7 +46,9 @@
 		  <a class="button small primary" href="javascript:void(0);" id="btn-pdf-upload">PDF도움말</a>
 		  <a class="button small primary" href="javascript:void(0);" id="btn-modify">수정</a>
 		  <a class="button small success" href="javascript:void(0);" id="btn-modify-complete">수정완료</a>
-		  <input id="pdf-file" type='file' hidden/>
+		  <form id="fileFrm" method="post" enctype="multipart/form-data">
+		  	<input id="pdfFile" type='file' hidden onchange="handlePdf(this.files[0]);" accept=".pdf" />
+	  	  </form>
 		</div>
 	</div>
   </div>

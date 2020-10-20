@@ -17,6 +17,7 @@ import ai.bitflow.helppress.publisher.service.ContentsService;
 import ai.bitflow.helppress.publisher.util.SpringUtil;
 import ai.bitflow.helppress.publisher.vo.req.ContentsReq;
 import ai.bitflow.helppress.publisher.vo.res.ContentsRes;
+import ai.bitflow.helppress.publisher.vo.res.StringRes;
 import ai.bitflow.helppress.publisher.vo.res.result.ContentResult;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * @author method76
  */
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/ecm/content") 
 public class ApiContentController {
@@ -51,6 +51,18 @@ public class ApiContentController {
 			ret.setFailResponse(404);
 		}
 		ret.setResult(result);
+		return ret;
+	}
+	
+	@GetMapping("/type/{id}")
+	public StringRes getType(@PathVariable String id) {
+		Contents item = cservice.getContent(id);
+		StringRes ret = new StringRes();
+		if (item!=null) {
+			ret.setResult(item.getType());
+		} else {
+			ret.setFailResponse(404);
+		}
 		return ret;
 	}
 	
@@ -86,7 +98,11 @@ public class ApiContentController {
 		if (username==null) {
 			ret.setFailResponse(401);
 		} else {
-			cservice.updateContent(params, id, username);
+			if (params.getFile1()==null) {
+				cservice.updateContent(params, id, username);
+			} else {
+				cservice.updatePdfContent(params, id, username);
+			}
 			result.setKey(id);
 			ret.setResult(result);
 		}

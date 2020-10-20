@@ -64,7 +64,7 @@ function initEvents() {
 	$("#btn-expand-all").click(expandAll);
 	$("#btn-collapse-all").click(collapseAll);
 	$("#btn-pdf-upload").click(function(e) {
-	  $("#pdf-file").click();
+	  $("#pdfFile").click();
 	});
 	$("#btn-modify-complete").click(function(e) {
 		// 도움말 수정완료 버튼 클릭
@@ -217,9 +217,25 @@ function editContent() {
 
 function loadPage(key) {
   console.log("loadPage " + key);
+  selectedContentId = key;
   $("#editor-wrapper").hide();
-  $("#contents-detail").attr("src", key + ".html");
-  $("#contents-detail").show();
+  $.ajax({
+		url: '/api/v1/ecm/content/type/' + key,
+		method: "GET"
+	})
+	.done(function(msg) {
+	  console.log('status ' + msg.status);
+	  if (msg.status==401) {
+	  	location.href = "/logout";
+	  } else {
+	  	if (msg.result=='PDF') {
+	  	  $("#contents-detail").attr("src", "/viewer/viewer.html?file=/" + key + ".pdf");
+	  	} else {
+	  	  $("#contents-detail").attr("src", key + ".html");
+	  	}
+	  }
+  	  $("#contents-detail").show();
+	});
 }
 
 function renameTitle(e, data) {
@@ -468,7 +484,6 @@ function downloadContent() {
 
 function editTitle() {
   console.log('editTitle');
-  
   var node = _tree.getActiveNode();
   if( !node ) {
     alert("도움말을 선택해주세요");
@@ -563,6 +578,23 @@ function initSocket() {
 	  	  }
         });
     });
+}
+
+function handlePdf(file) {
+	console.log('file ' + file);
+	var form = $('#fileFrm')[0];
+	var formData = new FormData(form);
+	formData.append("file1", $("#pdfFile")[0].files[0]);
+	$.ajax({
+	    url: '/api/v1/ecm/content/' + selectedContentId,
+            processData: false,
+            contentType: false,
+            data: formData,
+            type: 'PUT',
+            success: function(result){
+                alert("업로드 성공!!");
+            }
+	    });
 }
 
 $(function() {

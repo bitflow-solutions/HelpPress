@@ -3,6 +3,7 @@ package ai.bitflow.helppress.publisher.dao;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.thymeleaf.templateresolver.FileTemplateResolver;
 import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
 import ai.bitflow.helppress.publisher.domain.Contents;
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
+import ai.bitflow.helppress.publisher.vo.req.ContentsReq;
 
 @Component
 public class FileDao {
@@ -109,6 +111,36 @@ public class FileDao {
 			}
 			writer.write(getFooter());
 //			HtmlConverter.convertToPdf(html, new FileOutputStream(dest));
+		    return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (writer!=null) {
+				try {
+					writer.close();
+				} catch (IOException e) { }
+			}
+		}
+	}
+	
+	/**
+	 * PDF 업로드
+	 * @param params
+	 * @param item
+	 * @return
+	 */
+	public boolean newPdfFile(ContentsReq params, Contents item) {
+		
+		File dir = new File(UPLOAD_ROOT_PATH);
+		if (!dir.exists()) {
+			boolean success = dir.mkdirs();
+		}
+		 
+		FileOutputStream writer = null;
+		try {
+			writer = new FileOutputStream(UPLOAD_ROOT_PATH + String.format("%05d" , item.getId()) + ".pdf");
+			writer.write(params.getFile1().getBytes());
 		    return true;
 		} catch (IOException e) {
 			e.printStackTrace();

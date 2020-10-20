@@ -87,6 +87,7 @@ public class ContentsService implements ApplicationConstant {
 		if (row1.isPresent()) {
 			// 기존 파일 업데이트
 			Contents item1 = row1.get();
+			item1.setType(ApplicationConstant.TYPE_HTML);
 			item1.setContent(params.getContent());
 			Contents item2 = contentsrepo.save(item1);
 			fdao.newContentFile(item2);
@@ -98,6 +99,27 @@ public class ContentsService implements ApplicationConstant {
 			// 중복제거
 			chdao.addHistory(userid, type, method, params.getTitle(), filePath);
 		
+			return String.valueOf(item2.getId());
+		}
+		return null;
+	}
+	
+	@Transactional
+	public String updatePdfContent(ContentsReq params, String key, String userid) {
+		// id가 폴더이면 childDoc, id가 파일이면 업데이트
+		Optional<Contents> row1 = contentsrepo.findById(Integer.parseInt(key));
+		if (row1.isPresent()) {
+			// 기존 파일 업데이트
+			Contents item1 = row1.get();
+			item1.setType(ApplicationConstant.TYPE_PDF);
+			Contents item2 = contentsrepo.save(item1);
+			fdao.newPdfFile(params, item2);
+			// 변경이력 저장
+			String type     = TYPE_PDF;
+			String method   = METHOD_MODIFY;
+			String filePath = key + ".pdf";
+			// 중복제거
+			chdao.addHistory(userid, type, method, params.getTitle(), filePath);
 			return String.valueOf(item2.getId());
 		}
 		return null;
