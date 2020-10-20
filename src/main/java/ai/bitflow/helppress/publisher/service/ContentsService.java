@@ -36,43 +36,6 @@ public class ContentsService implements ApplicationConstant {
 	@Autowired
 	private FileDao fdao;
 	
-	/**
-	 * 새 "빈" 컨텐츠 추가
-	 * e.g.) String textOnly = Jsoup.parse(params.getContent()).text();
-	 * @param item
-	 */
-//	@Transactional
-//	public Contents newContent(ContentsReq params) {
-//		
-//		Contents item1 = new Contents();
-//		item1.setTitle(params.getTitle());
-//		Contents item2 = contentsrepo.save(item1);
-//		fdao.newContentFile(item2);
-//		
-//		// 변경이력 저장
-//		ChangeHistory item3 = new ChangeHistory();
-//		item3.setType(TYPE_CONTENT);
-//		item3.setMethod(METHOD_ADD);
-//		item3.setFilePath(String.format("%05d", item2.getId()) + ".html");
-//		item3.setComment(params.getComment());
-//		hrepo.save(item3);
-////		chdao.addHistory(userid, type, method, null, filePath);
-//		return item2;
-//	}
-	
-	/**
-	 * 폴더 추가
-	 * @param params
-	 * @return
-	 */
-//	@Transactional
-//	public String newFolder(ContentsReq params) {
-//		Contents item1 = new Contents();
-//		item1.setTitle("");
-//		Integer key = contentsrepo.save(item1).getId();
-//		contentsrepo.delete(item1);
-//		return String.format("%05d", key);
-//	}
 
 	/**
 	 * 컨텐츠 삭제
@@ -115,7 +78,7 @@ public class ContentsService implements ApplicationConstant {
 			Contents item2 = contentsrepo.save(item1);
 			fdao.newPdfFile(params, item2);
 			// 변경이력 저장
-			String type     = TYPE_PDF;
+			String type     = TYPE_CONTENT;
 			String method   = METHOD_MODIFY;
 			String filePath = key + ".pdf";
 			// 중복제거

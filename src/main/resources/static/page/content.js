@@ -209,6 +209,7 @@ function editContent() {
     $("#contents-detail").hide();
 	$("#editor-wrapper").show();
     $("#btn-modify-complete").show();
+    $("#btn-pdf-upload").hide();
     $("#btn-modify").hide();
     $("#btn-download").hide();
     $("#btn-delete").hide();
@@ -581,9 +582,13 @@ function initSocket() {
 
 function handlePdf(file) {
 	console.log('file ' + file);
+    var node = _tree.getActiveNode();
+    selectedContentId = node.key;
+    selectedContentTitle = node.title;
 	var form = $('#fileFrm')[0];
 	var formData = new FormData(form);
 	formData.append("file1", $("#pdfFile")[0].files[0]);
+	formData.append("title", selectedContentTitle);
 	$.ajax({
 	    url: '/api/v1/ecm/content/' + selectedContentId,
             processData: false,

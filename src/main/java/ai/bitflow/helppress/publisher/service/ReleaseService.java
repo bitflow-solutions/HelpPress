@@ -26,7 +26,9 @@ import org.zeroturnaround.zip.ZipUtil;
 import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
 import ai.bitflow.helppress.publisher.dao.ChangeHistoryDao;
 import ai.bitflow.helppress.publisher.domain.ChangeHistory;
+import ai.bitflow.helppress.publisher.domain.Contents;
 import ai.bitflow.helppress.publisher.domain.ReleaseHistory;
+import ai.bitflow.helppress.publisher.repository.ContentsRepository;
 import ai.bitflow.helppress.publisher.repository.ReleaseHistoryRepository;
 
 
@@ -49,6 +51,9 @@ public class ReleaseService {
 	
 	@Autowired
 	private ReleaseHistoryRepository rhrepo;
+	
+	@Autowired
+	private ContentsRepository crepo;
 	
 	@Autowired
 	private ChangeHistoryDao chdao;
@@ -141,20 +146,33 @@ public class ReleaseService {
 			return false;
 		}
 		
-		String resourcePath = SRC_FOLDER + ApplicationConstant.UPLOAD_REL_PATH + File.separator + key;
-		File resourceDir = new File(resourcePath);
-		if (resourceDir.exists() && resourceDir.isDirectory()) {
-			ZipUtil.pack(new File(resourcePath), destFile, new NameMapper() {
-				@Override
-				public String map(String name) {
-					 return ApplicationConstant.UPLOAD_REL_PATH + "/" + key + "/" + name;
-				}
-			});
-			ZipUtil.addEntry(destFile, key + ".html", new File(SRC_FOLDER + key + ".html"));
+		Contents item1 = null;
+		Optional<Contents> row1 = crepo.findById(Integer.parseInt(key));
+		if (row1.isPresent()) {
+			// 기존 파일 업데이트
+			item1 = row1.get();
 		} else {
-			ZipUtil.packEntry(new File(SRC_FOLDER + key + ".html"), destFile);
+			return false;
 		}
 
+		if (ApplicationConstant.TYPE_PDF.equals(item1.getType())) {
+			ZipUtil.packEntry(new File(SRC_FOLDER + key + ".pdf"), destFile);
+		} else {
+			String resourcePath = SRC_FOLDER + ApplicationConstant.UPLOAD_REL_PATH + File.separator + key;
+			File resourceDir = new File(resourcePath);
+			if (resourceDir.exists() && resourceDir.isDirectory()) {
+				ZipUtil.pack(new File(resourcePath), destFile, new NameMapper() {
+					@Override
+					public String map(String name) {
+						 return ApplicationConstant.UPLOAD_REL_PATH + "/" + key + "/" + name;
+					}
+				});
+				ZipUtil.addEntry(destFile, key + ".html", new File(SRC_FOLDER + key + ".html"));
+			} else {
+				ZipUtil.packEntry(new File(SRC_FOLDER + key + ".html"), destFile);
+			}
+		}
+		
 		FileInputStream fis = null;
 		ServletOutputStream out = null;
 		try {
