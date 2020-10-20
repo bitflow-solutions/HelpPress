@@ -509,8 +509,7 @@ function loadTree(groupId) {
 	  method: "GET"
 	})
 	.done(function(msg) {
-	console.log('msg ' + JSON.stringify(msg));
-	  
+	  console.log('msg ' + JSON.stringify(msg));
 	  $("#tree").show();
 	  if (msg && msg.result) {
 	  	_tree.reload(JSON.parse(msg.result.tree));
@@ -590,11 +589,12 @@ function handlePdf(file) {
             processData: false,
             contentType: false,
             data: formData,
-            type: 'PUT',
-            success: function(result){
-                alert("업로드 성공!!");
-            }
-	    });
+            type: 'PUT'
+    })
+    .done(function(msg) {
+	  console.log('msg ' + JSON.stringify(msg));
+	  loadPage(selectedContentId);
+	});
 }
 
 $(function() {
@@ -609,6 +609,5 @@ $(function() {
 	if (hash.length>1) {
 		$("#sel_category").val(hash.substring(1));
 		onSelectChanged($("#sel_category").get(0));
-		// loadTree(hash.substring(1));
 	}
 });
