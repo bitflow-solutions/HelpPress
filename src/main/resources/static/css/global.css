@@ -1,5 +1,8 @@
-html, body, .bf-body-wrapper { height: 100%; }
+html, body, .bf-body-wrapper { height: 100%; font-family: "Noto Sans Korean"; }
+ul.fancytree-container, span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { 
+	font-family: "Noto Sans Korean"; }
 .bf-body-wrapper { padding-bottom: 40px; }
+#editor-wrapper { width: 891px; }
 a { color: #333333; }
 a:hover { color: #05854A; }
 *:focus { outline: none; border: none; }
@@ -61,7 +64,8 @@ table td.btn-list-item:hover { background-color: #77b2d8; cursor: pointer; }
 .top-bar-right li:last-child { margin-left: 3px; }
 .menu .menu-text { width: 252px; padding: 0 1rem; display: inline-flex; }
 .logo-img { background-image: url('../img/logo.svg'); width: 120px; height: 36px; }
-.logo-text { margin-top: 12px; }
+.logo-text { margin-top: 12px;  }
+.menu .menu-text { font-weight: normal; }
 .menu .is-active { background-image: url('/img/bg-underline.gif'); background-position: bottom; background-repeat: no-repeat; }
 .menu .is-active > a { background-color: inherit; color: #05854A; }
 .accordion-menu li { width: inherit; }

@@ -1,9 +1,11 @@
 package ai.bitflow.helppress.publisher.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,7 +76,7 @@ public class SynapImportController {
         // 변환이 끝난 원본파일은 삭제한다.
         deleteFile(inputFileAbsPath);
      
-        // 변환된 pb파일을 읽어서 serialzie
+        // 변환된 pb파일을 읽어서 serialize
         // v2.3.0 부터 파일명이 document.word.pb에서 document.pb로 변경됨
         String pbAbsPath = worksDirAbsPath + File.separator + "document.pb";
         Integer[] serializedData = serializePbData(pbAbsPath);
@@ -112,7 +114,12 @@ public class SynapImportController {
         try {
             Timer t = new Timer();
             Process proc = Runtime.getRuntime().exec(cmd);
-         
+            BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            String line = null;
+            while((line = br.readLine()) != null){
+                logger.debug(line);
+            }
+
             TimerTask killer = new TimeoutProcessKiller(proc);
             t.schedule(killer, 20000); // 20초 (변환이 20초 안에 완료되지 않으면 프로세스 종료)
          
@@ -193,9 +200,9 @@ public class SynapImportController {
      */
     private void makeDirectory(String dirPath) {
         File dir = new File(dirPath);
-        logger.debug("making dir " + dir.getAbsolutePath());
         if (!dir.exists()) {
         	logger.debug("not exists");
+        	logger.debug("making dir " + dir.getAbsolutePath());
             dir.mkdirs();
         }
     }

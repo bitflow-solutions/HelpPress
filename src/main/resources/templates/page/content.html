@@ -36,14 +36,16 @@
 		    <option value="{{groupId}}">{{#name}}{{name}}{{/name}}</option>
 			{{/list}}
 		  </select>
-		  <i class="button alert hollow fi-plus tree-btn" id="btn-expand-all" title="전체메뉴펼치기"></i>
-		  <i class="button primary hollow fi-minus tree-btn" id="btn-collapse-all" title="전체메뉴접기"></i>
+		  <i class="button secondary hollow fi-plus tree-btn" id="btn-expand-all" title="전체메뉴펼치기"></i>
+		  <i class="button secondary hollow fi-minus tree-btn" id="btn-collapse-all" title="전체메뉴접기"></i>
 	</div>
 	<div class="cell small-4">
   	  	<div class="button-group float-right">
 		  <a class="button small alert" href="javascript:void(0);" id="btn-delete">삭제</a>
 		  <a class="button small primary hollow" href="javascript:void(0);" id="btn-download">다운로드</a>
+		  <!-- 
 		  <a class="button small primary" href="javascript:void(0);" id="btn-pdf-upload">PDF업로드</a>
+		   -->
 		  <a class="button small primary" href="javascript:void(0);" id="btn-modify">수정</a>
 		  <a class="button small success" href="javascript:void(0);" id="btn-modify-complete">수정완료</a>
 		  <form id="fileFrm" method="post" enctype="multipart/form-data">
@@ -64,7 +66,7 @@
 	<!-- 컨텐츠 상세내용 --> <!-- 706px for A4 -->
 	<div class="cell small-9 contents-wrapper">
 	  <div class="grid-x" style="height: calc(100% - 65px);">
-	    <iframe id="contents-detail" class="cell" width="100%" height="100%" src="/empty-content.html"></iframe>
+	    <iframe id="contents-detail" class="cell" width="100%" height="100%" border="0" src="/empty-content.html"></iframe>
 		<div id="editor-wrapper" class="cell" style="height: 100%;">
 	      <div class="row" style="height: 100%;">
 	        <div class="col-12 form-group" style="height: 100%;">

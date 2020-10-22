@@ -1,4 +1,6 @@
-html, body, .bf-body-wrapper { height: 100%; }
+html, body, .bf-body-wrapper { height: 100%; font-family: "Noto Sans Korean"; }
+ul.fancytree-container, span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { 
+	font-family: "Noto Sans Korean"; }
 .bf-body-wrapper { padding-bottom: 40px; }
 a { color: #333333; }
 a:hover { color: #05854A; }

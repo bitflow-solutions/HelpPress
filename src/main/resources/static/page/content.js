@@ -33,9 +33,11 @@ function initTree() {
     activate: function(e, data){
 	  var node = data.node;
 	  if (!node.folder || node.folder===false) {
+	    selectedContentId = node.key;
+	    selectedContentTitle = node.title;
 	  	$("#btn-delete").show();
 	  	$("#btn-download").show();
-	  	$("#btn-pdf-upload").show();
+	  	// $("#btn-pdf-upload").show();
 	  	$("#btn-modify").show();
 	  	$("#btn-modify-complete").hide();
 	  	// 도움말 표시
@@ -44,7 +46,7 @@ function initTree() {
 	    // 폴더인 경우
 	  	$("#btn-delete").show();
 	  	$("#btn-download").hide();
-	  	$("#btn-pdf-upload").hide();
+	  	// $("#btn-pdf-upload").hide();
 	  	$("#btn-modify").hide();
 	  	$("#btn-modify-complete").hide();
 	  }
@@ -63,9 +65,11 @@ function initEvents() {
 	$("#btn-download").click(downloadContent);
 	$("#btn-expand-all").click(expandAll);
 	$("#btn-collapse-all").click(collapseAll);
+	/*
 	$("#btn-pdf-upload").click(function(e) {
 	  $("#pdfFile").click();
 	});
+	*/
 	$("#btn-modify-complete").click(function(e) {
 		// 도움말 수정완료 버튼 클릭
 		$("#btn-modify-complete").hide();
@@ -80,10 +84,12 @@ function initEvents() {
 			}
 		})
 		.done(function(msg) {
-		  var key = msg.result.key;
-		  console.log('key ' + key);
-		  if (key && key.length>0) {
-			loadPage(key);
+		  if (msg.result) {
+			  var key = msg.result.key;
+			  console.log('key ' + key);
+			  if (key && key.length>0) {
+				loadPage(key);
+			  }
 		  }
 		  $("#btn-modify").show();
 		  $("#btn-delete").show();
@@ -194,12 +200,7 @@ function saveTree(node) {
 }
 
 function editContent() {
-  console.log("editContent");
-  var node = _tree.getActiveNode();
-  selectedContentId = node.key;
-  selectedContentTitle = node.title;
-  console.log('selectedContentTitle' + selectedContentTitle);
-  var url = "/api/v1/ecm/content/" + node.key;
+  var url = "/api/v1/ecm/content/" + selectedContentId;
   $.ajax({
 	url: url,
 	method: "GET"
@@ -209,7 +210,7 @@ function editContent() {
     $("#contents-detail").hide();
 	$("#editor-wrapper").show();
     $("#btn-modify-complete").show();
-    $("#btn-pdf-upload").hide();
+    // $("#btn-pdf-upload").hide();
     $("#btn-modify").hide();
     $("#btn-download").hide();
     $("#btn-delete").hide();
@@ -217,11 +218,9 @@ function editContent() {
 }
 
 function loadPage(key) {
-  console.log("loadPage " + key);
-  selectedContentId = key;
   $("#editor-wrapper").hide();
   $.ajax({
-		url: '/api/v1/ecm/content/type/' + key,
+		url: '/api/v1/ecm/content/type/' + selectedContentId,
 		method: "GET"
 	})
 	.done(function(msg) {
@@ -229,11 +228,11 @@ function loadPage(key) {
 	  if (msg.status==401) {
 	  	location.href = "/logout";
 	  } else {
-	  	if (msg.result=='PDF') {
-	  	  $("#contents-detail").attr("src", "/viewer/viewer.html?file=/" + key + ".pdf");
-	  	} else {
-	  	  $("#contents-detail").attr("src", key + ".html");
-	  	}
+    	//  $("#contents-detail").attr("src", "/viewer/viewer.html?file=/" + key + ".pdf");
+	  	//if (msg.result=='PDF') {
+	  	//} else {
+	  	$("#contents-detail").attr("src", key + ".html");
+	  	//}
 	  }
   	  $("#contents-detail").show();
 	});
