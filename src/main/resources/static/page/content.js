@@ -14,21 +14,23 @@ function initTree() {
       triggerStart: ["f2"],
       adjustWidthOfs: 4,   // null: don't adjust input size to content
       inputCss: { minWidth: "120px" },
-      beforeEdit: function(e, data){
-      },
-      edit: function(e, data){
-      },
       save: function(e, data) {
-      	console.log('save ' + e + ' ' + data);
+      	/*console.log('save ' + e + ' ' + data);*/
         renameTitle(e, data);
         return true;
       },
+      beforeEdit: function(e, data){
+      	$("span.fancytree-focused .fancytree-title").css("background-color", "inherit");
+      },
       beforeClose: function(e, data){
-      	  console.log("beforeClose");
+      	  $("span.fancytree-focused .fancytree-title").css("background-color", "#3875D7");
+      },
+      /*,
+      edit: function(e, data){
       },
       close: function(e, data){
     	  console.log("close");
-      }
+      }*/
     },
     activate: function(e, data){
 	  var node = data.node;
@@ -50,11 +52,11 @@ function initTree() {
 	  	$("#btn-modify").hide();
 	  	$("#btn-modify-complete").hide();
 	  }
-	},
+	}/*,
 	click: function(e, data){
-		console.log("click");
+		// console.log("click");
     },
-    lazyLoad: function (event, data) {},
+    lazyLoad: function (event, data) {},*/
   });
   _tree = $.ui.fancytree.getTree();
 }
@@ -117,10 +119,9 @@ function initEvents() {
 	    events: {
 			show : function(options){
 			  var key = $(this).attr('key');
-	    	  
 			  var node = _tree.getNodeByKey(key);
 			  node.setActive();
-			  console.log('file ' + key);
+			  /*console.log('file ' + key);*/
 	        }           
 		}
 	});
@@ -174,7 +175,7 @@ function initEditor() {
 }
 
 function saveTree(node) {
-  console.log('saveTree ' + node);
+  /*console.log('saveTree ' + node);*/
   var tree = _tree.toDict(true);
   $(".spinner").show();
   $.ajax({
@@ -210,7 +211,6 @@ function editContent() {
     $("#contents-detail").hide();
 	$("#editor-wrapper").show();
     $("#btn-modify-complete").show();
-    // $("#btn-pdf-upload").hide();
     $("#btn-modify").hide();
     $("#btn-download").hide();
     $("#btn-delete").hide();
@@ -224,7 +224,7 @@ function loadPage(key) {
 		method: "GET"
 	})
 	.done(function(msg) {
-	  console.log('status ' + msg.status);
+	  // console.log('status ' + msg.status);
 	  if (msg.status==401) {
 	  	location.href = "/logout";
 	  } else {
@@ -234,38 +234,42 @@ function loadPage(key) {
 	  	$("#contents-detail").attr("src", key + ".html");
 	  	//}
 	  }
+	  if (msg.result===null) {
+	  	$("#btn-modify").text("글쓰기");
+	  } else {
+	  	$("#btn-modify").text("수정");
+	  }
   	  $("#contents-detail").show();
 	});
 }
 
 function renameTitle(e, data) {
-    var title = data.input.val();
-    console.log('renameTitle ' + title);
-    var node = data.node;
-    var data = { groupId: selectedGroupId, key: node.key, title: title };
-    if (node.folder && node.folder===true) {
-    	data.folder = true;
-    }
-    $(".spinner").show();
-	$.ajax({
-		url: URL_UPDATE_NODE,
-		method: "PUT",
-		data: data
-	})
-	.done(function(msg) {
-	  console.log('status ' + msg.status);
-	  if (msg.status==401) {
-	  	location.href = "/logout";
-	  } else {
-	  	// node.setTitle(title);
-        saveTree();
-	  }
-	})
-	.always(function() {
-		setTimeout(function() {
-			$(".spinner").hide();
-		}, 500);
-    });
+	try {
+	    var title = data.input.val();
+	    var node = data.node;
+	    var data = { groupId: selectedGroupId, key: node.key, title: title };
+	    if (node.folder && node.folder===true) {
+	    	data.folder = true;
+	    }
+	    $(".spinner").show();
+		$.ajax({
+			url: URL_UPDATE_NODE,
+			method: "PUT",
+			data: data
+		})
+		.done(function(msg) {
+		  if (msg.status==401) {
+		  	location.href = "/logout";
+		  } else {
+	        saveTree();
+		  }
+		})
+		.always(function() {
+			setTimeout(function() {
+				$(".spinner").hide();
+			}, 500);
+	    });
+    } catch(e) { console.log(e.message); }
 }
 
 function appendRootFolder() {
@@ -509,7 +513,7 @@ function loadTree(groupId) {
 	  method: "GET"
 	})
 	.done(function(msg) {
-	  console.log('msg ' + JSON.stringify(msg));
+	  // console.log('msg ' + JSON.stringify(msg));
 	  $("#tree").show();
 	  if (msg && msg.result) {
 	  	_tree.reload(JSON.parse(msg.result.tree));
@@ -539,19 +543,14 @@ function initSocket() {
         stompClient.subscribe('/group', function (msg) {
           console.log("groupId " + JSON.parse(msg.body).groupId);
           if (selectedGroupId===JSON.parse(msg.body).groupId) {
-            console.log("reloading group " + JSON.parse(msg.body).groupId);
-	        // console.log("msg " + JSON.parse(msg.body).tree);
-	        
-	        // msg.body.groupId , msg.body.tree
 	        _tree.reload(JSON.parse(JSON.parse(msg.body).tree));
 	  	  }
         });
         stompClient.subscribe('/node', function (rawmsg) {
-          console.log("/node: msg " + rawmsg.body);
+          // console.log("/node: msg " + rawmsg.body);
           var msg = JSON.parse(rawmsg.body);
           if (selectedGroupId===msg.groupId) {
-            console.log("reloading group " + msg.groupId);
-            
+            /*console.log("reloading group " + msg.groupId);*/
             if (msg.method=="ADD") {
             	var existingNode = _tree.getNodeByKey(msg.key);
             	console.log('existingNode ' + existingNode);
@@ -609,7 +608,7 @@ $(function() {
 	initEditor();
 	initSocket();
 	var hash = window.location.hash;
-	console.log('hash ' + hash);
+	// console.log('hash ' + hash);
 	if (hash.length>1) {
 		$("#sel_category").val(hash.substring(1));
 		onSelectChanged($("#sel_category").get(0));

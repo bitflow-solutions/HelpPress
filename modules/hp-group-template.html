@@ -13,8 +13,9 @@
 <link rel="stylesheet" href="./resources/jquery/fancytree/skin-lion/ui.fancytree.css">
 <link rel="stylesheet" href="./resources/css/global.css">
 <style>
-body { font-family: "Noto Sans KR", "맑은 고딕"; }
+body { font-family: "Noto Sans Korean", "맑은 고딕", Arial; }
 .tree-wrapper { background-image: url('/img/bg-tree-gray.jpg'); border-right: 1px solid #ccc; overflow-y: auto; }
+.menu .menu-text { font-weight: normal; }
 .context-menu-list.context-menu-root {
   border-radius: 0; -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.5); box-shadow: 1px 1px 2px rgba(0,0,0,.5); }
 .context-menu-item { font-size: 13px; font-family: '맑은고딕'; }
@@ -28,6 +29,7 @@ body { font-family: "Noto Sans KR", "맑은 고딕"; }
 .tree-btn { padding: 6px; min-width: 32px; font-size: 16px; }
 #sel_category, .tree-btn, .callout .button-group { margin-bottom: 0; }
 #editor-wrapper { display: none; }
+#btn-print { position: absolute; top: 0; right: 0; height: 32px; width: 32px; background-color: #05854A; color: white; }
 </style>
 </head>
 
@@ -70,7 +72,7 @@ body { font-family: "Noto Sans KR", "맑은 고딕"; }
 		<!-- 컨텐츠 상세내용 --> <!-- 706px for A4 -->
 		<div class="cell small-9 contents-wrapper">
 		  <div class="grid-x" style="height: calc(100% - 7px);">
-		    <iframe id="contents-detail" class="cell" width="100%" height="100%" frameborder="0" border="0" style="border:0;" src="/empty-content.html"></iframe>
+		    <iframe id="contents-detail" name="ifrm" class="cell" width="100%" height="100%" frameborder="0" border="0" style="border:0;"></iframe>
 		  </div>
 	    </div>
 		
@@ -80,7 +82,7 @@ body { font-family: "Noto Sans KR", "맑은 고딕"; }
 	
 	<div class="cell shrink footer">
 	  <div class="grid-x">
-		  <div class="footer-text cell small-10 text-center">© 2020, DB금융투자 Co., Ltd. All Right Reserved.</div>
+		  <div class="footer-text cell small-10 text-center">© 2020 DB금융투자 Co., Ltd.</div>
 		  <div class="cell small-2"><img src="./resources/img/logo.svg" style="width: 105px; margin-right: 36px;" class="float-right"></div>
 	  </div>
 	</div>
@@ -131,9 +133,8 @@ function goHashLocation() {
 	}
 }
 function printIframeContent() {
-  var content = document.getElementById('contents-detail');
-  content.focus();
-  content.contentWindow.print();
+  window.frames["ifrm"].focus();
+  window.frames["ifrm"].print();
 }
 function initEventListener() {
   $(".fancytree-folder .fancytree-title").attr('tabindex', '-1');

@@ -218,7 +218,7 @@ public class FileDao {
 		// All contents group
 		for (int i=0; i<list.size(); i++) {
 			ContentsGroup item1 = list.get(i);
-			item1.setClassName("on");
+			item1.setClassName("is-active");
 			// Write to HTML file
 			Context ctx = new Context();
 			ctx.setVariable("group", list);
@@ -333,18 +333,20 @@ public class FileDao {
 		if (title==null) {
 			title = "온라인도움말";
 		}
-		String style = "@font-face { font-family: 'Arial'; src: url('C:\\Windows\\Fonts\\NanumGothic.woff') format('woff'), url('C:\\Windows\\Fonts\\NanumGothic.ttf') format('truetype');"
-				+ "font-weight: normal; font-style: normal; -fs-font-subset: complete-font; }"
-				+ "@page { margin: 3%; size: A4 portrait; }"
-				+ "html { font-family: Arial, Helvetica, sans-serif; font-size: 11pt; line-height: 1.2; padding-top: 72px; "
-				+ "width: 714px;  margin: 0 auto; overflow-x: hidden; }";
+		String style = "@page { margin: 3%; size: A4 portrait; }"
+				+ "html { font-family: 'Noto Sans Korean', '맑은 고딕', Arial, Helvetica, sans-serif; font-size: 11pt; line-height: 1.2; padding-top: 72px; "
+				+ "width: 714px;  margin: 0 auto; overflow-x: hidden; }"
+				+ ".sticky { position: fixed; top: 0; right: 0; height: 32px; width: 32px; background-color: #05854A; color: white; cursor: pointer; }"
+				+ ".fi-print { position: absolute; font-size: 20px; margin-left: 7px; top: 3px; }"
+				+ "@media print { .no-print { visibility: hidden; } }";
 		return "<!doctype html><html><head><meta charset=\"utf-8\">"
 				 + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no\">"
-				 + "<title>" + title + "</title><style>" + style + "</style></head><body>";
+				 + "<title>" + title + "</title><link rel=\"stylesheet\" href=\"./resources/foundation-icons/foundation-icons.css\" />"
+				 + "<style>" + style + "</style></head><body>";
 	}
 
 	private String getFooter() {
-		return "</body></html>";
+		return "<div class=\"sticky no-print\" onclick=\"window.print()\"><i class=\"fi-print\"></i></div></body></html>";
 	}
 	
 	public org.w3c.dom.Document html5ParseDocument(String urlStr, int timeoutMs) throws IOException {

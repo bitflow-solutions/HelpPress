@@ -2,6 +2,7 @@ html, body, .bf-body-wrapper { height: 100%; font-family: "Noto Sans Korean"; }
 ul.fancytree-container, span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { 
 	font-family: "Noto Sans Korean"; }
 .bf-body-wrapper { padding-bottom: 40px; }
+iframe { border: 0; }
 a { color: #333333; }
 a:hover { color: #05854A; }
 *:focus { outline: none; border: none; }
@@ -22,17 +23,13 @@ select { border: 1px solid #05854A; color: #05854A;  border-radius: 3px; max-wid
 span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { border: none; outline: none; }
 span.fancytree-node { height: 21px; }
 ul.fancytree-container li { min-height: 21px!important; }
-span.fancytree-icon { background-position: 0px 5px; height: 21px; }
-span.fancytree-title { display: initial!important; border: 0!important; line-height: 23px; padding: 2px 3px!important; }
+span.fancytree-icon { height: 16px; }
+span.fancytree-title { display: initial!important; border: 0!important; line-height: 23px; color: #555; }
 .fancytree-title input { display: inline; min-width: 180px; height: 21px; font-size: 13.333px; padding: 0 6px; color: #05854A;
 	border-top: 3px solid #05854A!important; border-bottom: 3px solid #05854A!important; 
 	border-left: 0; border-right: 0; }
 span.fancytree-focused, span.fancytree-title { outline: none!important; } 
 span.fancytree-icon, span.fancytree-checkbox, span.fancytree-expander, span.fancytree-custom-icon { margin-top: 3px!important; }
-span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title {
-    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-    border-radius: 3px;
-}
 .callout a.button { display: none; }
 .fancytree-treefocus span.fancytree-selected span.fancytree-title, .fancytree-treefocus span.fancytree-active span.fancytree-title { 
 	background-color: #05854A!important; }
@@ -63,8 +60,8 @@ table td.btn-list-item:hover { background-color: #77b2d8; cursor: pointer; }
 .top-bar-right li:last-child { margin-left: 3px; }
 .menu .menu-text { width: 252px; padding: 0 1rem; display: inline-flex; }
 .logo-img { background-image: url('../img/logo.svg'); width: 120px; height: 36px; }
-.logo-text { margin-top: 12px; }
-.menu .is-active { background-image: url('/img/bg-underline.gif'); background-position: bottom; background-repeat: no-repeat; }
+.logo-text { margin-top: 11px; }
+.menu .is-active { background-image: url('../img/bg-underline.gif'); background-position: bottom; background-repeat: no-repeat; }
 .menu .is-active > a { background-color: inherit; color: #05854A; }
 .accordion-menu li { width: inherit; }
 .breadcrumbs { margin: 0; }
