@@ -18,8 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -48,9 +46,6 @@ public class FileDao {
 	
 	@Value("${app.ext.template.path}")
 	private String EXT_TEMPLATE_PATH;
-
-	@Autowired
-    private ResourceLoader resourceLoader;
 
     @Autowired
     private SpringTemplateEngine tengine;
@@ -139,28 +134,28 @@ public class FileDao {
 			content.append(getFooter());
 			writer.write(content.toString());
 			
-			PdfRendererBuilder builder = new PdfRendererBuilder();
-			fop = new FileOutputStream(destPdfFilename);
-			builder.toStream(fop);
-			File fontMalgun = new File(FileDao.class.getResource("/static/fonts/malgun.TTF").getFile());
-			builder.useFont(fontMalgun, "맑은 고딕");
-			builder.useFont(fontMalgun, "Arial");
-			builder.useFont(fontMalgun, "함초롬바탕");
-			builder.useFont(fontMalgun, "굴림");
-			builder.useFont(fontMalgun, "돋움");
-			builder.useFont(fontMalgun, "바탕");
-			builder.useFont(fontMalgun, "휴먼명조");
-			builder.useFont(fontMalgun, "궁서");
-			builder.useFont(new File(FileDao.class.getResource("/static/fonts/NanumGothic.ttf").getFile()), "나눔고딕");
-			builder.useFont(new File(FileDao.class.getResource("/static/fonts/H2HDRM.TTF").getFile()), "HY헤드라인M");
-			
-			W3CDom w3cDom = new W3CDom();
-			String baseUri = "file:///" + (dir.getAbsolutePath() + "/export").replace("\\", "/");
-			logger.debug("baseUri " + baseUri);
-			Document w3cDoc = w3cDom.fromJsoup(Jsoup.parse(content.toString(), baseUri));
-			builder.withW3cDocument(w3cDoc, baseUri);
-			builder.useHttpStreamImplementation(new OkHttpStreamFactory());
-            builder.run();
+//			PdfRendererBuilder builder = new PdfRendererBuilder();
+//			fop = new FileOutputStream(destPdfFilename);
+//			builder.toStream(fop);
+//			File fontMalgun = new File(FileDao.class.getResource("/static/fonts/malgun.TTF").getFile());
+//			builder.useFont(fontMalgun, "맑은 고딕");
+//			builder.useFont(fontMalgun, "Arial");
+//			builder.useFont(fontMalgun, "함초롬바탕");
+//			builder.useFont(fontMalgun, "굴림");
+//			builder.useFont(fontMalgun, "돋움");
+//			builder.useFont(fontMalgun, "바탕");
+//			builder.useFont(fontMalgun, "휴먼명조");
+//			builder.useFont(fontMalgun, "궁서");
+//			builder.useFont(new File(FileDao.class.getResource("/static/fonts/NanumGothic.ttf").getFile()), "나눔고딕");
+//			builder.useFont(new File(FileDao.class.getResource("/static/fonts/H2HDRM.TTF").getFile()), "HY헤드라인M");
+//			
+//			W3CDom w3cDom = new W3CDom();
+//			String baseUri = "file:///" + (dir.getAbsolutePath() + "/export").replace("\\", "/");
+//			logger.debug("baseUri " + baseUri);
+//			Document w3cDoc = w3cDom.fromJsoup(Jsoup.parse(content.toString(), baseUri));
+//			builder.withW3cDocument(w3cDoc, baseUri);
+//			builder.useHttpStreamImplementation(new OkHttpStreamFactory());
+//            builder.run();
 		    return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -333,9 +328,10 @@ public class FileDao {
 		if (title==null) {
 			title = "온라인도움말";
 		}
-		String style = "@page { margin: 3%; size: A4 portrait; }"
-				+ "html { font-family: 'Noto Sans Korean', '맑은 고딕', Arial, Helvetica, sans-serif; font-size: 11pt; line-height: 1.2; padding-top: 72px; "
-				+ "width: 714px;  margin: 0 auto; overflow-x: hidden; }"
+		String style = "@page { size: A4 portrait; margin: 10mm; padding: 0mm; }"
+				 + "@media print and (-ms-high-contrast: active), (-ms-high-contrast: none) { body { margin: 0; padding: 0; zoom: 85%; } }"
+				+ "html { font-family: 'Noto Sans Korean', '맑은 고딕', '돋움', Arial, Helvetica, sans-serif; font-size: 11pt; line-height: 1.2; "
+				+ "width: 210mm; margin: 10mm auto; overflow-x: hidden; } body { padding: 0 10mm; }"
 				+ ".sticky { position: fixed; top: 0; right: 0; height: 32px; width: 32px; background-color: #05854A; color: white; cursor: pointer; }"
 				+ ".fi-print { position: absolute; font-size: 20px; margin-left: 7px; top: 3px; }"
 				+ "@media print { .no-print { visibility: hidden; } }";

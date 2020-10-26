@@ -4,6 +4,7 @@
 <style>
 .left-section { background-image: url('/img/bg-group-left.jpg');
 	border: 1px solid #ccc; border-left: 0; }
+#btn-create { display: block; }
 </style>
 {{/style}}
 
@@ -26,11 +27,11 @@
 	<div class="cell small-3 left-section">
 	</div>
 	
-	<div class="cell small-3" id="group-list-wrapper">
+	<div class="cell small-3" id="group-list-wrapper" style="padding-top: 12px;">
 		<table>
 		  <thead>
 		    <tr>
-		      <th>도움말그룹 선택</th>
+		      <th style="font-weight: normal;">도움말그룹</th>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -48,14 +49,14 @@
 		</table>
 		<ul>
 		  <li>
-		  <a class="cell button success expanded" href="javascript:void(0);" onclick="getCategory();">
+		  <a class="cell button secondary hollow expanded" href="javascript:void(0);" onclick="getCategory();">
 		    <i class="fi-pencil"></i>&nbsp;그룹추가
 	      </a>
 	      </li>
       </ul>
 	</div>
 		
-	<div class="cell small-6 bf-detail-area">
+	<div class="cell small-6 bf-detail-area" style="padding-top: 12px;">
 		<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
 		<div>
 			<label for="groupId"><i class="fi-link"></i>&nbsp;도움말그룹URI</label>

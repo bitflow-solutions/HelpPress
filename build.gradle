@@ -38,15 +38,9 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
 	implementation "org.apache.commons:commons-text:1.8"
 	implementation "org.jsoup:jsoup:1.13.1"
-	implementation 'com.itextpdf:itextpdf:5.5.13.1'
-	implementation 'com.itextpdf:itext-pdfa:5.5.13.1'
-	implementation 'com.itextpdf:itext-xtra:5.5.13.1'
-	implementation 'com.itextpdf.tool:xmlworker:5.5.13.1'
-	implementation 'com.itextpdf:html2pdf:3.0.1'
-	
 	implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.4'
 	implementation 'com.squareup.okhttp3:okhttp:3.14.9'
-	
+	implementation 'commons-io:commons-io:2.8.0'
 	implementation "com.google.code.gson:gson:2.8.6"
 	//implementation 'org.zeroturnaround:zt-zip:1.14'
 	
@@ -62,7 +56,7 @@ dependencies {
 }
 
 processResources {
-    exclude('static/SynapEditor_2.8.4/**/*')
+    // exclude('static/SynapEditor_2.8.4/**/*')
 }
 
 test {

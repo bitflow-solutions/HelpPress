@@ -24,19 +24,23 @@ function getCategory(obj) {
 function validateInput() {
 	if ($("#groupId").val().length<1) {
 	  alert("도움말그룹URI를 입력해주세요");
+	  $("#groupId").focus();
 	  return false; 
 	}
 	if ($("#name").val().length<1) {
 	  alert("도움말그룹명을 입력해주세요");
+	  $("#name").focus();
 	  return false; 
 	}
 	if ($("#orderNo").val().length<1) {
 	  alert("정렬순서를 입력해주세요");
+	  $("#orderNo").focus();
 	  return false; 
 	}
 	var orderNo = parseInt($("#orderNo").val(), 10);
 	if (orderNo>255) {
 		alert("정렬순서 값은 255이하 이어야 합니다");
+	    $("#orderNo").focus();
 		return false; 
 	}
 	return true;

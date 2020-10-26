@@ -5,12 +5,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
 <style>
-html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
-#empty-img-wrapper { width:100%; height: 100%; background-image: url('/img/bg-logo-gray.jpg'); }
+html, body, #empty-img-wrapper { width: 100%; margin: 0; padding: 0; }
+#img-no-contents { display: block; margin: 0 auto; margin-top: calc(50% - 256px); }
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	#img-no-contents { margin-top: calc(50% - 400px); }
+}
 </style>
 </head>
 <body>
 <div id="empty-img-wrapper">
+	<img id="img-no-contents" src="/img/no-contents.gif" width="254" height="322" />
 </div>
 </body>
 </html>

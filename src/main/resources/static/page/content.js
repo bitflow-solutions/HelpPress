@@ -20,17 +20,11 @@ function initTree() {
         return true;
       },
       beforeEdit: function(e, data){
-      	$("span.fancytree-focused .fancytree-title").css("background-color", "inherit");
+		$("span.fancytree-focused .fancytree-title").css("background-color", "inherit");
       },
       beforeClose: function(e, data){
-      	  $("span.fancytree-focused .fancytree-title").css("background-color", "#3875D7");
-      },
-      /*,
-      edit: function(e, data){
-      },
-      close: function(e, data){
-    	  console.log("close");
-      }*/
+        $("span.fancytree-focused .fancytree-title").css("background-color", "#3875D7");
+      }
     },
     activate: function(e, data){
 	  var node = data.node;
@@ -52,11 +46,7 @@ function initTree() {
 	  	$("#btn-modify").hide();
 	  	$("#btn-modify-complete").hide();
 	  }
-	}/*,
-	click: function(e, data){
-		// console.log("click");
-    },
-    lazyLoad: function (event, data) {},*/
+	}
   });
   _tree = $.ui.fancytree.getTree();
 }
@@ -121,7 +111,7 @@ function initEvents() {
 			  var key = $(this).attr('key');
 			  var node = _tree.getNodeByKey(key);
 			  node.setActive();
-			  /*console.log('file ' + key);*/
+			  console.log("[" + key + "] file");
 	        }           
 		}
 	});
@@ -142,7 +132,7 @@ function initEvents() {
 	    	  
 			  var node = _tree.getNodeByKey(key);
 			  node.setActive();
-			  console.log('folder ' + key);
+			  console.log("[" + key + "] folder");
 	        }           
 		}
 	});
@@ -231,15 +221,17 @@ function loadPage(key) {
     	//  $("#contents-detail").attr("src", "/viewer/viewer.html?file=/" + key + ".pdf");
 	  	//if (msg.result=='PDF') {
 	  	//} else {
-	  	$("#contents-detail").attr("src", key + ".html");
+	  	if (msg.result===null) {
+	  	  $("#contents-detail").attr("src", "empty-content.html");
+		  $("#btn-modify").text("글쓰기");
+		} else {
+	  	  $("#contents-detail").attr("src", key + ".html");
+		  $("#btn-modify").text("수정");
+		}
+	  	$("#contents-detail").show();
 	  	//}
 	  }
-	  if (msg.result===null) {
-	  	$("#btn-modify").text("글쓰기");
-	  } else {
-	  	$("#btn-modify").text("수정");
-	  }
-  	  $("#contents-detail").show();
+	  
 	});
 }
 
@@ -273,7 +265,6 @@ function renameTitle(e, data) {
 }
 
 function appendRootFolder() {
-  console.log("appendRootFolder");
   
   var parent = _tree.getRootNode();
   $.ajax({
@@ -285,7 +276,7 @@ function appendRootFolder() {
 	  if (msg.status==401) {
 	  	location.href = "/logout";
 	  } else {
-	    console.log('appendRootFolder - parent ' + parent.key + ' child ' + msg.result.key);
+	    // console.log('appendRootFolder - parent ' + parent.key + ' child ' + msg.result.key);
     	var existingNode = _tree.getNodeByKey(msg.result.key);
     	if (!existingNode) {
 			var child = { key: msg.result.key, title: msg.result.title, folder: true };
@@ -301,7 +292,6 @@ function appendRootFolder() {
 }
 
 function appendChildFolder() {
-  console.log("appendChildFolder");
   
   var parent = _tree.getActiveNode();
   if( !parent ) {
@@ -316,7 +306,7 @@ function appendChildFolder() {
 	  if (msg.status==401) {
 	  	location.href = "/logout";
 	  } else {
-	    console.log('appendChildFolder - parent ' + parent.key + ' child ' + msg.result.key);
+	    // console.log('appendChildFolder - parent ' + parent.key + ' child ' + msg.result.key);
     	var existingNode = _tree.getNodeByKey(msg.result.key);
     	if (!existingNode) {
 			var child = { key: msg.result.key, title: msg.result.title, folder: true };
@@ -346,7 +336,7 @@ function appendChildContent() {
 	  if (msg.status==401) {
 	  	location.href = "/logout";
 	  } else {
-	    console.log('appendChildFolder - parent ' + parent.key + ' child ' + msg.result.key);
+	    // console.log('appendChildFolder - parent ' + parent.key + ' child ' + msg.result.key);
     	var existingNode = _tree.getNodeByKey(msg.result.key);
     	if (!existingNode) {
 			var child = { key: msg.result.key, title: msg.result.title };
@@ -373,7 +363,7 @@ function appendRootContent() {
 	  if (msg.status==401) {
 	  	location.href = "/logout";
 	  } else {
-	    console.log('appendRootFolder - parent ' + parent.key + ' child ' + msg.result.key);
+	    // console.log('appendRootFolder - parent ' + parent.key + ' child ' + msg.result.key);
     	var existingNode = _tree.getNodeByKey(msg.result.key);
     	if (!existingNode) {
 			var child = { key: msg.result.key, title: msg.result.title };
@@ -455,7 +445,7 @@ function deleteContent() {
 }
 
 function getChildrenRecursive(node, arr) {
-    console.log('[' + node.key + '] folder ' + node.folder);
+    // console.log('[' + node.key + '] folder ' + node.folder);
 	if (node.folder && node.folder===true) {
 	    // 1) if node is folder
 		if (node.hasChildren()) {
@@ -553,7 +543,7 @@ function initSocket() {
             /*console.log("reloading group " + msg.groupId);*/
             if (msg.method=="ADD") {
             	var existingNode = _tree.getNodeByKey(msg.key);
-            	console.log('existingNode ' + existingNode);
+            	// console.log('existingNode ' + existingNode);
             	if (existingNode) {
             	  return;
             	}
@@ -612,5 +602,11 @@ $(function() {
 	if (hash.length>1) {
 		$("#sel_category").val(hash.substring(1));
 		onSelectChanged($("#sel_category").get(0));
+	} else {
+		if (document.getElementById("sel_category").length>1) {
+			$("#sel_category option:eq(1)").attr("selected", "selected");
+		    onSelectChanged($("#sel_category").get(0));
+		    location.href = "#" + $("#sel_category option:selected").val();
+		}
 	}
 });

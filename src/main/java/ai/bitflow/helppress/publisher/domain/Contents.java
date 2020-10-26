@@ -28,7 +28,6 @@ public class Contents {
     @Column(insertable=false, updatable=false)
 	private Integer id;
 	// html, pdf
-	@ColumnDefault("html")
 	private String type;
 	@Lob
 	private String content;

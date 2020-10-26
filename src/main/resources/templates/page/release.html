@@ -6,6 +6,7 @@
 .list-table th, .list-table td { border: 1px solid #ddd; border-collapse: collapse; font-size: 12px; }
 .list-row { width: 100%; height: calc(100% - 150px); }
 .list-row .col { height: 100%; overflow-y: auto; padding-right: 0; }
+.list-table th, .list-table td { color: #555; font-weight: normal; }
 .list-table td { font-size: 12px; border: 1px solid #ddd; border-collapse: collapse; padding-left: 6px; padding-right: 6px; }
 .contents-area div.cell { height: 100%; overflow-y: auto; }
 .callout a.button { display: block; }
@@ -21,12 +22,12 @@
 	</nav>
 	<div class="button-group float-right">
 		<a class="button small success hollow" id="btn-download-all">전체파일</a>
-		<a class="button small success hollow" id="btn-download-changed" {{^clist}}disabled{{/clist}}>변경된파일</a>
-		<a class="button small success hollow" id="btn-download-changed-by-me" {{^mlist}}disabled{{/mlist}}>내변경파일</a>
+		<a class="button small secondary hollow" id="btn-download-changed" {{^clist}}disabled{{/clist}}>변경된파일</a>
+		<a class="button small secondary hollow" id="btn-download-changed-by-me" {{^mlist}}disabled{{/mlist}}>내변경파일</a>
 	</div>
 </div>
 
-<div class="grid-x">
+<div class="grid-x" style="padding: 10px 0 0;">
 	<div class="cell small-3"><h5 class="text-center">배포이력</h5></div>
 	<div class="cell small-3"><h5 class="text-center">변경파일</h5></div>
 	<div class="cell small-6"><h5 class="text-center">변경이력</h5></div>
@@ -35,7 +36,7 @@
 <div class="grid-x contents-area">
 
 	<!-- 1) 미배포 변경사항 -->
-	<div class="cell small-3 left-section">
+	<div class="cell small-3 left-section" style="padding: 0 10px 0 20px;">
 		<table class="list-table">
 			<colgroup>
 				<col width="33%" />
@@ -69,7 +70,7 @@
 	</div>
 	
 	<!-- 2) 변경이력 -->
-	<div class="cell small-3">
+	<div class="cell small-3" style="padding: 0 10px 0 10px;">
 		<table class="list-table">
 			<colgroup>
 				<col width="20%" />
@@ -101,7 +102,7 @@
 	</div>
 	
 	<!-- 3) 배포이력 -->
-	<div class="cell small-6">
+	<div class="cell small-6" style="padding: 0 20px 0 10px;">
 	  <table class="list-table">
 		<colgroup>
 			<col width="8%"/>

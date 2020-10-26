@@ -70,12 +70,17 @@
 	    <span aria-hidden="true">&times;</span>
 	  </button>
 	  <br>
-	  	<div class="button-group float-right">
-		  <a class="button secondary hollow" id="btn-reveal-close">아니오</a>
-		  <a class="button alert" href="javascript:doLogout();">예</a>
-		</div>
+	  <div class="button-group float-right">
+		<a class="button secondary hollow" id="btn-reveal-close">아니오</a>
+		<a class="button alert" href="javascript:doLogout();">예</a>
+	  </div>
 	</div>
-
+	
+	<div class="reveal tiny" id="snackbar" data-reveal>
+		<button class="close-button" data-close aria-label="Close modal" type="button">
+		  <span aria-hidden="true">&times;</span>
+		</button>
+	</div>
 
 	<div class="spinner">
 	  <div class="rect1"></div>
@@ -84,16 +89,13 @@
 	  <div class="rect4"></div>
 	  <div class="rect5"></div>
 	</div>
-	
-	<div id="snackbar"></div>
 
 </div>
 
 <script src="/jquery/jquery-3.5.1.min.js"></script>
 <script src="/jquery/jquery-ui.min.js"></script>
 <script src="/jquery/fancytree/jquery.fancytree-all.js"></script>
-<!-- <script src="/jquery/fancytree/modules/jquery.fancytree.edit.js"></script> -->
-<script src="http://wwwendt.de/tech/fancytree/src/jquery.fancytree.edit.js"></script>
+<script src="/jquery/fancytree/modules/jquery.fancytree.edit.js"></script>
 <script src="/jquery/contextmenu/jquery.contextMenu.min.js"></script>
 <script src="/js/vendor/foundation.min.js"></script>
 <script src="/js/app.js"></script>
@@ -101,12 +103,11 @@
 <script src="/js/stomp.min.js"></script>
 <script>
 window.alert = function(message) {
-	var x = document.getElementById("snackbar");
-	x.className = "show";
-	x.innerText = message;
+	$("#snackbar").html('<p>' + message + '</p><button class="close-button" data-close aria-label="Close modal" type="button"> <span aria-hidden="true">&times;</span> </button>')
+		.foundation('open');
 	setTimeout(function() {
-		x.className = x.className.replace("show", "");
-	}, 3000);
+		$("#snackbar").html("").foundation('close');
+	}, 2500);
 }
 function doLogout() {
 	location.href = "/logout";

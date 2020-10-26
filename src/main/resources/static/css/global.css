@@ -1,19 +1,20 @@
-html, body, .bf-body-wrapper { height: 100%; font-family: "Noto Sans Korean"; }
+html, body, .bf-body-wrapper { height: 100%; font-family: "Noto Sans Korean", "맑은 고딕", "돋움", Arial; color: #555; }
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 { font-family: "Noto Sans Korean", "맑은 고딕", "돋움", Arial; }
 ul.fancytree-container, span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { 
 	font-family: "Noto Sans Korean"; }
-.bf-body-wrapper { padding-bottom: 40px; }
 #editor-wrapper { width: 891px; }
-a { color: #333333; }
+.callout .button-group .button + .button { margin-left: 3px; }
+a { color: #555; }
 a:hover { color: #05854A; }
 *:focus { outline: none; border: none; }
 [type='text'], [type='password'], [type='date'], [type='datetime'], [type='datetime-local'], [type='month'], [type='week'], [type='email'], [type='number'], [type='search'], [type='tel'], [type='time'], [type='url'], [type='color'], textarea
 { border-radius: 3px; }
 .menu input, .menu select, .menu a, .menu button { font-size: 13.33px; }
+[type='text']:focus, [type='password']:focus { border-color: #05854A; border-width: 3px; }
 .button { min-width: 74px; border-radius: 3px; /* border-color: #555; */ }
 .button.success { background-color: #05854A; color: white; }
 .button.hollow { background-color: white; }
 .button.success.hollow { border: 1px solid #05854A; color: #05854A; }
-.button + .button { margin-left: 3px; }
 .button-group > .button { font-size: 0.75rem; padding: 0.5rem; }
 .reveal { border-radius: 3px; border: 1px solid #555; }
 select { border: 1px solid #05854A; color: #05854A;  border-radius: 3px; max-width: 260px; }
@@ -34,8 +35,8 @@ span.fancytree-icon, span.fancytree-checkbox, span.fancytree-expander, span.fanc
 .cell.shrink.footer { background-color: white; border-top: 1px solid #ccc; z-index: 1; position: absolute; bottom: 0; 
 	height: 48px; padding-top: 7px; background-image: url('../img/bg-footer-right.jpg');
 	background-position: top right; background-repeat: no-repeat; }
-.footer-text { font-size: 11px; color: #555; margin-top: 8px; }
-label { color: #05854A; }
+.footer-text { font-size: 0.75rem; color: #555; margin-top: 8px; }
+label { color: #555; }
 .breadcrumbs li { font-size: 13px; }
 .bf-body-wrapper > .callout.secondary { height: 44px; padding-top: 6px; padding-bottom: 6px; background-color: #f3f3f3;
 	background-image: url(/img/bg-callout-left.jpg); background-position: top left; background-repeat: no-repeat;
@@ -64,8 +65,12 @@ table td.btn-list-item:hover { background-color: #77b2d8; cursor: pointer; }
 .menu .is-active > a { background-color: inherit; color: #05854A; }
 .accordion-menu li { width: inherit; }
 .breadcrumbs { margin: 0; }
-.callout .nav { width: inherit; margin-top: 7px; margin-left: 16px; }
-
+.callout .nav { width: inherit; margin-top: 4px; margin-left: 16px; }
+.breadcrumbs li { color: #555; }
+.menu .button.hollow.secondary {
+    border-color: #555; color: #555; border-radius: 32px; height: 32px; padding: 8px; background-color: #eee; }
+.button.hollow.secondary:hover, .button.hollow.secondary:focus { background-color: #fff; }
+#sel_category { border-width: 3px; }
 .spinner {
   margin: 100px auto;
   width: 50px;

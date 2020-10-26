@@ -17,6 +17,7 @@ import java.util.zip.InflaterInputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,41 +58,46 @@ public class SynapImportController {
     public Map<String, Object> importDoc(HttpServletRequest request, @RequestParam("file") MultipartFile importFile)
             throws IOException {
 
-    	String TEMP_DOC_UPLOAD_PATH = UPLOAD_ROOT_PATH + TEMP_DOC_REL_PATH;
-        makeDirectory(TEMP_DOC_UPLOAD_PATH);
-
-        String fileName = importFile.getOriginalFilename();
-        String inputFileAbsPath = TEMP_DOC_UPLOAD_PATH + File.separator + fileName;
-     
-        writeFile(inputFileAbsPath, importFile.getBytes());
-     
-        // 파일별로 변환결과를 저장할 경로 생성
-        String key = (String) request.getParameter("key");
-        String worksDirAbsPath = UPLOAD_ROOT_PATH + IMG_UPLOAD_REL_PATH + File.separator + key;
-        makeDirectory(worksDirAbsPath);
- 
-        // 문서 변환
-        executeConverter(inputFileAbsPath, worksDirAbsPath);
-     
-        // 변환이 끝난 원본파일은 삭제한다.
-        deleteFile(inputFileAbsPath);
-     
-        // 변환된 pb파일을 읽어서 serialize
-        // v2.3.0 부터 파일명이 document.word.pb에서 document.pb로 변경됨
-        String pbAbsPath = worksDirAbsPath + File.separator + "document.pb";
-        Integer[] serializedData = serializePbData(pbAbsPath);
-     
-        // pb파일은 삭제
-        // v2.3.0 부터 파일명이 document.word.pb에서 document.pb로 변경됨
-        deleteFile(pbAbsPath);
-     
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("serializedData", serializedData);
-        // 브라우저에서 접근가능한 경로를 importPath에 담아서 넘겨줍니다.
-        // OUTPUT_DIR_REL_PATH 경로에 맞춰서 수정해야 합니다.
-        map.put("importPath", ApplicationConstant.UPLOAD_REL_PATH + "/" + key);
-        
-        return map;
+    	try {
+	    	String TEMP_DOC_UPLOAD_PATH = UPLOAD_ROOT_PATH + TEMP_DOC_REL_PATH;
+	        makeDirectory(TEMP_DOC_UPLOAD_PATH);
+	
+	        String fileName = FilenameUtils.getName(importFile.getOriginalFilename());
+	        String inputFileAbsPath = TEMP_DOC_UPLOAD_PATH + File.separator + fileName;
+	        logger.debug("inputFileAbsPath " + inputFileAbsPath);
+	        writeFile(inputFileAbsPath, importFile.getBytes());
+	     
+	        // 파일별로 변환결과를 저장할 경로 생성
+	        String key = (String) request.getParameter("key");
+	        String worksDirAbsPath = UPLOAD_ROOT_PATH + IMG_UPLOAD_REL_PATH + File.separator + key;
+	        makeDirectory(worksDirAbsPath);
+	 
+	        // 문서 변환
+	        executeConverter(inputFileAbsPath, worksDirAbsPath);
+	     
+	        // 변환이 끝난 원본파일은 삭제한다.
+	        deleteFile(inputFileAbsPath);
+	     
+	        // 변환된 pb파일을 읽어서 serialize
+	        // v2.3.0 부터 파일명이 document.word.pb에서 document.pb로 변경됨
+	        String pbAbsPath = worksDirAbsPath + File.separator + "document.pb";
+	        Integer[] serializedData = serializePbData(pbAbsPath);
+	     
+	        // pb파일은 삭제
+	        // v2.3.0 부터 파일명이 document.word.pb에서 document.pb로 변경됨
+	        deleteFile(pbAbsPath);
+	     
+	        Map<String, Object> map = new HashMap<String, Object>();
+	        map.put("serializedData", serializedData);
+	        // 브라우저에서 접근가능한 경로를 importPath에 담아서 넘겨줍니다.
+	        // OUTPUT_DIR_REL_PATH 경로에 맞춰서 수정해야 합니다.
+	        map.put("importPath", ApplicationConstant.UPLOAD_REL_PATH + "/" + key);
+	        
+	        return map;
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return null;
+    	}
     }
      
     /**
