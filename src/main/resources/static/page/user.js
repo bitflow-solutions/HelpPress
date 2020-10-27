@@ -98,4 +98,5 @@ $(function() {
 		$("#category-wrapper li").removeClass("on");
 		$(this).addClass("on");
 	});
+	$("#btn-create").show();
 });

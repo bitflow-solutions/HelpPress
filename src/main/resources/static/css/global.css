@@ -16,6 +16,7 @@ a:hover { color: #05854A; }
 .button.hollow { background-color: white; }
 .button.success.hollow { border: 1px solid #05854A; color: #05854A; }
 .button-group > .button { font-size: 0.75rem; padding: 0.5rem; }
+.button-group .button + .button { margin-left: 3px; }
 .reveal { border-radius: 3px; border: 1px solid #555; }
 select { border: 1px solid #05854A; color: #05854A;  border-radius: 3px; max-width: 260px; }
 .bf-body-wrapper > .callout.secondary { border-top: 0; }

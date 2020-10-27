@@ -38,7 +38,7 @@ public class ContentsService implements ApplicationConstant {
 	
 
 	/**
-	 * 컨텐츠 삭제
+	 * 컨텐츠 수정
 	 * @param params
 	 * @param key
 	 * @return
@@ -53,7 +53,7 @@ public class ContentsService implements ApplicationConstant {
 			item1.setType(ApplicationConstant.TYPE_HTML);
 			item1.setContent(params.getContent());
 			Contents item2 = contentsrepo.save(item1);
-			fdao.newContentFile(item2);
+			fdao.updateContentFile(item2);
 			
 			// 변경이력 저장
 			String type     = TYPE_CONTENT;

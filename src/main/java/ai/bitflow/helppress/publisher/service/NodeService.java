@@ -63,7 +63,7 @@ public class NodeService {
 		String contentidstr = String.format("%05d", item1.getId());
 		String groupid = params.getGroupId();
 		if (params.getFolder()==null || params.getFolder()==false) {
-			fdao.newContentFile(item1, contentidstr);
+			// fdao.newContentFile(item1, contentidstr);
 		} else {
 			contentsrepo.delete(item1);
 		}

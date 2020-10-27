@@ -115,7 +115,7 @@ public class FileDao {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean newContentFile(Contents item) {
+	public boolean updateContentFile(Contents item) {
 		
 		File dir = new File(UPLOAD_ROOT_PATH);
 		if (!dir.exists()) {
@@ -125,7 +125,7 @@ public class FileDao {
 		BufferedWriter writer = null;
 		FileOutputStream fop = null;
 		String destHtmlFilename = UPLOAD_ROOT_PATH + String.format("%05d" , item.getId()) + ".html";
-		String destPdfFilename  = UPLOAD_ROOT_PATH + String.format("%05d" , item.getId()) + ".pdf";
+//		String destPdfFilename  = UPLOAD_ROOT_PATH + String.format("%05d" , item.getId()) + ".pdf";
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(destHtmlFilename), "UTF-8"));
 			StringBuilder content = new StringBuilder();

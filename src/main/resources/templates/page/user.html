@@ -4,6 +4,7 @@
 <style>
 .left-section { background-image: url('/img/bg-user-left.jpg');
 	border: 1px solid #ccc; border-left: 0; }
+thead th, thead td, tfoot th, tfoot td { font-weight: normal; }
 </style>
 {{/style}}
 
@@ -28,7 +29,7 @@
 	<div class="cell small-3 left-section">
 	</div>
 	
-	<div class="cell small-3" id="group-list-wrapper">
+	<div class="cell small-3" id="group-list-wrapper" style="padding-top: 12px;">
 		<table>
 		  <thead>
 		    <tr>
@@ -45,14 +46,14 @@
 		</table>
 		<ul>
 			<li>
-				<a class="cell button success expanded" href="javascript:void(0);" onclick="getUser();" >
-					<i class="fi-pencil"></i>&nbsp;사용자추가
+				<a class="cell button secondary hollow expanded" href="javascript:void(0);" onclick="getUser();" >
+					<i class="fi-pencil"></i>&nbsp;새 사용자
 				</a>
 			</li>
 		</ul>
 	</div>
 		
-	<div class="cell small-6 bf-detail-area" id="bf-contents">
+	<div class="cell small-6 bf-detail-area" id="bf-contents" style="padding-top: 12px;">
 		<div>
 		   <label for="groupId"><i class="fi-torso"></i> 사용자ID</label>
 		   <div class="col-sm-10">

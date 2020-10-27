@@ -209,30 +209,25 @@ function editContent() {
 
 function loadPage(key) {
   $("#editor-wrapper").hide();
+  $("#contents-detail").attr("src", key + ".html");
   $.ajax({
-		url: '/api/v1/ecm/content/type/' + selectedContentId,
-		method: "GET"
-	})
-	.done(function(msg) {
-	  // console.log('status ' + msg.status);
-	  if (msg.status==401) {
-	  	location.href = "/logout";
-	  } else {
-    	//  $("#contents-detail").attr("src", "/viewer/viewer.html?file=/" + key + ".pdf");
-	  	//if (msg.result=='PDF') {
-	  	//} else {
-	  	if (msg.result===null) {
-	  	  $("#contents-detail").attr("src", "empty-content.html");
-		  $("#btn-modify").text("글쓰기");
-		} else {
-	  	  $("#contents-detail").attr("src", key + ".html");
-		  $("#btn-modify").text("수정");
-		}
-	  	$("#contents-detail").show();
-	  	//}
-	  }
-	  
+		url: "/" + key + ".html",
+		method: "GET",
+		statusCode: {
+	        404: function(responseObject, textStatus, jqXHR) {
+	            $("#btn-modify").text("글쓰기");
+	            $("#btn-delete").hide();
+	            $("#btn-download").hide();
+	        },
+	        200: function(responseObject, textStatus, errorThrown) {
+	            $("#btn-modify").text("수정");
+	            $("#btn-delete").show();
+	            $("#btn-download").show();
+	        }           
+	    }
 	});
+  
+  $("#contents-detail").show();
 }
 
 function renameTitle(e, data) {
