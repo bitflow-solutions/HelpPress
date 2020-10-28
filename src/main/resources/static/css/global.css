@@ -2,6 +2,7 @@ html, body, .bf-body-wrapper { height: 100%; font-family: "Noto Sans Korean", "�
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 { font-family: "Noto Sans Korean", "맑은 고딕", "돋움", Arial; }
 ul.fancytree-container, span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { 
 	font-family: "Noto Sans Korean"; }
+.bf-body-wrapper { position: fixed; top: 54px; width: 100%; height: calc(100% - 54px); }
 #editor-wrapper { width: 891px; }
 .callout .button-group .button + .button { margin-left: 3px; }
 a { color: #555; }
@@ -33,7 +34,7 @@ span.fancytree-focused, span.fancytree-title { outline: none!important; /* backg
 span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { background-color: inherit; }
 span.fancytree-icon, span.fancytree-checkbox, span.fancytree-expander, span.fancytree-custom-icon { margin-top: 3px!important; }
 .callout a.button { display: none; }
-.cell.shrink.footer { background-color: white; border-top: 1px solid #ccc; z-index: 1; position: absolute; bottom: 0; 
+.cell.shrink.footer { background-color: white; border-top: 1px solid #ccc; z-index: 1; position: fixed; bottom: 0; 
 	height: 48px; padding-top: 7px; background-image: url('../img/bg-footer-right.jpg');
 	background-position: top right; background-repeat: no-repeat; }
 .footer-text { font-size: 0.75rem; color: #555; margin-top: 8px; }

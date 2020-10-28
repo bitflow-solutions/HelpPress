@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,8 @@ public class SynapImportController {
 	    	String TEMP_DOC_UPLOAD_PATH = UPLOAD_ROOT_PATH + TEMP_DOC_REL_PATH;
 	        makeDirectory(TEMP_DOC_UPLOAD_PATH);
 	
-	        String fileName = FilenameUtils.getName(importFile.getOriginalFilename());
+	        Calendar now = Calendar.getInstance();
+	        String fileName = String.valueOf(now.getTimeInMillis()); // FilenameUtils.getName(importFile.getOriginalFilename());
 	        String inputFileAbsPath = TEMP_DOC_UPLOAD_PATH + File.separator + fileName;
 	        logger.debug("inputFileAbsPath " + inputFileAbsPath);
 	        writeFile(inputFileAbsPath, importFile.getBytes());

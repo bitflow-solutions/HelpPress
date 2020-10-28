@@ -26,33 +26,26 @@
 <div class="grid-y medium-grid-frame">
 
 <!-- Navigation -->
-<div class="title-bar" data-responsive-toggle="realEstateMenu" data-hide-for="small" style="display: none;">
-  <button class="menu-icon" type="button" data-toggle></button>
-  <div class="title-bar-title">Menu</div>
+<div class="top-bar">
+  <div class="top-bar-left">
+    <ul class="menu" data-responsive-menu="accordion">
+      <li class="menu-text">			
+      	<div class="logo-img"></div>
+      	<div class="logo-text">온라인매뉴얼</div>
+	  </li>
+      <li class="{{#tab1}}{{tab1}}{{/tab1}}"><a href="/group">도움말그룹</a></li>
+      <li class="{{#tab2}}{{tab2}}{{/tab2}}"><a href="/content">도움말작성</a></li>
+      <li class="{{#tab3}}{{tab3}}{{/tab3}}"><a href="/release">배포관리</a></li>
+    </ul>
+  </div>
+  <div class="top-bar-right">
+    <ul class="menu">
+      <li class="{{#tab4}}{{tab4}}{{/tab4}}"><a href="/user">사용자관리</a></li>
+      <li><a class="button secondary hollow" data-open="bf-modal-user">{{userid}}님</a></li>
+    </ul>
+  </div>
 </div>
-
-<div>
-	<div class="top-bar">
-	  <div class="top-bar-left">
-	    <ul class="menu" data-responsive-menu="accordion">
-	      <li class="menu-text">			
-	      	<div class="logo-img"></div>
-	      	<div class="logo-text">온라인매뉴얼</div>
-		  </li>
-	      <li class="{{#tab1}}{{tab1}}{{/tab1}}"><a href="/group">도움말그룹</a></li>
-	      <li class="{{#tab2}}{{tab2}}{{/tab2}}"><a href="/content">도움말작성</a></li>
-	      <li class="{{#tab3}}{{tab3}}{{/tab3}}"><a href="/release">배포관리</a></li>
-	    </ul>
-	  </div>
-	  <div class="top-bar-right">
-	    <ul class="menu">
-	      <li class="{{#tab4}}{{tab4}}{{/tab4}}"><a href="/user">사용자관리</a></li>
-	      <li><a class="button secondary hollow" data-open="bf-modal-user">{{userid}}님</a></li>
-	    </ul>
-	  </div>
-	</div>
-	<!-- /Navigation -->
-</div>
+<!-- /Navigation -->
 
 <div class="bf-body-wrapper">{{{layout.body}}}</div>
 
