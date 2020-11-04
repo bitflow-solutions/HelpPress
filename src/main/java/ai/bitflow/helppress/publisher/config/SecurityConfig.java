@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
     @Override
     public void configure(WebSecurity web) throws Exception {
-    	web.ignoring().antMatchers("/SynapEditor_2.8.4/**", "/js/**", "/css/**", "/img/**", "/api/v1/**");
+    	web.ignoring().antMatchers("/SynapEditor/**", "/js/**", "/css/**", "/img/**", "/api/v1/**");
     }
     
     @Override

@@ -23,6 +23,7 @@ select { border: 1px solid #05854A; color: #05854A;  border-radius: 3px; max-wid
 .bf-body-wrapper > .callout.secondary { border-top: 0; }
 .reveal .button-group { margin-bottom: 0; }
 #tree, #tree > ul { height: 100%; border: none; outline: none; }
+.tree-wrapper { height: calc(100% - 92px); overflow-y: auto; }
 span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { border: none; outline: none; }
 span.fancytree-node { height: 21px; }
 ul.fancytree-container li { min-height: 21px!important; }

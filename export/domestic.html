@@ -13,23 +13,6 @@
 <link rel="stylesheet" href="./resources/jquery/fancytree/skin-lion/ui.fancytree.css">
 <link rel="stylesheet" href="./resources/css/global.css">
 <style>
-body { font-family: "Noto Sans Korean", "맑은 고딕", Arial; }
-.tree-wrapper { background-image: url('/img/bg-tree-gray.jpg'); border-right: 1px solid #ccc; overflow-y: auto; }
-.menu .menu-text { font-weight: normal; }
-.context-menu-list.context-menu-root {
-  border-radius: 0; -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.5); box-shadow: 1px 1px 2px rgba(0,0,0,.5); }
-.context-menu-item { font-size: 13px; font-family: '맑은고딕'; }
-.contents-grid-wrapper { height: 100%; }
-.contents-wrapper { width: 595px; border: 0; padding-left: 16px; overflow-y: hidden; height: 100%; }
-#contents-detail { border: 0; }
-.select-row { padding: 0; margin: 3px auto; }
-.select-row i { cursor: pointer; color: #05854A; font-size: 26px; margin-top: 4px; }
-#btn-create { float: right; }
-#sel_category { float: left; margin-right: 12px; height: 32px; font-size: 13px; }
-.tree-btn { padding: 6px; min-width: 32px; font-size: 16px; }
-#sel_category, .tree-btn, .callout .button-group { margin-bottom: 0; }
-#editor-wrapper { display: none; }
-#btn-print { position: absolute; top: 0; right: 0; height: 32px; width: 32px; background-color: #05854A; color: white; }
 </style>
 </head>
 
@@ -66,6 +49,12 @@ body { font-family: "Noto Sans Korean", "맑은 고딕", Arial; }
 		
 		<!-- 좌측 컨텐츠그룹 선택 및 메뉴 구조 TREE -->
 		<div class="cell small-3 tree-wrapper">
+			<div id="search-wrapper">
+				<input id="input-search" name="search" placeholder="검색어 입력" autocomplete="off">
+				<button id="btnResetSearch">&times;</button>
+				<i class="fi-magnifying-glass"></i>
+				<span id="matches"></span>
+			</div>
 			<div id="tree"></div>
 		</div>
 		
@@ -95,7 +84,7 @@ body { font-family: "Noto Sans Korean", "맑은 고딕", Arial; }
 <script src="./resources/jquery/fancytree/modules/jquery.fancytree.filter.js"></script>
 <script>
 /*<![CDATA[*/
-var SOURCE = "[{\"folder\":true,\"key\":\"00001\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB3541\"},{\"key\":\"00002\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D02\"},{\"folder\":true,\"key\":\"00013\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB3543\"},{\"key\":\"00014\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D04\"},{\"folder\":true,\"key\":\"00015\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB3545\"},{\"key\":\"00016\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D06\"}]";
+var SOURCE = "[{\"folder\":true,\"key\":\"00001\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB3541\"},{\"key\":\"00002\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D02\"},{\"folder\":true,\"key\":\"00013\",\"partsel\":false,\"selected\":false,\"title\":\"\uB3C4\uC6C0\uB9D03\"},{\"key\":\"00014\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D04\"},{\"expanded\":true,\"folder\":true,\"key\":\"00015\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB3545\",\"children\":[{\"key\":\"00018\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D0\"},{\"expanded\":true,\"folder\":true,\"key\":\"00019\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB354\",\"children\":[{\"key\":\"00020\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D0\"},{\"expanded\":true,\"folder\":true,\"key\":\"00021\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB354\",\"children\":[{\"key\":\"00022\",\"partsel\":false,\"selected\":false,\"title\":\"(0767)\uD22C\uC790\uC815\uBCF4 Magazine\"},{\"key\":\"00023\",\"partsel\":false,\"selected\":false,\"title\":\"[1020](\uC8FC\uC2DD) \uB2E8\uACC4\uC88C\uB2E4\uC885\uBAA9\uC8FC\uBB38\"},{\"folder\":true,\"key\":\"00024\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB354\"}]}]}]},{\"key\":\"00016\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D06\"},{\"key\":\"00017\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D08\"},{\"folder\":true,\"key\":\"00025\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB354\"},{\"key\":\"00026\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D0\"},{\"folder\":true,\"key\":\"00027\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB354\"},{\"key\":\"00028\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D0\"},{\"expanded\":true,\"folder\":true,\"key\":\"00029\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB354111\",\"children\":[{\"key\":\"00030\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D0\"}]},{\"folder\":true,\"key\":\"00031\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB354\"},{\"folder\":true,\"key\":\"00032\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB354\"},{\"key\":\"00033\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D0\"},{\"key\":\"00034\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D0\"},{\"key\":\"00035\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D0\"},{\"key\":\"00036\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D0\"},{\"key\":\"00037\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uB3C4\uC6C0\uB9D0\"},{\"folder\":true,\"key\":\"00038\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB354\"},{\"folder\":true,\"key\":\"00039\",\"partsel\":false,\"selected\":false,\"title\":\"\uC0C8 \uD3F4\uB35412\"}]";
 window.alert = function(message) {
 	var x = document.getElementById("snackbar");
 	x.className = "show";
@@ -107,11 +96,14 @@ function loadContents(id) {
 	location.href = "/doc#" + id;
 }
 function search(id) {
-	var keyword = $("#search-bar").val();
+	var keyword = $("#input-search").val();
 	if (keyword && keyword.length>0) {
-		$.ui.fancytree.getTree().filterNodes(keyword, {autoExpand: true, leavesOnly: true});
+		$.ui.fancytree.getTree().filterNodes(keyword, {autoExpand: true, mode: 'dimm', leavesOnly: false});
+		$("#btnResetSearch").attr("disabled", false);
+		$("#btnResetSearch").show();
 	} else {
 		$.ui.fancytree.getTree().clearFilter()
+		$("#btnResetSearch").hide();
   }
 }
 function goHashLocation() {
@@ -132,15 +124,16 @@ function goHashLocation() {
 		});
 	}
 }
-function printIframeContent() {
-  window.frames["ifrm"].focus();
-  window.frames["ifrm"].print();
-}
 function initEventListener() {
   $(".fancytree-folder .fancytree-title").attr('tabindex', '-1');
   $("#btn-expand-all").click(expandAll);
   $("#btn-collapse-all").click(collapseAll);
-  $("#btn-print").click(printIframeContent);
+  $("#input-search").keyup(search);
+  $("#btnResetSearch").click(function(e){
+	$("#input-search").val("");
+	$.ui.fancytree.getTree().clearFilter();
+	$("#btnResetSearch").hide();
+  });
 }
 function expandAll() {
   $.ui.fancytree.getTree().expandAll();
@@ -150,11 +143,13 @@ function collapseAll() {
 }
 function initTree() {
   $('#tree').fancytree({
-	  extensions: ["filter"],
-	  filter: {  		// override default settings
-	    counter: false, // No counter badges
-	    mode: "hide"  	// "dimm": Grayout unmatched nodes, "hide": remove unmatched nodes
-	  },
+    extensions: ["filter"],
+	quicksearch: true,
+	filter: {
+      counter: false,
+	  autoExpand: true,
+	  mode: "hide" // "dimm", "hide"
+	},
     checkbox: false,
     selectMode: 3,
     source: JSON.parse(SOURCE),

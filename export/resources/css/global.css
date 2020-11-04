@@ -1,4 +1,27 @@
 html, body, .bf-body-wrapper { height: 100%; font-family: "Noto Sans Korean"; }
+body { font-family: "Noto Sans Korean", "¸¼Àº °íµñ", Arial; }
+.tree-wrapper { border-right: 1px solid #ccc; }
+.menu .menu-text { font-weight: normal; }
+#search-wrapper { height: 44px; padding: 6px; position: relative; }
+#input-search { width: calc(100% - 12px); font-weight: 100; font-size: 14px; border: 1px solid #555; height: 32px; 
+	padding: 0 10px 0 32px; position: absolute; top: 6px; left: 6px; border-radius: 4px; border-color: #ccc; }
+#tree { height: calc(100% - 70px); overflow-y: auto; }
+#btnResetSearch { position: absolute; right: 18px; top: 12px; display: none; cursor: pointer; }
+.fi-magnifying-glass { color: #aaa; position: absolute; left: 15px; font-size: 24px; top: 3px; font-weight: normal; }
+.context-menu-list.context-menu-root {
+  border-radius: 0; -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.5); box-shadow: 1px 1px 2px rgba(0,0,0,.5); }
+.context-menu-item { font-size: 13px; font-family: '¸¼Àº°íµñ'; }
+.contents-grid-wrapper { height: 100%; }
+.contents-wrapper { width: 595px; border: 0; padding-left: 16px; overflow-y: hidden; height: 100%; }
+#contents-detail { border: 0; }
+.select-row { padding: 0; margin: 3px auto; }
+.select-row i { cursor: pointer; color: #05854A; font-size: 26px; margin-top: 4px; }
+#btn-create { float: right; }
+#sel_category { float: left; margin-right: 12px; height: 32px; font-size: 13px; }
+.tree-btn { padding: 6px; min-width: 32px; font-size: 16px; }
+#sel_category, .tree-btn, .callout .button-group { margin-bottom: 0; }
+#editor-wrapper { display: none; }
+#btn-print { position: absolute; top: 0; right: 0; height: 32px; width: 32px; background-color: #05854A; color: white; }
 ul.fancytree-container, span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { 
 	font-family: "Noto Sans Korean"; }
 .bf-body-wrapper { padding-bottom: 40px; }
@@ -19,7 +42,7 @@ a:hover { color: #05854A; }
 select { border: 1px solid #05854A; color: #05854A;  border-radius: 3px; max-width: 260px; }
 .bf-body-wrapper > .callout.secondary { border-top: 0; }
 .reveal .button-group { margin-bottom: 0; }
-#tree, #tree > ul { height: 100%; border: none; outline: none; }
+#tree, #tree > ul { border: none; outline: none; }
 span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { border: none; outline: none; }
 span.fancytree-node { height: 21px; }
 ul.fancytree-container li { min-height: 21px!important; }
@@ -39,7 +62,8 @@ span.fancytree-icon, span.fancytree-checkbox, span.fancytree-expander, span.fanc
 .footer-text { font-size: 11px; color: #555; margin-top: 8px; }
 label { color: #05854A; }
 .breadcrumbs li { font-size: 13px; }
-
+.fancytree-ext-filter-dimm tr.fancytree-match span.fancytree-title, .fancytree-ext-filter-dimm span.fancytree-node.fancytree-match span.fancytree-title {
+	font-weight: 500; color: #555; }
 .bf-body-wrapper > .callout.secondary { height: 44px; padding-top: 6px; padding-bottom: 6px; background-color: #f3f3f3;
 	background-image: url(/img/bg-callout-left.jpg); background-position: top left; background-repeat: no-repeat; }
 
