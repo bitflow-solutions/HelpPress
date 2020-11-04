@@ -331,7 +331,7 @@ public class FileDao {
 		String style = "@page { size: A4 portrait; margin: 10mm; padding: 0mm; }"
 				 + "@media print and (-ms-high-contrast: active), (-ms-high-contrast: none) { body { margin: 0; padding: 0; zoom: 85%; } }"
 				+ "html { font-family: 'Noto Sans Korean', '맑은 고딕', '돋움', Arial, Helvetica, sans-serif; font-size: 11pt; line-height: 1.2; "
-				+ "width: 210mm; margin: 10mm auto; overflow-x: hidden; } body { padding: 0 10mm; }"
+				+ "width: 210mm; margin: 10mm auto; overflow-x: hidden; } body { width: 162mm; padding: 0 10mm; }"
 				+ ".sticky { position: fixed; top: 0; right: 0; height: 32px; width: 32px; background-color: #05854A; color: white; cursor: pointer; }"
 				+ ".fi-print { position: absolute; font-size: 20px; margin-left: 7px; top: 3px; }"
 				+ "@media print { .no-print { visibility: hidden; } }";
