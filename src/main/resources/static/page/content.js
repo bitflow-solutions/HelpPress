@@ -81,7 +81,7 @@ function initEvents() {
 		  $("#btn-modify").show();
 		  $("#btn-delete").show();
 		  $("#btn-download").show();
-		  alert('도움말을 수정하였습니다');
+		  alert('수정하였습니다');
 		})
 		.always(function() {
 			setTimeout(function() {
@@ -158,6 +158,10 @@ function initEditor() {
 	e.addParameter('key', selectedContentId);
 	console.log("beforeOpenDocument " + JSON.stringify(e));
   });
+  editor.setEventListener('beforePaste', function(data) {
+  	// beforePaste, afterPaste
+    // console.log("beforePaste " + JSON.stringify(data));
+});
 }
 
 function saveTree(node) {

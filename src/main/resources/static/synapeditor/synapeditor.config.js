@@ -37,7 +37,7 @@ var synapEditorConfig = {
      * 에디터 타입을 설정합니다.
      * ex) classic, inline, document
      */
-    'editor.type': null,
+    'editor.type': 'document',
 
     /**
      * 에디터 첫 로딩후 안쪽으로 포커스 지정 여부를 설정합니다.
@@ -142,7 +142,7 @@ var synapEditorConfig = {
             'help', 'about', 'bulletList', 'numberedList', 'multiLevelList', 'alignLeft', 'alignCenter',
             'alignRight', 'alignJustify', 'decreaseIndent', 'increaseIndent', 'paragraphProperties',
             'link', 'unlink', 'bookmark', 'image', 'background', 'video', 'file', 'table', 'div',
-            'drawAbsolutePositionDiv', 'horizontalLine', 'quote', 'specialCharacter', 'emoji',
+            'drawAbsolutePositionDiv', 'horizontalLine', 'quote', 'shapeEditor', 'specialCharacter', 'emoji',
             'paragraphStyleWithText', 'fontFamilyWithText', 'fontSizeWithText', 'lineHeightWithText',
             'bold', 'italic', 'underline', 'strike', 'growFont', 'shrinkFont', 'fontColor',
             'fontBackgroundColor', 'superScript', 'subScript', 'customRunStyle', 'removeRunStyle', 'customParagraphStyle'
@@ -158,7 +158,7 @@ var synapEditorConfig = {
         'link', 'unlink', 'bookmark', '|',
         'image', 'background', 'video', 'file', '|',
         'table', 'div', 'horizontalLine', 'quote', '|',
-        'specialCharacter', 'emoji', '-',
+        'shapeEditor', 'specialCharacter', 'emoji', '-',
         'paragraphStyleWithText', '|',
         'fontFamilyWithText', '|',
         'fontSizeWithText', '|',
@@ -170,8 +170,7 @@ var synapEditorConfig = {
         'lineHeight', '|',
         'decreaseIndent', 'increaseIndent'
     ],
-    */
-
+	*/
     /**
      * 모바일용 툴바를 설정합니다.
      */
@@ -312,7 +311,7 @@ var synapEditorConfig = {
      */
     'editor.fontFamily': {
         'ko': [
-            '돋움', '굴림', '바탕', '궁서', '맑은 고딕',
+            '맑은 고딕', '돋움', '굴림', '바탕', '궁서', 
             'Arial', 'Comic Sans MS', 'Courier New', 'Georgia',
             'Lucida Sans Unicode', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana'
         ],
