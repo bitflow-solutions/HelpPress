@@ -44,7 +44,10 @@ public class ChangeHistoryDao {
 	 * @return
 	 */
 	public List<ChangeHistory> getHistories() {
-		return chrepo.findTop300ByOrderByUpdDtDesc();
+		List<String> exclude = new ArrayList<>();
+		exclude.add("ADD");
+		exclude.add("REN");
+		return chrepo.findTop300ByMethodNotInOrderByUpdDtDesc(exclude);
 	}
 	
 	public List<ChangeHistory> findAllChanged() {

@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * @author method76
  */
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/ecm/node") 
 public class ApiNodeController {

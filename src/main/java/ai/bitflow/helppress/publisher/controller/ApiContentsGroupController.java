@@ -29,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
  * 도움말그룹 관련 API
  * @author 김성준
  */
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/ecm/group") 
 public class ApiContentsGroupController {
@@ -88,7 +87,6 @@ public class ApiContentsGroupController {
 	 */
 	@PutMapping("/{groupId}")
 	public ContentsGroupRes putGroup(@PathVariable String groupId, ContentsGroupReq params, HttpSession sess) {
-		logger.debug("params " + params.toString());
 		params.setGroupId(groupId);
 		String username = SpringUtil.getSessionUserid(sess);
 		ContentsGroupRes ret = new ContentsGroupRes();

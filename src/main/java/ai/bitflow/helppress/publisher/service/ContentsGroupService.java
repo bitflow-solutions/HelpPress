@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
  * 도움말그룹 관련 서비스
  * @author 김성준
  */
-@Slf4j
 @Service
 public class ContentsGroupService {
 
@@ -103,7 +102,7 @@ public class ContentsGroupService {
 	@Transactional
     public ContentsGroup updateGroup(ContentsGroupReq params, String userid) {
 		
-		String type = ApplicationConstant.TYPE_GROUP;
+		String type   = ApplicationConstant.TYPE_GROUP;
 		String method = ApplicationConstant.METHOD_MODIFY;
 		
 		Optional<ContentsGroup> row = grepo.findById(params.getGroupId());
@@ -128,7 +127,7 @@ public class ContentsGroupService {
 		fdao.makeAllContentGroupHTML(list);
 		
 		// 변경이력 저장
-		if (params.getTree()==null) {
+		if (params.getTree()==null && params.getOrderNo()!=null) {
 			chdao.addHistory(userid, type, method, params.getName(), params.getGroupId() + ".html");
 		}
 		

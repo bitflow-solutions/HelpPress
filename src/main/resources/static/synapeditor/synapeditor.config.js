@@ -35,7 +35,7 @@ var synapEditorConfig = {
 
     /**
      * 에디터 타입을 설정합니다.
-     * ex) classic, inline
+     * ex) classic, inline, document
      */
     'editor.type': null,
 
@@ -57,7 +57,17 @@ var synapEditorConfig = {
     'editor.size.height': '100%',
 
     /**
-     * 에디터의 높이 조절가능 여부를 설정합니다.
+     * 에디터 편집영역(se-contents)의 크기(px)를 설정합니다.
+     * 'editor.type' 값이 'document'인 경우 적용됩니다.
+     * 기본값은 MS-Word A4 기준입니다.
+     */
+    'editor.document.size': {
+        'width': 793,
+        'height': 1122,
+        'padding': { 'top': 96, 'right': 96, 'bottom': 96, 'left': 96 }
+    },
+
+    /**     * 에디터의 높이 조절가능 여부를 설정합니다.
      */
     'editor.resizable': false,
 
@@ -85,7 +95,24 @@ var synapEditorConfig = {
     'editor.mode.sticky': false,
 
     /**
-     * 에디터 가로 스크롤 사용 여부를 설정합니다.
+     * 에디터의 편집영역을 iframe으로 설정하기 위한 옵션 입니다.
+     *  - enable      : iframe mode 설정 여부
+     *  - style.urls  : iframe 내부에 추가할 스타일 url ( 'contentsEditStyle.css': iframe mode설정시 반드시 추가되야 합니다. )
+     *  - script.urls : iframe 내부에 추가할 스크립트 url ( 'SEPolyfill.min.js': iframe mode설정시 반드시 추가되야 합니다. )
+     * ex)
+     * 'editor.mode.iframe': {
+     *      'enable': true,
+     *      'style.urls': ['../dist/iframeMode/contentsEditStyle.css', ... ],
+     *      'script.urls': ['../dist/iframeMode/SEPolyfill.min.js']
+     * }
+     */
+    'editor.mode.iframe': {
+        'enable': false,
+        'style.urls': [],
+        'script.urls': []
+    },
+
+    /**     * 에디터 가로 스크롤 사용 여부를 설정합니다.
      */
     'editor.horizontalScroll': true,
 
@@ -110,7 +137,7 @@ var synapEditorConfig = {
     /**
      * 툴바를 설정합니다.
      * ex)  'new', 'open', 'template', 'layout', 'autoSave', 'print', 'pageBreak', 'undo', 'redo',
-            'copy', 'cut', 'paste', 'copyRunStyle', 'pasteRunStyle', 'ruler', 'divGuide', 'source',
+            'copy', 'cut', 'paste', 'copyRunStyle', 'pasteRunStyle', 'ruler', 'guide', 'source',
             'preview', 'fullScreen', 'accessibility', 'personalDataProtection', 'find', 'conversion',
             'help', 'about', 'bulletList', 'numberedList', 'multiLevelList', 'alignLeft', 'alignCenter',
             'alignRight', 'alignJustify', 'decreaseIndent', 'increaseIndent', 'paragraphProperties',
@@ -123,6 +150,7 @@ var synapEditorConfig = {
      * '-' : 세로 나눔 선
      * 툴바 설정 참고 : https://synapeditor.com/docs/pages/viewpage.action?pageId=8421767
      */
+     /*
     'editor.toolbar': [
         'new', 'open', 'template', 'layout', '|',
         'undo', 'redo', '|',
@@ -142,6 +170,7 @@ var synapEditorConfig = {
         'lineHeight', '|',
         'decreaseIndent', 'increaseIndent'
     ],
+    */
 
     /**
      * 모바일용 툴바를 설정합니다.
@@ -216,7 +245,7 @@ var synapEditorConfig = {
         'view': [
             'fullScreen', '-',
             'source', 'preview', '-',
-            'ruler', 'divGuide'
+            'ruler', 'guide'
         ],
         'insert': [
             'link', 'bookmark', '-',
@@ -356,7 +385,7 @@ var synapEditorConfig = {
 
     /**
      * 임포트 시 문서의 최대 사이즈를 설정합니다.
-     * 단위: B(bite)
+     * 단위: B(byte)
      */
     'editor.import.maxSize': 10485760,
 
@@ -399,7 +428,7 @@ var synapEditorConfig = {
 
     /**
      * 업로드 시 파일의 최대 사이즈를 설정합니다.
-     * 단위: B(bite)
+     * 단위: B(byte)
      */
     'editor.upload.maxSize': 3145728,
 
@@ -516,7 +545,11 @@ var synapEditorConfig = {
     ],
 
     /**
-     * 미리보기에 스타일 url을 추가합니다.
+     * 다운로드 할 이미지의 URL 패턴을 설정합니다.
+     */
+    'editor.download.image.pattern': '',
+
+    /**     * 미리보기에 스타일 url을 추가합니다.
      * ex) ['dist/css/myStyle.css']
      */
     'editor.preview.style.urls': [],
@@ -565,7 +598,7 @@ var synapEditorConfig = {
     /**
      * <iframe>태그 필터링을 설정합니다.
      */
-    'editor.contentFilter.allowIFrame': false,
+    'editor.contentFilter.allowIframe': false,
 
     /**
      * <script>태그 필터링을 설정합니다.
@@ -584,17 +617,23 @@ var synapEditorConfig = {
 
     /**
      * htmlBuild시 옵션을 설정합니다.
+     *  - peelOffDiv : 이 값이 true이면 불필요한 Div Tag를 벗겨냅니다.
+     *  - alterDuplicateId : 이 값이 true이면 중복ID에 대한 알림을 표시합니다.
+     *  - checkPreWrap : 이전에 에디터를 통해 저장된 pre-wrap속성의 문단을 처리하기위한 flag입니다.
+     *                   이 값이 true인 경우 se-contents 하위 p에 pre-wrap속성이 하나라도 있을 경우 검사합니다.
+     *  - customTagToDiv : 이 값이 true이면 Custom Tag를 Div Tag로 변환합니다. false 이면 customTag를 SEContainer Tag로 감싸서 표시합니다.
      */
     'editor.buildOption.html': {
         'peelOffDiv': false,
         'alertDuplicateId': true,
-        'checkPreWrap': false
+        'checkPreWrap': false,
+        'customTagToDiv': false
     },
 
     /**
-     * 레이어 가이드 표시 여부를 설정합니다.
+     * 편집 가이드 표시 여부를 설정합니다.
      */
-    'editor.guide.div': false,
+    'editor.guide': false,
 
     /**
      * 에디터 표 핸들을 사용할지 여부를 설정합니다.
@@ -625,5 +664,30 @@ var synapEditorConfig = {
     /**
      * 일반 글머리(HTML List) 사용 여부를 설정합니다.
      */
-    'editor.useHTMLList': false
+    'editor.useHTMLList': false,
+
+    /*
+     * 객체 회전시 shift키로 조절할 각도값을 설정합니다.
+     */
+    'editor.edit.rotate.step': 15,
+
+    /**
+     * 알림창이 자동으로 사라지기(fadeout) 전 표시되는 시간을 밀리초(ms) 단위로 설정합니다.
+     */
+    'editor.notification.fadeout': 3000,
+
+    /**
+     * 라이선스 만료 알림 메시지가 나타나는 일수(day)를 설정합니다.
+     */
+    'editor.notification.license.showDays': 20,
+
+    /**
+     * 알림창이 노출되는 레벨을 설정합니다. (error, warning, info 세 가지 레벨 중 선택)
+     */
+    'editor.notification.show.level': ['error', 'warning', 'info'],
+
+    /**
+     * 이미지(binary)를 붙여넣을때 절대좌표(position: absolute)로 설정합니다.
+     */
+    'editor.paste.image.absolutePosition': false
 };

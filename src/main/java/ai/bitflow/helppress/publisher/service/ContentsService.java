@@ -12,13 +12,10 @@ import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
 import ai.bitflow.helppress.publisher.dao.ChangeHistoryDao;
 import ai.bitflow.helppress.publisher.dao.FileDao;
 import ai.bitflow.helppress.publisher.domain.Contents;
-import ai.bitflow.helppress.publisher.repository.ChangeHistoryRepository;
 import ai.bitflow.helppress.publisher.repository.ContentsRepository;
 import ai.bitflow.helppress.publisher.vo.req.ContentsReq;
-import lombok.extern.slf4j.Slf4j;
 
 
-@Slf4j
 @Service
 public class ContentsService implements ApplicationConstant {
 
@@ -26,9 +23,6 @@ public class ContentsService implements ApplicationConstant {
 	
 	@Autowired
 	private ContentsRepository contentsrepo;
-	
-	@Autowired
-	private ChangeHistoryRepository hrepo;
 	
 	@Autowired
 	private ChangeHistoryDao chdao;
@@ -109,9 +103,8 @@ public class ContentsService implements ApplicationConstant {
 		if (row.isPresent()) {
 			Contents item = row.get();
 			contentsrepo.delete(item);
-			
 			// 변경이력 저장
-			chdao.addHistory(userid, TYPE_CONTENT, METHOD_DELETE, null, String.format("%05d", item.getId()) + ".html");
+			chdao.addHistory(userid, TYPE_CONTENT, METHOD_DELETE, null, id + ".html");
 		}
 		return true;
 	}

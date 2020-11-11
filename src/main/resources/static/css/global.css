@@ -3,7 +3,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 { font-family: "Noto Sans K
 ul.fancytree-container, span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { 
 	font-family: "Noto Sans Korean"; }
 .bf-body-wrapper { position: fixed; top: 54px; width: 100%; height: calc(100% - 54px); }
-#editor-wrapper { width: 891px; }
+#editor-wrapper { padding: 12px 12px 12px 0; }
 .callout .button-group .button + .button { margin-left: 3px; }
 a { color: #555; }
 a:hover { color: #05854A; }
@@ -20,9 +20,12 @@ a:hover { color: #05854A; }
 .button-group .button + .button { margin-left: 3px; }
 .reveal { border-radius: 3px; border: 1px solid #555; }
 select { border: 1px solid #05854A; color: #05854A;  border-radius: 3px; max-width: 260px; }
+/* .contents-wrapper { background-color: #efefef; } */
+.se:not(#se-t).se-document-editor .se-main .se-contents-edit>.se-contents {
+	padding-top: 96px; width: 831px !important; }
 .bf-body-wrapper > .callout.secondary { border-top: 0; }
 .reveal .button-group { margin-bottom: 0; }
-#tree, #tree > ul { height: 100%; border: none; outline: none; }
+#tree, #tree > ul { border: none; outline: none; }
 .tree-wrapper { height: calc(100% - 92px); overflow-y: auto; }
 span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { border: none; outline: none; }
 span.fancytree-node { height: 21px; }

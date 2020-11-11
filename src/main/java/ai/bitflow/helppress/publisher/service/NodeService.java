@@ -78,6 +78,7 @@ public class NodeService {
 		}
 		filePath = groupid + ".html";
 		
+		// 
 		chdao.addHistory(userid, type, method, title, filePath);
 		
 		ret.setParentKey(params.getParentKey());
@@ -122,6 +123,7 @@ public class NodeService {
 			}
 			// 2) 파일 삭제
 			boolean success = fdao.deleteFile(params.getKey());
+			chdao.addHistory(userid, type, method, params.getTitle(), item2.getFilePath());
 			// 3) Todo: 첨부 이미지 폴더 삭제
 		} else {
 			type = ApplicationConstant.TYPE_FOLDER;
@@ -142,8 +144,7 @@ public class NodeService {
 		}
 		
 		// 변경이력 저장 - 도움말 또는 그룹
-		chdao.addHistory(userid, type, method, params.getTitle(), item2.getFilePath());
-		chdao.addHistory(userid, type, ApplicationConstant.METHOD_MODIFY, params.getTitle(), ret.getGroupId() + ".html");
+		chdao.addHistory(userid, ApplicationConstant.TYPE_GROUP, ApplicationConstant.METHOD_MODIFY, params.getTitle(), ret.getGroupId() + ".html");
 		
 		return ret;
 	}

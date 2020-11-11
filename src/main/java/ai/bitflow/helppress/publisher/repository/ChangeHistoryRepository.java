@@ -15,7 +15,8 @@ import ai.bitflow.helppress.publisher.domain.ChangeHistory;
 @Repository
 public interface ChangeHistoryRepository extends JpaRepository <ChangeHistory, Integer> {
 
-	public List<ChangeHistory> findTop300ByOrderByUpdDtDesc();
+	// public List<ChangeHistory> findTop300ByOrderByUpdDtDesc();
+	public List<ChangeHistory> findTop300ByMethodNotInOrderByUpdDtDesc(List<String> type);
 	public Optional<ChangeHistory> findTopByTypeAndMethodAndFilePathAndUpdDtGreaterThanEqual
 			(String type, String method, String filePath, LocalDateTime time);
 	

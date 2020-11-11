@@ -57,11 +57,6 @@ function initEvents() {
 	$("#btn-download").click(downloadContent);
 	$("#btn-expand-all").click(expandAll);
 	$("#btn-collapse-all").click(collapseAll);
-	/*
-	$("#btn-pdf-upload").click(function(e) {
-	  $("#pdfFile").click();
-	});
-	*/
 	$("#btn-modify-complete").click(function(e) {
 		// 도움말 수정완료 버튼 클릭
 		$("#btn-modify-complete").hide();
@@ -146,6 +141,7 @@ function initEvents() {
 }
 
 function initEditor() {
+  synapEditorConfig['editor.type'] = 'document';
   editor = new SynapEditor('synapEditor', synapEditorConfig);
   editor.setEventListener('beforeUploadImage', function (e) {
     e.addParameter('key', selectedContentId);
@@ -165,13 +161,12 @@ function initEditor() {
 }
 
 function saveTree(node) {
-  /*console.log('saveTree ' + node);*/
   var tree = _tree.toDict(true);
   $(".spinner").show();
   $.ajax({
 	  url: "/api/v1/ecm/group/" + selectedGroupId,
 	  method: "PUT",
-		data: {  tree: JSON.stringify(tree.children) }
+		data: { tree: JSON.stringify(tree.children) }
   	})
 	.done(function(msg) {
 	  _tree.reload(JSON.parse(msg.result.tree))
@@ -440,7 +435,6 @@ function deleteContent() {
 }
 
 function getChildrenRecursive(node, arr) {
-    // console.log('[' + node.key + '] folder ' + node.folder);
 	if (node.folder && node.folder===true) {
 	    // 1) if node is folder
 		if (node.hasChildren()) {
