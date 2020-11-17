@@ -8,6 +8,14 @@ $(function () {
 	$("#btn-download-changed-by-me").click(function() {
 		downloadChangedByMe();
 	});
+	$("#check-all-file").click(function() {
+		// console.log('checked ' + ($(this).prop("checked")==true));
+		if ($(this).prop("checked")==true) {
+			$(".changed-files:enabled").prop("checked", true);
+		} else {
+			$(".changed-files:enabled").prop("checked", false);
+		}
+	});
 });
 
 function downloadFromHistory(id) {

@@ -1,4 +1,4 @@
-var editor, selectedGroupId, selectedContentId, selectedContentTitle;
+var editor, selectedGroupId, selectedContentId, selectedContentTitle, htmlToOpen = null, isRTF = false;
 var SOURCE = [];
 var _tree = null;
 const URL_UPDATE_NODE = "/api/v1/ecm/node";
@@ -140,6 +140,45 @@ function initEvents() {
 	});
 }
 
+function fallbackCopyTextToClipboard(text) {
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+  
+  // Avoid scrolling to bottom
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  textArea.style.position = "fixed";
+
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Fallback: Copying text command was ' + msg);
+  } catch (err) {
+    console.error('Fallback: Oops, unable to copy', err);
+  }
+
+  document.body.removeChild(textArea);
+}
+
+function copyTextToClipboard(text) {
+  if (!navigator.clipboard) {
+    fallbackCopyTextToClipboard(text);
+    return;
+  }
+  navigator.clipboard.writeText(text).then(function() {
+  }, function(err) {
+    console.error('Async: Could not copy text: ', err);
+  });
+}
+
+function lazyOpenHtml() {
+	editor.openHTML(htmlToOpen);
+}
+
 function initEditor() {
   synapEditorConfig['editor.type'] = 'document';
   editor = new SynapEditor('synapEditor', synapEditorConfig);
@@ -148,20 +187,18 @@ function initEditor() {
 	console.log("beforeUploadImage " + JSON.stringify(e));
   });
   editor.setEventListener('afterUploadImage', function (e) {
-    console.log('afterUploadImage ' + JSON.stringify(e));
-    var fileType = e.fileType;
-    var uploadPath = e.path;
-    // console.log('filetype ' + fileType + ' uploadpath ' + uploadPath);
-    e.editor.addUploadPath(fileType, uploadPath);
+    console.log('afterUploadImage');
   });
   editor.setEventListener('beforeOpenDocument', function (e) {
 	e.addParameter('key', selectedContentId);
 	console.log("beforeOpenDocument " + JSON.stringify(e));
   });
   editor.setEventListener('beforePaste', function(data) {
-  	// beforePaste, afterPaste
-    // console.log("beforePaste " + JSON.stringify(data));
-});
+    console.log("beforePaste");
+  });
+  editor.setEventListener('afterPaste', function(data) {
+    console.log("afterPaste");
+  });
 }
 
 function saveTree(node) {
@@ -180,8 +217,7 @@ function saveTree(node) {
 	    }
 	  });
 	})
-	.fail(function() {
-	})
+	.fail(function() { })
 	.always(function() {
 		setTimeout(function() {
 			$(".spinner").hide();
@@ -270,7 +306,6 @@ function appendRootFolder() {
 	  if (msg.status==401) {
 	  	location.href = "/logout";
 	  } else {
-	    // console.log('appendRootFolder - parent ' + parent.key + ' child ' + msg.result.key);
     	var existingNode = _tree.getNodeByKey(msg.result.key);
     	if (!existingNode) {
 			var child = { key: msg.result.key, title: msg.result.title, folder: true };
@@ -339,10 +374,8 @@ function appendChildContent() {
         saveTree();
 	  }
 	})
-	.fail(function() {
-	})
-	.always(function() {
-  });  
+	.fail(function() { })
+	.always(function() { });  
 }
 
 function appendRootContent() {
@@ -366,8 +399,7 @@ function appendRootContent() {
         saveTree();
 	  }
 	})
-	.fail(function() {
-	})
+	.fail(function() { })
 	.always(function() {
   });
 }
@@ -503,10 +535,8 @@ function loadTree(groupId) {
 	  }
 	  location.href = "#" + groupId;
 	})
-	.fail(function() {
-	})
-	.always(function() {
-	});
+	.fail(function() { })
+	.always(function() { });
 }
 
 function expandAll() {

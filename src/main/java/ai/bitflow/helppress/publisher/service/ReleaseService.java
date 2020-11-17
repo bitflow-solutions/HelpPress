@@ -371,21 +371,18 @@ public class ReleaseService {
 	}
 	
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public List<ChangeHistory> getAllChanges() {
-		List<ChangeHistory> ret = chdao.findAllChanged();
+	public List<ChangeHistory> getAllChangesOrderByNameAsc() {
+		List<ChangeHistory> ret = chdao.findAllChangedByName();
 		for (ChangeHistory item : ret) {
 			String status = "";
 			if (ApplicationConstant.METHOD_ADD.equals(item.getMethod())) {
-				status = "post_add";
+				status = "fi-plus";
 			} else if (ApplicationConstant.METHOD_MODIFY.equals(item.getMethod())
 					|| ApplicationConstant.METHOD_RENAME.equals(item.getMethod())) {
-				status = "update";
+				status = "fi-page-edit";
 			} else if (ApplicationConstant.METHOD_DELETE.equals(item.getMethod())) {
-				status = "delete_outline";
+				status = "fi-minus";
+				item.setDel(true);
 			}
 			item.setStatus(status);
 		}
@@ -411,7 +408,7 @@ public class ReleaseService {
 				if (ApplicationConstant.METHOD_ADD.equals(item.getMethod())) {
 					status = "fi-plus";
 				} else if (ApplicationConstant.METHOD_MODIFY.equals(item.getMethod())) {
-					status = "fi-pencil";
+					status = "fi-page-edit";
 				} else if (ApplicationConstant.METHOD_DELETE.equals(item.getMethod())) {
 					status = "fi-minus";
 				} else  if (ApplicationConstant.METHOD_RENAME.equals(item.getMethod())) {

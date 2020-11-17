@@ -97,7 +97,13 @@ public class ViewController {
 	 * @return
 	 */
 	@GetMapping("/group") 
-	public String group(Model mo, HttpServletRequest req) {
+	public String group(Model mo, HttpServletRequest req, HttpSession sess) {
+
+		String username = SpringUtil.getSessionUserid(sess);
+		if (username==null) {
+			return "redirect:/login";
+		}
+		
 		List<ContentsGroup> list = cservice.getGroups();
 		mo.addAttribute("tab1", "is-active");
 		mo.addAttribute("list", list);
@@ -111,7 +117,13 @@ public class ViewController {
 	 * @return
 	 */
 	@GetMapping("/content") 
-	public String content(Model mo) {
+	public String content(Model mo, HttpSession sess) {
+
+		String username = SpringUtil.getSessionUserid(sess);
+		if (username==null) {
+			return "redirect:/login";
+		}
+		
 		mo.addAttribute("tab2", "is-active");
 		List<ContentsGroup> list = cservice.getGroups();
 		mo.addAttribute("list", list);
@@ -123,26 +135,54 @@ public class ViewController {
 	 * @param mo
 	 * @return
 	 */
-	@GetMapping("/release") 
-	public String release(Model mo, HttpSession sess) {
-		
-		mo.addAttribute("tab3", "is-active");
+	@GetMapping("/history") 
+	public String history(Model mo, HttpSession sess) {
 		
 		String username = SpringUtil.getSessionUserid(sess);
+		if (username==null) {
+			return "redirect:/login";
+		}
+		
+		mo.addAttribute("tab3", "is-active");
 
-		List<ChangeHistory> clist  = rservice.getAllChanges();
+		List<ChangeHistory> clist  = rservice.getAllChangesOrderByNameAsc();
 		List<ChangeHistory> hlist  = rservice.getHistories();
-		List<ReleaseHistory> rlist = rservice.getReleases();
-		List<ChangeHistory> mlist  = rservice.getAllChangesByMe(username);
+		
+		logger.debug("clist " + clist.toString());
 		
 		mo.addAttribute("clist", clist);
 		mo.addAttribute("hlist", hlist);
-		mo.addAttribute("rlist", rlist);
-		mo.addAttribute("mlist", mlist);
 		
 		File previewPath = new File(SRC_FOLDER);
 		mo.addAttribute("previewPath", previewPath.getAbsolutePath());
-		return "page/release";
+		return "page/history";
+	}
+
+	/**
+	 * 관리자 관리
+	 * @param mo
+	 * @return
+	 */
+	@GetMapping("/download") 
+	public String download(Model mo, HttpSession sess) {
+		
+		String username = SpringUtil.getSessionUserid(sess);
+		if (username==null) {
+			return "redirect:/login";
+		}
+		
+		mo.addAttribute("tab4", "is-active");
+		
+
+		List<ChangeHistory> clist  = rservice.getAllChangesOrderByNameAsc();
+		List<ReleaseHistory> rlist = rservice.getReleases();
+		
+		mo.addAttribute("clist", clist);
+		mo.addAttribute("rlist", rlist);
+		
+		File previewPath = new File(SRC_FOLDER);
+		mo.addAttribute("previewPath", previewPath.getAbsolutePath());
+		return "page/download";
 	}
 
 	/**
@@ -152,7 +192,7 @@ public class ViewController {
 	 */
 	@GetMapping("/user") 
 	public String user(Model mo) {
-		mo.addAttribute("tab4", "is-active");
+		mo.addAttribute("tab5", "is-active");
 		List<User> list = uservice.getUsers();
 		for (User item : list) {
 			item.setUserid(item.getUsername());

@@ -43,6 +43,8 @@ public class ChangeHistory {
 	
 	@Transient
 	private String status;
+	@Transient
+	private Boolean del;
 	
 	@CreationTimestamp
     private LocalDateTime updDt;

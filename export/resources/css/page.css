@@ -21,6 +21,7 @@ html { padding: 25.4mm; }
 	html {
 		font-family: '¸¼Àº °íµñ', 'µ¸¿ò', '±¼¸²', Arial, Helvetica, sans-serif; font-size: 11pt;
 		width: 650px; min-height: 930px; border: 1px solid #c9c9c9; margin: 19px auto; /* padding: 96px; */ 
+		box-shadow: 1px 1px 3px 3px #efefef; 
 	}
 }
 

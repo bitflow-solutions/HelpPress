@@ -54,6 +54,11 @@ public class ChangeHistoryDao {
 		List<Integer> list = chrepo.findAllChangedFileIds();
 		return chrepo.findAllByIdInOrderByUpdDtDesc(list);
 	}
+
+	public List<ChangeHistory> findAllChangedByName() {
+		List<Integer> list = chrepo.findAllChangedFileIds();
+		return chrepo.findAllByIdInOrderByFilePathAsc(list);
+	}
 	
 	/**
 	 * 

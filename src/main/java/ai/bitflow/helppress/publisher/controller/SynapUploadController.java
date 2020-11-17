@@ -70,7 +70,7 @@ public class SynapUploadController {
      
         // 브라우저에서 접근가능한 경로를 uploadPath에 담아서 넘겨줍니다.
         map.put("uploadPath", ApplicationConstant.UPLOAD_REL_PATH + "/" + key + "/" + saveFileName);
-     
+        map.put("orgFileName", fileName);
         return map;
     }
  
