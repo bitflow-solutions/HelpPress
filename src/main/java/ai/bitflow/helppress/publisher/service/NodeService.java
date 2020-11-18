@@ -1,5 +1,6 @@
 package ai.bitflow.helppress.publisher.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -8,16 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
 import ai.bitflow.helppress.publisher.dao.ChangeHistoryDao;
 import ai.bitflow.helppress.publisher.dao.FileDao;
+import ai.bitflow.helppress.publisher.dao.NodeDao;
 import ai.bitflow.helppress.publisher.domain.ChangeHistory;
 import ai.bitflow.helppress.publisher.domain.Contents;
+import ai.bitflow.helppress.publisher.domain.ContentsGroup;
+import ai.bitflow.helppress.publisher.repository.ContentsGroupRepository;
 import ai.bitflow.helppress.publisher.repository.ContentsRepository;
 import ai.bitflow.helppress.publisher.vo.req.DeleteNodeReq;
 import ai.bitflow.helppress.publisher.vo.req.NewNodeReq;
 import ai.bitflow.helppress.publisher.vo.req.UpdateNodeReq;
 import ai.bitflow.helppress.publisher.vo.res.result.NodeUpdateResult;
+import ai.bitflow.helppress.publisher.vo.tree.Node;
 
 
 @Service
@@ -26,10 +34,13 @@ public class NodeService {
 	private final Logger logger = LoggerFactory.getLogger(NodeService.class);
 	
 	@Autowired
+	private ChangeHistoryDao chdao;
+	
+	@Autowired
 	private ContentsRepository contentsrepo;
 	
 	@Autowired
-	private ChangeHistoryDao chdao;
+	private NodeDao ndao;
 	
 	@Autowired
 	private FileDao fdao;
@@ -56,35 +67,30 @@ public class NodeService {
 			title = "새 폴더";
 		}
 		item1.setTitle(title);
-		
-		// 테이블 저장 후 ID 반환
+		// 테이블 저장 후 ID 반환 (JavaScript 트리에서 노드 key로 사용됨)
 		contentsrepo.save(item1);
+		
 		// 파일 생성
-		String contentidstr = String.format("%05d", item1.getId());
+		String key = String.format("%05d", item1.getId());
 		String groupid = params.getGroupId();
-		if (params.getFolder()==null || params.getFolder()==false) {
-			// fdao.newContentFile(item1, contentidstr);
-		} else {
+		if (params.getFolder()!=null && params.getFolder()==true) {
 			contentsrepo.delete(item1);
 		}
 		
-		// 변경이력 저장
-		String type = "";
-		String filePath = null;
-		if (params.getFolder()==null || params.getFolder()==false) {
-			type = ApplicationConstant.TYPE_CONTENT;
-		} else {
-			type = ApplicationConstant.TYPE_FOLDER;
-		}
-		filePath = groupid + ".html";
+		params.setTitle(title);
+		params.setKey(key);
 		
-		// 
+		ndao.addNode(params);
+		
+		// 변경이력 저장
+		String type = ApplicationConstant.TYPE_GROUP;;
+		String filePath = groupid + ".html";
 		chdao.addHistory(userid, type, method, title, filePath);
 		
 		ret.setParentKey(params.getParentKey());
 		ret.setGroupId(params.getGroupId());
 		ret.setFolder(params.getFolder());
-		ret.setKey(contentidstr);
+		ret.setKey(key);
 		ret.setTitle(title);
 		
 		return ret;
@@ -141,7 +147,12 @@ public class NodeService {
 					boolean success = fdao.deleteFile(contentKey);
 				}
 			}
+			
 		}
+		
+		// Todo: 트리구조 저장
+		boolean foundNode = ndao.deleteNodeByKey(params);
+		logger.debug("found node " + foundNode);
 		
 		// 변경이력 저장 - 도움말 또는 그룹
 		chdao.addHistory(userid, ApplicationConstant.TYPE_GROUP, ApplicationConstant.METHOD_MODIFY, params.getTitle(), ret.getGroupId() + ".html");
@@ -149,6 +160,13 @@ public class NodeService {
 		return ret;
 	}
 	
+	/**
+	 * 노드이름(제목) 변경
+	 * @param params
+	 * @param userid
+	 * @return
+	 */
+	@Transactional
 	public NodeUpdateResult renameNode(UpdateNodeReq params, String userid) {
 		
 		NodeUpdateResult ret = new NodeUpdateResult();
@@ -163,6 +181,10 @@ public class NodeService {
 			type = ApplicationConstant.TYPE_CONTENT;
 		}
 		
+		// Todo: 트리구조 저장
+		boolean foundNode = ndao.replaceTitleByKey(params);
+		logger.debug("found node " + foundNode);
+		
 		// 변경이력 저장
 		chdao.addHistory(userid, type, method, params.getTitle(), filePath);
 
@@ -174,4 +196,5 @@ public class NodeService {
 		
 		return ret;
 	}
+	
 }

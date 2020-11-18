@@ -84,7 +84,7 @@ public class ApiNodeController {
 	}
 	
 	/**
-	 * 노드 삭제
+	 * 노드이름(제목) 변경
 	 * @param key
 	 * @param params
 	 * @return

@@ -9,4 +9,8 @@ public class NewNodeReq {
 	private String parentKey;
 	private Boolean folder;
 	
+	// later add
+	private String key;
+	private String title;
+	
 }

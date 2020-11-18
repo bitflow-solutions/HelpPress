@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
 import ai.bitflow.helppress.publisher.service.ContentsGroupService;
 import ai.bitflow.helppress.publisher.util.SpringUtil;
@@ -23,7 +26,7 @@ import ai.bitflow.helppress.publisher.vo.req.ContentsGroupReq;
 import ai.bitflow.helppress.publisher.vo.res.ContentsGroupRes;
 import ai.bitflow.helppress.publisher.vo.res.GeneralRes;
 import ai.bitflow.helppress.publisher.vo.res.result.ContentsGroupResult;
-import lombok.extern.slf4j.Slf4j;
+import ai.bitflow.helppress.publisher.vo.tree.Node;
 
 /**
  * 도움말그룹 관련 API
@@ -73,7 +76,8 @@ public class ApiContentsGroupController {
 		if (res!=null) {
 			ContentsGroupResult rst = new ContentsGroupResult();
 			rst.setGroupId(res.getGroupId());
-			rst.setTree(res.getTree());
+			logger.debug("tree " + res.getTree());
+			rst.setTree(new Gson().fromJson(res.getTree(), new TypeToken<List<Node>>(){}.getType()));
 			ret.setResult(rst);
 		}
 		return ret;
@@ -96,7 +100,7 @@ public class ApiContentsGroupController {
 			ContentsGroup res = gservice.updateGroup(params, username);
 			ContentsGroupResult rst = new ContentsGroupResult();
 			rst.setGroupId(res.getGroupId());
-			rst.setTree(res.getTree());
+			rst.setTree(new Gson().fromJson(res.getTree(), new TypeToken<List<Node>>(){}.getType()));
 			ret.setResult(rst);
 			broker.convertAndSend("/group", rst);
 		}

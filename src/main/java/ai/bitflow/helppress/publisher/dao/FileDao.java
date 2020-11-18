@@ -22,11 +22,9 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
-import org.w3c.dom.Document;
 
 import com.openhtmltopdf.extend.FSStream;
 import com.openhtmltopdf.extend.HttpStreamFactory;
-import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 
 import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
 import ai.bitflow.helppress.publisher.domain.Contents;

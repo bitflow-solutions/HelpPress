@@ -1,7 +1,7 @@
 var editor, selectedGroupId, selectedContentId, selectedContentTitle, htmlToOpen = null, isRTF = false;
 var SOURCE = [];
 var _tree = null;
-const URL_UPDATE_NODE = "/api/v1/ecm/node";
+const URL_API_NODE = "/api/v1/ecm/node";
 
 function initTree() {
   $('#tree').fancytree({
@@ -28,8 +28,8 @@ function initTree() {
     },
     activate: function(e, data){
 	  var node = data.node;
+	  selectedContentId = node.key;
 	  if (!node.folder || node.folder===false) {
-	    selectedContentId = node.key;
 	    selectedContentTitle = node.title;
 	  	$("#btn-delete").show();
 	  	$("#btn-download").show();
@@ -201,6 +201,37 @@ function initEditor() {
   });
 }
 
+function saveTree() {
+  $(".spinner").show();
+  $.ajax({
+	  url: "/api/v1/ecm/group/" + selectedGroupId,
+	  method: "GET"
+  	})
+	.done(function(msg) {
+	  if (msg.status==401) {
+	  	location.href = "/logout";
+	  } else {
+		  _tree.reload(msg.result.tree).done(function() {
+		  	if (selectedContentId) {
+		  	  try {
+			    var node = _tree.getNodeByKey(selectedContentId);
+			    node.setActive();
+			  } catch(e) {
+			    console.log('err ' + e.message);
+			  }
+		    }
+		  });
+	  }
+	})
+	.fail(function() { })
+	.always(function() {
+		setTimeout(function() {
+			$(".spinner").hide();
+		}, 300);
+	});
+}
+
+/*
 function saveTree(node) {
   var tree = _tree.toDict(true);
   $(".spinner").show();
@@ -224,6 +255,7 @@ function saveTree(node) {
 		}, 300);
 	});
 }
+*/
 
 function editContent() {
   var url = "/api/v1/ecm/content/" + selectedContentId;
@@ -265,6 +297,9 @@ function loadPage(key) {
   $("#contents-detail").show();
 }
 
+/**
+ * 제목변경: checked OK
+ */
 function renameTitle(e, data) {
 	try {
 	    var title = data.input.val();
@@ -275,7 +310,7 @@ function renameTitle(e, data) {
 	    }
 	    $(".spinner").show();
 		$.ajax({
-			url: URL_UPDATE_NODE,
+			url: URL_API_NODE,
 			method: "PUT",
 			data: data
 		})
@@ -294,32 +329,6 @@ function renameTitle(e, data) {
     } catch(e) { console.log(e.message); }
 }
 
-function appendRootFolder() {
-  
-  var parent = _tree.getRootNode();
-  $.ajax({
-	  url: URL_UPDATE_NODE,
-	  method: "POST",
-	  data: { groupId: selectedGroupId, parentKey: parent.key, folder: true }
-  	})
-	.done(function(msg) {
-	  if (msg.status==401) {
-	  	location.href = "/logout";
-	  } else {
-    	var existingNode = _tree.getNodeByKey(msg.result.key);
-    	if (!existingNode) {
-			var child = { key: msg.result.key, title: msg.result.title, folder: true };
-			parent.addNode(child, 'child');
-    	}
-        saveTree();
-	  }
-	})
-	.fail(function() {
-	})
-	.always(function() {
-  });
-}
-
 function appendChildFolder() {
   
   var parent = _tree.getActiveNode();
@@ -327,7 +336,7 @@ function appendChildFolder() {
     parent = _tree.getRootNode();
   }
   $.ajax({
-	  url: URL_UPDATE_NODE,
+	  url: URL_API_NODE,
 	  method: "POST",
 	  data: { groupId: selectedGroupId, parentKey: parent.key, folder: true }
   	})
@@ -344,10 +353,8 @@ function appendChildFolder() {
         saveTree();
 	  }
 	})
-	.fail(function() {
-	})
-	.always(function() {
-  });
+	.fail(function() { })
+	.always(function() { });
 }
 
 function appendChildContent() {
@@ -357,7 +364,7 @@ function appendChildContent() {
     parent = _tree.getRootNode();
   }
   $.ajax({
-	  url: URL_UPDATE_NODE,
+	  url: URL_API_NODE,
 	  method: "POST",
 	  data: { groupId: selectedGroupId, parentKey: parent.key }
   	})
@@ -378,24 +385,51 @@ function appendChildContent() {
 	.always(function() { });  
 }
 
-function appendRootContent() {
+function appendRootFolder() {
   
   var parent = _tree.getRootNode();
   $.ajax({
-	  url: URL_UPDATE_NODE,
+	  url: URL_API_NODE,
 	  method: "POST",
-	  data: { groupId: selectedGroupId, parentKey: parent.key }
+	  data: { groupId: selectedGroupId, folder: true } // parentKey: parent.key, 
   	})
 	.done(function(msg) {
 	  if (msg.status==401) {
 	  	location.href = "/logout";
 	  } else {
-	    // console.log('appendRootFolder - parent ' + parent.key + ' child ' + msg.result.key);
+    	var existingNode = _tree.getNodeByKey(msg.result.key);
+    	if (!existingNode) {
+			var child = { key: msg.result.key, title: msg.result.title, folder: true };
+			parent.addNode(child, 'child');
+    	}
+    	console.log('tree ' + JSON.stringify(msg.result.tree));
+        saveTree();
+	  }
+	})
+	.fail(function() {
+	})
+	.always(function() {
+  });
+}
+
+function appendRootContent() {
+  
+  var parent = _tree.getRootNode();
+  $.ajax({
+	  url: URL_API_NODE,
+	  method: "POST",
+	  data: { groupId: selectedGroupId } // , parentKey: parent.key 
+  	})
+	.done(function(msg) {
+	  if (msg.status==401) {
+	  	location.href = "/logout";
+	  } else {
     	var existingNode = _tree.getNodeByKey(msg.result.key);
     	if (!existingNode) {
 			var child = { key: msg.result.key, title: msg.result.title };
 			parent.addNode(child, 'child');
     	}
+    	console.log('tree ' + JSON.stringify(msg.result.tree));
         saveTree();
 	  }
 	})
@@ -417,7 +451,7 @@ function deleteContent() {
 			  	console.log('childContentsArr ' + JSON.stringify(childContentsArr));
 			  }
 			  $.ajax({
-				  url: URL_UPDATE_NODE,
+				  url: URL_API_NODE,
 				  method: "DELETE",
 				  data: { groupId: selectedGroupId, key: node.key, child: childContentsArr, folder: true, title:  node.title }
 			  	})
@@ -437,7 +471,7 @@ function deleteContent() {
 	  	} else {
 	  	  if (confirm("도움말이 삭제됩니다. 진행 하시겠습니까?")) {
 			  $.ajax({
-				  url: URL_UPDATE_NODE,
+				  url: URL_API_NODE,
 				  method: "DELETE",
 				  data: { groupId: selectedGroupId, key: node.key, title: node.title }
 			  	})
@@ -528,10 +562,9 @@ function loadTree(groupId) {
 	  method: "GET"
 	})
 	.done(function(msg) {
-	  // console.log('msg ' + JSON.stringify(msg));
 	  $("#tree").show();
 	  if (msg && msg.result) {
-	  	_tree.reload(JSON.parse(msg.result.tree));
+	  	_tree.reload(msg.result.tree);
 	  }
 	  location.href = "#" + groupId;
 	})
@@ -540,11 +573,11 @@ function loadTree(groupId) {
 }
 
 function expandAll() {
-  $.ui.fancytree.getTree().expandAll();
+  _tree.expandAll();
 }
 
 function collapseAll() {
-  $.ui.fancytree.getTree().expandAll(false);
+  _tree.expandAll(false);
 }
 
 function initSocket() {
@@ -560,10 +593,10 @@ function initSocket() {
 	  	  }
         });
         stompClient.subscribe('/node', function (rawmsg) {
-          // console.log("/node: msg " + rawmsg.body);
+          saveTree();
+          /*
           var msg = JSON.parse(rawmsg.body);
           if (selectedGroupId===msg.groupId) {
-            /*console.log("reloading group " + msg.groupId);*/
             if (msg.method=="ADD") {
             	var existingNode = _tree.getNodeByKey(msg.key);
             	// console.log('existingNode ' + existingNode);
@@ -587,6 +620,7 @@ function initSocket() {
 			  node.setTitle(msg.title);
             }
 	  	  }
+	  	  */
         });
     });
 }

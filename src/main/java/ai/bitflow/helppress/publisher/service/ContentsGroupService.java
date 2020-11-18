@@ -15,10 +15,8 @@ import ai.bitflow.helppress.publisher.constant.ApplicationConstant;
 import ai.bitflow.helppress.publisher.dao.ChangeHistoryDao;
 import ai.bitflow.helppress.publisher.dao.FileDao;
 import ai.bitflow.helppress.publisher.domain.ContentsGroup;
-import ai.bitflow.helppress.publisher.repository.ChangeHistoryRepository;
 import ai.bitflow.helppress.publisher.repository.ContentsGroupRepository;
 import ai.bitflow.helppress.publisher.vo.req.ContentsGroupReq;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 도움말그룹 관련 서비스
@@ -31,9 +29,6 @@ public class ContentsGroupService {
 	
 	@Autowired
 	private ContentsGroupRepository grepo;
-	
-	@Autowired
-	private ChangeHistoryRepository hrepo;
 	
 	@Autowired
 	private ChangeHistoryDao chdao;

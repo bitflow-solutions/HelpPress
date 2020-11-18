@@ -1,5 +1,8 @@
 package ai.bitflow.helppress.publisher.vo.res.result;
 
+import java.util.List;
+
+import ai.bitflow.helppress.publisher.vo.tree.Node;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ContentsGroupResult {
 	private String groupId;
-	private String tree;
+	private List<Node> tree;
 }
