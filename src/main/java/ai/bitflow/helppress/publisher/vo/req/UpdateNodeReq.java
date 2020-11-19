@@ -10,4 +10,8 @@ public class UpdateNodeReq {
 	private String title;
 	private Boolean folder;
 	
+	// Drag Reorder
+	private String parentKey;
+	private Integer index;
+
 }

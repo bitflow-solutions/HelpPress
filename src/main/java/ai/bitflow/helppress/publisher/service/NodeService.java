@@ -61,10 +61,10 @@ public class NodeService {
 		
 		Contents item1 = new Contents();
 		if (params.getFolder()==null || params.getFolder()==false) {
-			title = "새 도움말";
+			title = "새 도움말 (";
 			item1.setAuthor(userid);		
 		} else {
-			title = "새 폴더";
+			title = "새 폴더 (";
 		}
 		item1.setTitle(title);
 		// 테이블 저장 후 ID 반환 (JavaScript 트리에서 노드 key로 사용됨)
@@ -77,7 +77,7 @@ public class NodeService {
 			contentsrepo.delete(item1);
 		}
 		
-		params.setTitle(title);
+		params.setTitle(title + item1.getId() + ")");
 		params.setKey(key);
 		
 		ndao.addNode(params);
@@ -167,7 +167,7 @@ public class NodeService {
 	 * @return
 	 */
 	@Transactional
-	public NodeUpdateResult renameNode(UpdateNodeReq params, String userid) {
+	public NodeUpdateResult updateNode(UpdateNodeReq params, String userid) {
 		
 		NodeUpdateResult ret = new NodeUpdateResult();
 		
@@ -182,7 +182,16 @@ public class NodeService {
 		}
 		
 		// Todo: 트리구조 저장
-		boolean foundNode = ndao.replaceTitleByKey(params);
+		boolean foundNode = false;
+		if (params.getTitle()!=null) {
+			// 제목 변경
+			foundNode = ndao.replaceTitleByKey(params);
+		} else if (params.getParentKey()!=null) {
+			// 순서 변경
+			foundNode = ndao.updateNodeOrder(params);
+		} else {
+			return ret;
+		}
 		logger.debug("found node " + foundNode);
 		
 		// 변경이력 저장

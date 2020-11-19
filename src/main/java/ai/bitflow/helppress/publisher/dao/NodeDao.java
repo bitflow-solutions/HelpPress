@@ -28,9 +28,6 @@ public class NodeDao {
 	private ContentsGroupRepository grepo;
 	
 	public boolean addNode(NewNodeReq params) {
-		
-		boolean found = false;
-		
 		// Todo: 트리구조 저장
 		Optional<ContentsGroup> row = grepo.findById(params.getGroupId());
 		ContentsGroup item1 = null;
@@ -39,7 +36,16 @@ public class NodeDao {
 		} else {
 			item1 = row.get();
 			List<Node> tree = new Gson().fromJson(item1.getTree(), new TypeToken<List<Node>>(){}.getType());
-			findNodeAndAdd(tree, params);
+			if (tree==null) {
+				tree = new ArrayList<Node>();
+			}
+			if (params.getParentKey()==null) {
+				Node node = new Node(params.getKey(), params.getTitle(), params.getFolder());
+				tree.add(node);
+				logger.debug("found parent to add #1");
+			} else {
+				findNodeAndAdd(tree, params);
+			}
 			String treeStr = new Gson().toJson(tree);
 			logger.debug("tree " + treeStr);
 			item1.setTree(treeStr);
@@ -50,12 +56,6 @@ public class NodeDao {
 	}
 	
 	private void findNodeAndAdd(List<Node> nodes, NewNodeReq params) {
-		if (params.getParentKey()==null) {
-			Node node = new Node(params.getKey(), params.getTitle(), params.getFolder());
-			nodes.add(node);
-			logger.debug("found parent to add #1");
-			return;
-		}
 		if (nodes!=null && nodes.size()>0) {
 			for (Node item : nodes) {
 				if (item.getKey().equals(params.getParentKey())) {
@@ -111,6 +111,72 @@ public class NodeDao {
 				}
 			}
 		}
+	}
+	
+	
+	public boolean updateNodeOrder(UpdateNodeReq params) {
+		// Todo: 트리구조 저장
+		Optional<ContentsGroup> row = grepo.findById(params.getGroupId());
+		ContentsGroup item1 = null;
+		Node foundNode = null;
+		if (!row.isPresent()) {
+			return false;
+		} else {
+			item1 = row.get();
+			List<Node> tree = new Gson().fromJson(item1.getTree(), new TypeToken<List<Node>>(){}.getType());
+			foundNode = findFromChildren(tree, params);
+			Node foundParent = findParent(tree, params);
+			List<Node> children = null;
+			if (foundParent==null) {
+				children = tree;
+			} else {
+				children = foundParent.getChildren();
+			}
+			children.add((int)params.getIndex(), foundNode);
+			logger.debug("foundNode: " + foundNode.getKey() + " appending to: parent[" + params.getIndex()+ "] ");
+			String treeStr = new Gson().toJson(tree);
+			logger.debug("tree " + treeStr);
+			item1.setTree(treeStr);
+			grepo.save(item1);
+		}
+		return foundNode!=null;
+	}
+	
+	private Node findFromChildren(List<Node> nodes, UpdateNodeReq params) {
+		Node ret = null;
+		if (nodes!=null && nodes.size()>0) {
+			for (Node item : nodes) {
+				if (item.getKey().equals(params.getKey())) {
+					ret = item;
+					nodes.remove(item);
+					return ret;
+				} else if (item.getChildren()!=null && item.getChildren().size()>0) {
+					ret = findFromChildren(item.getChildren(), params);
+					if (ret!=null) {
+						return ret;
+					}
+				}
+			}
+		}
+		return ret;
+	}
+	
+	private Node findParent(List<Node> nodes, UpdateNodeReq params) {
+		Node ret = null;
+		if (nodes!=null && nodes.size()>0) {
+			for (Node item : nodes) {
+				if (item.getKey().equals(params.getParentKey())) {
+					ret = item;
+					return ret;
+				} else if (item.getChildren()!=null && item.getChildren().size()>0) {
+					ret = findFromChildren(item.getChildren(), params);
+					if (ret!=null) {
+						return ret;
+					}
+				}
+			}
+		}
+		return ret;
 	}
 	
 	public boolean replaceTitleByKey(UpdateNodeReq params) {

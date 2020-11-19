@@ -98,7 +98,7 @@ public class ApiNodeController {
 		if (username==null) {
 			ret.setFailResponse(401);
 		} else {
-			NodeUpdateResult res = nservice.renameNode(params, username);
+			NodeUpdateResult res = nservice.updateNode(params, username);
 			ret.setResult(res);
 			broker.convertAndSend("/node", res);
 		}

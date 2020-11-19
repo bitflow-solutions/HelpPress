@@ -19,13 +19,14 @@ a:hover { color: #05854A; }
 .button-group > .button { font-size: 0.75rem; padding: 0.5rem; }
 .button-group .button + .button { margin-left: 3px; }
 .reveal { border-radius: 3px; border: 1px solid #555; }
+.login-body-wrapper { height: 100%; }
 select { border: 1px solid #05854A; color: #05854A;  border-radius: 3px; max-width: 260px; }
-/* .contents-wrapper { background-color: #efefef; } */
+.contents-wrapper { background: url(/img/bg-contents-gray.jpg); }
 .se:not(#se-t).se-document-editor .se-main .se-contents-edit>.se-contents {
 	padding-top: 96px; width: 831px !important; }
 .bf-body-wrapper > .callout.secondary { border-top: 0; }
 .reveal .button-group { margin-bottom: 0; }
-#tree { width: min-content; min-height: 100%; background-color: white; }
+#tree { width: min-content; min-height: 100%; }
 #tree, #tree > ul { border: none; outline: none; }
 .tree-wrapper { height: calc(100% - 92px); overflow-y: auto; }
 span.fancytree-selected span.fancytree-title, span.fancytree-active span.fancytree-title { border: none; outline: none; }
@@ -77,7 +78,10 @@ table td.btn-list-item:hover { background-color: #77b2d8; cursor: pointer; }
 .menu .button.hollow.secondary {
     border-color: #555; color: #555; border-radius: 32px; height: 32px; padding: 8px; background-color: #eee; }
 .button.hollow.secondary:hover, .button.hollow.secondary:focus { background-color: #fff; }
-#sel_category { border-width: 3px; }
+#sel_category { float: left; height: 32px; font-size: 13px; border-width: 3px; margin-right: 6px; }
+.tree-btn { padding: 7px; }
+.tree-btn.fi-plus { margin-right: 6px; }
+#wrapper-group-sel { overflow-x: hidden; display: inherit; }
 .spinner {
   margin: 100px auto;
   width: 50px;

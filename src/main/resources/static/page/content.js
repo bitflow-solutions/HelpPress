@@ -5,7 +5,7 @@ const URL_API_NODE = "/api/v1/ecm/node";
 
 function initTree() {
   $('#tree').fancytree({
-    extensions: ["edit"],
+    extensions: ["edit", "dnd5"],
     checkbox: false,
     selectMode: 3,
     source: SOURCE,
@@ -25,6 +25,87 @@ function initTree() {
       beforeClose: function(e, data){
         $("span.fancytree-focused .fancytree-title").css("background-color", "#3875D7");
       }
+    },
+    dnd5: {
+      // --- Drag-support:
+      dragStart: function(node, data) {
+          data.effectAllowed = "all";
+          data.dropEffect = data.dropEffectSuggested;
+          return true;
+      },
+      dragEnd: function(node, data) {
+      	console.log("dragEnd: key " + node.key + " parent " + node.parent.key + " idx " + node.getIndex());
+      	var parentKey = node.parent.key.startsWith("root")?null:node.parent.key;
+      	$.ajax({
+			url: URL_API_NODE,
+			method: "PUT",
+			data: { 
+				groupId: selectedGroupId,
+				parentKey: parentKey,
+				key: node.key,
+				index: node.getIndex()
+			}
+		})
+		.done(function(msg) {
+		})
+		.always(function() {
+	    });
+      },
+      // --- Drop-support:
+      dragEnter: function(node, data) {
+        node.debug( "T2: dragEnter: " + "data: " + data.dropEffect + "/" + data.effectAllowed +
+          ", dataTransfer: " + data.dataTransfer.dropEffect + "/" + data.dataTransfer.effectAllowed, data );
+        return true;
+      },
+      dragOver: function(node, data) {
+          data.dropEffect = data.dropEffectSuggested;
+      },
+      dragDrop: function(node, data) {
+        var newNode,
+          transfer = data.dataTransfer,
+          sourceNodes = data.otherNodeList,
+          mode = data.dropEffect;
+        // don't open links, files, ... even if an error occurs in this handler:
+        data.originalEvent.preventDefault();
+        if( data.hitMode === "after" ){
+          // If node are inserted directly after tagrget node one-by-one,
+          // this would reverse them. So we compensate:
+          sourceNodes.reverse();
+        }
+        if (data.otherNode) {
+          // Drop another Fancytree node from same frame
+          // (maybe from another tree however)
+          var sameTree = data.otherNode.tree === data.tree;
+          if (mode === "move") {
+            data.otherNode.moveTo(node, data.hitMode);
+          } else {
+            newNode = data.otherNode.copyTo(node, data.hitMode);
+            if (mode === "link") {
+              newNode.setTitle("Link to " + newNode.title);
+            } else {
+              newNode.setTitle("Copy of " + newNode.title);
+            }
+          }
+        } else if (data.otherNodeData) {
+          // Drop Fancytree node from different frame or window, so we only have
+          // JSON representation available
+          node.addChild(data.otherNodeData, data.hitMode);
+        } else if (data.files.length) {
+          // Drop files
+          for(var i=0; i<data.files.length; i++) {
+            var file = data.files[i];
+            node.addNode( { title: "'" + file.name + "' (" + file.size + " bytes)" }, data.hitMode );
+          }
+
+        } else {
+          // Drop a non-node
+          node.addNode({
+              title: transfer.getData("text"),
+            }, data.hitMode
+          );
+        }
+        node.setExpanded();
+      },
     },
     activate: function(e, data){
 	  var node = data.node;
@@ -124,7 +205,6 @@ function initEvents() {
 	    events: {
 			show : function(options){
 			  var key = $(this).attr('key');
-	    	  
 			  var node = _tree.getNodeByKey(key);
 			  node.setActive();
 			  console.log("[" + key + "] folder");
@@ -201,6 +281,13 @@ function initEditor() {
   });
 }
 
+function findParents(node) {
+	if (typeof(node.parent)!=='undefined' && node.parent!==null) {
+		node.parent.setExpanded();
+		findParents(node.parent);
+	}
+}
+
 function saveTree() {
   $(".spinner").show();
   $.ajax({
@@ -215,6 +302,10 @@ function saveTree() {
 		  	if (selectedContentId) {
 		  	  try {
 			    var node = _tree.getNodeByKey(selectedContentId);
+			    if (node.folder && node.folder==true) {
+			    	node.setExpanded();
+			    }
+			    findParents(node);
 			    node.setActive();
 			  } catch(e) {
 			    console.log('err ' + e.message);
@@ -276,7 +367,9 @@ function editContent() {
 
 function loadPage(key) {
   $("#editor-wrapper").hide();
-  $("#contents-detail").attr("src", key + ".html");
+  try {
+  	$("#contents-detail").attr("src", key + ".html");
+  } catch(e) {}
   $.ajax({
 		url: "/" + key + ".html",
 		method: "GET",
@@ -349,6 +442,7 @@ function appendChildFolder() {
     	if (!existingNode) {
 			var child = { key: msg.result.key, title: msg.result.title, folder: true };
 			parent.addNode(child, 'child');
+			// parent.setExpanded();
     	}
         saveTree();
 	  }
@@ -377,6 +471,7 @@ function appendChildContent() {
     	if (!existingNode) {
 			var child = { key: msg.result.key, title: msg.result.title };
 			parent.addNode(child, 'child');
+			// parent.setExpanded();
     	}
         saveTree();
 	  }
@@ -549,10 +644,14 @@ function onSelectChanged(select) {
   selectedGroupId = select.options[select.selectedIndex].value;
   if (!selectedGroupId || selectedGroupId.length<1) {
 	  $("#tree").hide();
-	  $("#contents-detail").attr("src", "/empty-content.html");
 	  location.href = "#";
+	  $(".tree-wrapper").css("background-image", "url(/img/bg-tree-gray.jpg)");
+	  $(".contents-wrapper").css("background", "url(/img/bg-contents-gray.jpg)");
+	  $("#contents-detail").attr("src", "about:blank");
   } else {
-	loadTree(selectedGroupId);
+	  $(".tree-wrapper").css("background-image", "inherit");
+	  $(".contents-wrapper").css("background", "white");
+	  loadTree(selectedGroupId);
   }
 }
 
