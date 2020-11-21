@@ -145,7 +145,7 @@ public class ViewController {
 		
 		mo.addAttribute("tab3", "is-active");
 
-		List<ChangeHistory> clist  = rservice.getAllChangesOrderByNameAsc();
+		List<ChangeHistory> clist  = rservice.getAllChangesExcludeReleaseOrderByNameAsc();
 		List<ChangeHistory> hlist  = rservice.getHistories();
 		
 		logger.debug("clist " + clist.toString());
@@ -172,9 +172,8 @@ public class ViewController {
 		}
 		
 		mo.addAttribute("tab4", "is-active");
-		
 
-		List<ChangeHistory> clist  = rservice.getAllChangesOrderByNameAsc();
+		List<ChangeHistory> clist  = rservice.getAllChangesExcludeReleaseOrderByNameAsc();
 		List<ReleaseHistory> rlist = rservice.getReleases();
 		
 		mo.addAttribute("clist", clist);

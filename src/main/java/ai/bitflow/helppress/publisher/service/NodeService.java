@@ -171,15 +171,9 @@ public class NodeService {
 		
 		NodeUpdateResult ret = new NodeUpdateResult();
 		
-		String method = ApplicationConstant.METHOD_RENAME;
-		String type = "";
+		String method = ApplicationConstant.METHOD_MODIFY;
+		String type = ApplicationConstant.TYPE_GROUP;
 		String filePath = params.getGroupId() + ".html";
-		
-		if (params.getFolder()!=null && params.getFolder()==true) {
-			type = ApplicationConstant.TYPE_FOLDER;
-		} else {
-			type = ApplicationConstant.TYPE_CONTENT;
-		}
 		
 		// Todo: 트리구조 저장
 		boolean foundNode = false;
@@ -194,8 +188,9 @@ public class NodeService {
 		}
 		logger.debug("found node " + foundNode);
 		
+		String title = ndao.getGroupTitle(params);
 		// 변경이력 저장
-		chdao.addHistory(userid, type, method, params.getTitle(), filePath);
+		chdao.addHistory(userid, type, method, title, filePath);
 
 		ret.setMethod(method);
 		ret.setUsername(userid);

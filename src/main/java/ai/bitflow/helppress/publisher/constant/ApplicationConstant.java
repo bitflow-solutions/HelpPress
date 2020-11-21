@@ -11,6 +11,7 @@ public interface ApplicationConstant {
 	String METHOD_DELETE = "DEL";
 	String METHOD_RENAME = "REN";
 	
+	String TYPE_RELEASE	 = "RELEASE";
 	String TYPE_GROUP 	 = "GROUP";
 	String TYPE_CONTENT  = "CONTENT";
 	String TYPE_PDF  	 = "PDF";

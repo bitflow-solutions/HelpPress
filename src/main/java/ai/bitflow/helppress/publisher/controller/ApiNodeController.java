@@ -90,7 +90,7 @@ public class ApiNodeController {
 	 * @return
 	 */
 	@PutMapping("")
-	public NodeUpdateRes renameNode(UpdateNodeReq params, HttpSession sess) {
+	public NodeUpdateRes updateNode(UpdateNodeReq params, HttpSession sess) {
 
 		logger.debug("params " + params.toString());
 		NodeUpdateRes ret = new NodeUpdateRes();

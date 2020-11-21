@@ -261,17 +261,10 @@ public class ReleaseService {
 	 * @return
 	 */
 	@Transactional
-	public boolean downloadChanged(Boolean released, HttpServletResponse res, String downloader, String userid) {
+	public boolean downloadChanged(String[] fileIds, HttpServletResponse res, String username, Boolean release) {
 		
-		List<ChangeHistory> list = null;
-		if (userid!=null) {
-			list = chdao.findAllChangedByMe(userid);
-		} else {
-			list = chdao.findAllChanged();
-		}
-		
-		if (list==null || list.size()<1) {
-			return true;
+		if (fileIds==null || fileIds.length<1) {
+			return false;
 		}
 		
 		File destFolder = new File(DEST_FOLDER);
@@ -279,7 +272,7 @@ public class ReleaseService {
 			destFolder.mkdirs();
 		}
 		String timestamp = sdf.format(Calendar.getInstance().getTime());
-		String DEST_FILENAME = "changed-" + timestamp + ".zip";
+		String DEST_FILENAME = "release-part-" + timestamp + ".zip";
 		String destFilePath = DEST_FOLDER + DEST_FILENAME;
 		File destFile = new File(destFilePath);
 		try {
@@ -290,53 +283,36 @@ public class ReleaseService {
 		}
 		
 		int i = 0;
-		for (ChangeHistory item : list) {
-			
-			if (ApplicationConstant.METHOD_ADD.equals(item.getMethod())
-					|| ApplicationConstant.METHOD_MODIFY.equals(item.getMethod())
-					|| ApplicationConstant.METHOD_RENAME.equals(item.getMethod())) {
-				
-				// 도움말그룹인 경우 파일만, 도움말인 경우 파일과 폴더
-				if (ApplicationConstant.TYPE_GROUP.equals(item.getType())) {
-					if (i==0) {
-						ZipUtil.packEntry(new File(SRC_FOLDER + item.getFilePath()), destFile);
-					} else {
-						ZipUtil.addEntry(destFile, item.getFilePath(), new File(SRC_FOLDER + item.getFilePath()));
-					}
-				} else if (ApplicationConstant.TYPE_CONTENT.equals(item.getType())) {
-					// 도움말 또는 도움말그룹
-					logger.debug("item.getFilePath() " + item.getFilePath());
-					if (i==0) {
-						ZipUtil.packEntry(new File(SRC_FOLDER + item.getFilePath()), destFile);
-					} else {
-						ZipUtil.addEntry(destFile, item.getFilePath(), new File(SRC_FOLDER + item.getFilePath()));
-					}
-					
-					String key = item.getFilePath().replace(".html", "");
-					String resourcePath = SRC_FOLDER + ApplicationConstant.UPLOAD_REL_PATH + File.separator + key;
-					File resourceDir = new File(resourcePath);
-					if (resourceDir.exists() && resourceDir.isDirectory()) {
-						// 도움말 하위 폴더
-						ZipUtil.addEntry(resourceDir, destFile, ApplicationConstant.UPLOAD_REL_PATH + File.separator + key);
-					}					
+		for (String fileId : fileIds) {
+			// 도움말그룹인 경우 파일만, 도움말인 경우 파일과 폴더
+			String fileName = fileId + ".html";
+			File file = new File(SRC_FOLDER + fileName);
+			if (file.exists() && file.isFile()) {
+				if (i==0) {
+					ZipUtil.packEntry(file, destFile);
+				} else {
+					ZipUtil.addEntry(destFile, fileName, file);
 				}
+				String resourcePath = SRC_FOLDER + ApplicationConstant.UPLOAD_REL_PATH + File.separator + fileId;
+				File resourceDir = new File(resourcePath);
+				if (resourceDir.exists() && resourceDir.isDirectory()) {
+					// 도움말 하위 폴더
+					ZipUtil.addEntry(resourceDir, destFile, ApplicationConstant.UPLOAD_REL_PATH + File.separator + fileId);
+				}	
 			}
 			i++;
 		}
 		
-		// 배포이력 저장
-		if (released) {
+		// Todo:
+		if (release) {
         	ReleaseHistory item = new ReleaseHistory();
         	item.setType(ApplicationConstant.RELEASE_PART);
         	item.setFileName(DEST_FILENAME);
-        	item.setUserid(downloader);
+        	item.setUserid(username);
         	rhrepo.save(item);
-        	if (userid!=null) {
-        		chdao.releasePart(list);
-        	} else {
-        		chdao.releaseAll();
-        	}
-        }
+			chdao.addHistory(username, ApplicationConstant.TYPE_RELEASE, ApplicationConstant.METHOD_ADD, 
+					String.valueOf(item.getId()), destFile.getName());
+		}
 		
 		FileInputStream fis = null;
 		ServletOutputStream out = null;
@@ -384,10 +360,31 @@ public class ReleaseService {
 				status = "fi-minus";
 				item.setDel(true);
 			}
+			item.setFileId(item.getFilePath().replace(".html", ""));
 			item.setStatus(status);
 		}
 		return ret;
 	}
+	
+	public List<ChangeHistory> getAllChangesExcludeReleaseOrderByNameAsc() {
+		List<ChangeHistory> ret = chdao.findAllChangedFileIdsExcludeRelease();
+		for (ChangeHistory item : ret) {
+			String status = "";
+			if (ApplicationConstant.METHOD_ADD.equals(item.getMethod())) {
+				status = "fi-plus";
+			} else if (ApplicationConstant.METHOD_MODIFY.equals(item.getMethod())
+					|| ApplicationConstant.METHOD_RENAME.equals(item.getMethod())) {
+				status = "fi-page-edit";
+			} else if (ApplicationConstant.METHOD_DELETE.equals(item.getMethod())) {
+				status = "fi-minus";
+				item.setDel(true);
+			}
+			item.setFileId(item.getFilePath().replace(".html", ""));
+			item.setStatus(status);
+		}
+		return ret;
+	}
+	
 	
 	public List<ChangeHistory> getAllChangesByMe(String userid) {
 		List<ChangeHistory> ret = chdao.findAllChangedByMe(userid);

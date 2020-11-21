@@ -177,9 +177,9 @@ function initEvents() {
 	    callback: function(key, options) {
         },
 	    items: {
-	        rename: {name: "제목 변경 (F2)", callback: editTitle },
-	        modify: {name: "도움말 수정", callback: editContent },
-	        deletecontent: {name: "도움말 삭제", callback: deleteContent },
+	        rename: {name: "제목변경 [F2]", callback: editTitle },
+	        modify: {name: "수정", callback: editContent },
+	        deletecontent: {name: "삭제", callback: deleteContent },
 	        downloadcontent: {name: "다운로드", callback: downloadContent }
 	    },
 	    events: {
@@ -197,10 +197,10 @@ function initEvents() {
 	    callback: function(key, options) {
         },
 	    items: {
-	        rename: {name: "제목 변경 (F2)", callback: editTitle },
+	        rename: {name: "제목변경 [F2]", callback: editTitle },
 	        newfolder: {name: "새 폴더", callback: appendChildFolder },
 	        newcontent: {name: "새 도움말", callback: appendChildContent },
-	        deleteContent: {name: "폴더 삭제", callback: deleteContent }
+	        deleteContent: {name: "삭제", callback: deleteContent }
 	    },
 	    events: {
 			show : function(options){

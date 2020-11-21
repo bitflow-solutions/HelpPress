@@ -18,7 +18,6 @@ public class ChangeHistoryDao {
 
 	@Autowired
 	private ChangeHistoryRepository chrepo;
-
 	
 	/**
 	 * 변경이력 저장
@@ -45,18 +44,19 @@ public class ChangeHistoryDao {
 	 */
 	public List<ChangeHistory> getHistories() {
 		List<String> exclude = new ArrayList<>();
-		exclude.add("ADD");
+//		exclude.add("ADD");
 		exclude.add("REN");
 		return chrepo.findTop300ByMethodNotInOrderByUpdDtDesc(exclude);
 	}
 	
-	public List<ChangeHistory> findAllChanged() {
-		List<Integer> list = chrepo.findAllChangedFileIds();
-		return chrepo.findAllByIdInOrderByUpdDtDesc(list);
-	}
-
 	public List<ChangeHistory> findAllChangedByName() {
 		List<Integer> list = chrepo.findAllChangedFileIds();
+		return chrepo.findAllByIdInOrderByFilePathAsc(list);
+	}
+	
+	
+	public List<ChangeHistory> findAllChangedFileIdsExcludeRelease() {
+		List<Integer> list = chrepo.findAllChangedFileIdsExcludeRelease();
 		return chrepo.findAllByIdInOrderByFilePathAsc(list);
 	}
 	

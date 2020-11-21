@@ -78,7 +78,10 @@ public class SynapImportController {
 	     
 	        // 변환이 끝난 원본파일은 삭제한다.
 	        deleteFile(inputFileAbsPath);
-	     
+	        
+	        // method76) 2020.11.21 김성준 추가
+	        deleteFile(worksDirAbsPath + File.separator + "access.inf");
+	        
 	        // 변환된 pb파일을 읽어서 serialize
 	        // v2.3.0 부터 파일명이 document.word.pb에서 document.pb로 변경됨
 	        String pbAbsPath = worksDirAbsPath + File.separator + "document.pb";

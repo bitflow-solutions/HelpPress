@@ -26,7 +26,15 @@ function validateInput() {
 	  alert("도움말그룹URI를 입력해주세요");
 	  $("#groupId").focus();
 	  return false; 
-	}
+	} else if ($("#groupId").val()=='resources') {
+	  alert("지원되지 않는 URI 키워드입니다. 'resources'");
+	  $("#groupId").focus();
+	  return false; 
+	} else if ($("#groupId").val()=='uploads') {
+	  alert("지원되지 않는 URI 키워드입니다. 'uploads'");
+	  $("#groupId").focus();
+	  return false;
+    }
 	if ($("#name").val().length<1) {
 	  alert("도움말그룹명을 입력해주세요");
 	  $("#name").focus();

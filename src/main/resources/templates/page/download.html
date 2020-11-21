@@ -25,6 +25,7 @@ tbody th, tbody td { padding: 0.1rem 0.625rem 0.1rem; }
 	<div class="button-group float-right">
 		<a class="button small success hollow" id="btn-download-all">전체다운로드</a>
 		<a class="button small secondary hollow" id="btn-download-changed" {{^clist}}disabled{{/clist}}>선택다운로드</a>
+		<a class="button small success hollow" id="btn-record-release">배포버전처리</a>
 	</div>
 </div>
 
@@ -42,8 +43,9 @@ tbody th, tbody td { padding: 0.1rem 0.625rem 0.1rem; }
 				<col width="10%" />
 				<col width="10%" />
 				<col />
-				<col width="15%" />
-				<col width="15%" />
+				<col width="20%" />
+				<col width="10%" />
+				<col width="10%" />
 			</colgroup>
 			<thead>
 				<tr>
@@ -51,16 +53,18 @@ tbody th, tbody td { padding: 0.1rem 0.625rem 0.1rem; }
 					<th>작업</th>
 					<th>제목</th>
 					<th>파일명</th>
+					<th>담당자</th>
 					<th>최종변경일시</th>
 				</tr>
 			</thead>
 			<tbody>
    				{{#clist}}
 				<tr>
-					<td class="text-center"><input type="checkbox" id="{{filePath}}" class="changed-files" value="{{filePath}}" {{#del}}disabled{{/del}}/></td>
+					<td class="text-center"><input type="checkbox" id="{{fileId}}" class="changed-files" name="fileIds" value="{{fileId}}" {{#del}}disabled{{/del}}/></td>
 					<td class="text-center"><i class="{{status}}"></i></td>
 					<td>{{#title}}{{title}}{{/title}}</td>
 					<td>{{#filePath}}{{filePath}}{{/filePath}}</td>
+			 		<td class="text-center" >{{#userid}}{{userid}}{{/userid}}</td>
 					<td class="text-center">{{updDtStr}}</td>
 				</tr>
 				{{/clist}}
@@ -79,28 +83,27 @@ tbody th, tbody td { padding: 0.1rem 0.625rem 0.1rem; }
 			<colgroup>
 				<col width="10%" />
 				<col width="30%" />
+				<col width="20%" />
 				<col width="30%" />
-				<col width="30%" />
+				<col width="10%" />
 			</colgroup>
 			<thead>
 				<tr>
+					<th>버전</th>
+					<th>구분</th>
+					<th>담당자</th>
+					<th>일시</th>
 					<th>파일</th>
-					<th>배포구분</th>
-					<th>배포자</th>
-					<th>다운로드일시</th>
 				</tr>
 			</thead>
 			<tbody>
 				{{#rlist}}
 				<tr>
-					<td class="text-center">
-					file
-					</td>
-					<td class="text-center">
-			  			<a href="javascript:downloadFromHistory({{id}})"><span><i class="far fa-file-code"></i>&nbsp;{{typeKr}}</span></a>
-			 		</td>
+					<td class="text-center">v{{id}}</td>
+					<td class="text-center">{{typeKr}}</td>
 			 		<td class="text-center" >{{#userid}}{{userid}}{{/userid}}</td>
 			 		<td class="text-center" >{{updDtStr}}</td>
+					<td class="text-center"><a href="javascript:downloadFromHistory({{id}})"><i class="fi-archive"></i></a></td>
 				</tr>
 				{{/rlist}}
 				{{^rlist}}

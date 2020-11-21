@@ -5,9 +5,6 @@ $(function () {
 	$("#btn-download-changed").click(function() {
 		downloadChanged();
 	});
-	$("#btn-download-changed-by-me").click(function() {
-		downloadChangedByMe();
-	});
 	$("#check-all-file").click(function() {
 		// console.log('checked ' + ($(this).prop("checked")==true));
 		if ($(this).prop("checked")==true) {
@@ -42,21 +39,21 @@ function downloadAll() {
 
 function downloadChanged() {
 	var release = false;
-	if (confirm("현재 다운로드 버전을 배포 처리로 기록하시겠습니까?")) {
-		release = true;
+	var checkboxes = document.querySelectorAll('input[name="fileIds"]:checked');
+	if (checkboxes.length<1) {
+		alert("파일을 하나 이상 선택해주세요!");
+		return;
 	}
-	alert('다운로드에 몇 초 소요됩니다');
+	var fileIds = new Array();
+	for (var checkbox of checkboxes) {
+		fileIds.push(checkbox.value);
+	}
+	if (confirm("배포처리 하시겠습니까?\n배포처리 하시면 변경이력에서 삭제됩니다.")) {
+		release = true;
+    }
+    alert('다운로드에 몇 초 소요됩니다');
 	$(".spinner").show();
-	$("#ifrm").attr("src", "/api/v1/ecm/release/changed?release=" + release);
-	setTimeout(function() {
-		$(".spinner").hide();
-	}, 3000);
-}
-
-function downloadChangedByMe() {
-	alert('다운로드에 몇 초 소요됩니다');
-	$(".spinner").show();
-	$("#ifrm").attr("src", "/api/v1/ecm/release/changedbyme");
+	$("#ifrm").attr("src", "/api/v1/ecm/release/changed?release=" + release + "&fileIds=" + fileIds);
 	setTimeout(function() {
 		$(".spinner").hide();
 	}, 3000);

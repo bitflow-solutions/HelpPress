@@ -51,7 +51,6 @@ public class NodeDao {
 			item1.setTree(treeStr);
 			grepo.save(item1);
 		}
-		
 		return false;
 	}
 	
@@ -221,6 +220,17 @@ public class NodeDao {
 				return found;
 			}
 			return false;			
+		}
+	}
+	
+	public String getGroupTitle(UpdateNodeReq params) {
+		Optional<ContentsGroup> row = grepo.findById(params.getGroupId());
+		ContentsGroup item1 = null;
+		if (!row.isPresent()) {
+			return null;
+		} else {
+			item1 = row.get();
+			return item1.getName();
 		}
 	}
 	

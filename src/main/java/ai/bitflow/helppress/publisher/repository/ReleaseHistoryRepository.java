@@ -12,5 +12,6 @@ import ai.bitflow.helppress.publisher.domain.ReleaseHistory;
 public interface ReleaseHistoryRepository extends JpaRepository <ReleaseHistory, Integer> {
 
 	public List<ReleaseHistory> findTop300ByOrderByUpdDtDesc();
+	public ReleaseHistory findOneByOrderByIdDesc();
 	
 }

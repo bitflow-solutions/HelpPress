@@ -1,5 +1,7 @@
 package ai.bitflow.helppress.publisher.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -39,7 +41,13 @@ public class ApiReleaseController {
 	public void downloadAll(@RequestParam Boolean release, HttpServletResponse res, HttpSession sess) {
 		log.debug("downloadAll " + release);
 		String username = SpringUtil.getSessionUserid(sess);
-		if (username!=null && username.length()>0) {
+		if (username==null || username.length()<1) {
+			try {
+				res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication Failed");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
 			rservice.downloadAll(release, res, username);
 		}
 	}
@@ -71,25 +79,22 @@ public class ApiReleaseController {
 	 * @param res
 	 */
 	@GetMapping("/changed") 
-	public void downloadChanged(@RequestParam Boolean release, HttpServletResponse res, HttpSession sess) {
+	public void downloadChanged(@RequestParam String fileIds, @RequestParam Boolean release, HttpServletResponse res, HttpSession sess) {
 		log.debug("downloadChanged");
 		String username = SpringUtil.getSessionUserid(sess);
-		if (username!=null && username.length()>0) {
-			rservice.downloadChanged(release, res, username, null);
+		if (username==null || username.length()<1) {
+			try {
+				res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication Failed");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			String[] fileIdsArr = fileIds.split(",");
+			if (fileIdsArr!=null && fileIdsArr.length>0) {
+				rservice.downloadChanged(fileIdsArr, res, username, release);
+			}
 		}
+		
 	}
 	
-	/**
-	 * 
-	 * @param res
-	 */
-	@GetMapping("/changedbyme") 
-	public void downloadChangedByMe(HttpServletResponse res, HttpSession sess) {
-		log.debug("downloadChangedByMe");
-		String username = SpringUtil.getSessionUserid(sess);
-		if (username!=null && username.length()>0) {
-			rservice.downloadChanged(false, res, username, username);
-		}
-	}
-
 }
