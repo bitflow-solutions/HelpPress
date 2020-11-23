@@ -668,7 +668,11 @@ function loadTree(groupId) {
 	  location.href = "#" + groupId;
 	})
 	.fail(function() { })
-	.always(function() { });
+	.always(function() {
+		setTimeout(function() {
+			$(".spinner").hide();
+		}, 300);
+	});
 }
 
 function expandAll() {
@@ -747,6 +751,7 @@ function handlePdf(file) {
 }
 
 $(function() {
+    $(".spinner").show();
     // 서버쪽의 NumberFormatException: For input string: "" <- 우회를 위한 방어코드
 	jQuery.ajaxSettings.traditional = true;
 	initTree();
@@ -754,7 +759,6 @@ $(function() {
 	initEditor();
 	initSocket();
 	var hash = window.location.hash;
-	// console.log('hash ' + hash);
 	if (hash.length>1) {
 		$("#sel_category").val(hash.substring(1));
 		onSelectChanged($("#sel_category").get(0));

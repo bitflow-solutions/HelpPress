@@ -1,6 +1,6 @@
 #FileLock
-#Sat Nov 21 18:52:03 KST 2020
+#Mon Nov 23 14:30:22 KST 2020
 hostName=DESKTOP-METHOD76
-id=175ea37c1420891413f41edc101fd0d7dd1797683c3
+id=175f394e3a1bad7bb50a6e8c73017565cdab3ad1dff
 method=file
-server=172.16.200.163\:52824
+server=192.168.0.30\:54946

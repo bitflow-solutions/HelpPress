@@ -11,6 +11,10 @@
 .contents-area div.cell { height: calc(100% - 32px); overflow-y: auto; }
 .callout a.button { display: block; }
 tbody th, tbody td { padding: 0.1rem 0.625rem 0.1rem; }
+.tr-release { background-color: #1976d2; }
+.tr-release > td { color: white; }
+.tr-released { background-color: gray !important; }
+.tr-released > td { color: white !important; }
 </style>
 {{/style}}
 
@@ -36,12 +40,12 @@ tbody th, tbody td { padding: 0.1rem 0.625rem 0.1rem; }
 	<div class="cell small-7" style="padding: 0 20px 0 10px;">
 	  <table class="list-table">
 		<colgroup>
-			<col width="8%"/>
-			<col width="13%"/>
+			<col width="7%"/>
+			<col width="12%"/>
 			<col />
+			<col width="20%"/>
+			<col width="10%"/>
 			<col width="13%"/>
-			<col width="13%"/>
-			<col width="15%"/>
 		</colgroup>
 		<thead>
 			<tr>
@@ -55,7 +59,7 @@ tbody th, tbody td { padding: 0.1rem 0.625rem 0.1rem; }
 		</thead>
 		<tbody>
 			{{#hlist}}
-			<tr {{^released}}style="background-color: #ffcc;"{{/released}}>
+			<tr {{#className}}class="{{className}}"{{/className}}>
 				<td class="text-center">{{method}}</td>
 				<td class="text-center">{{type}}</td>
 				<td class="text-left">{{#title}}{{title}}{{/title}}</td>

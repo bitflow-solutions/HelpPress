@@ -413,11 +413,19 @@ public class ReleaseService {
 				}
 				item.setStatus(status);
 				if (ApplicationConstant.TYPE_FOLDER.equals(item.getType())) {
-					type = "폴더"; // "folder_open";
+					type = "폴더";
 				} else if (ApplicationConstant.TYPE_CONTENT.equals(item.getType())) {
-					type = "도움말"; // "insert_drive_file";
+					type = "도움말";
 				} else  if (ApplicationConstant.TYPE_GROUP.equals(item.getType())) {
-					type = "도움말그룹"; // "file_copy";
+					type = "도움말그룹";
+				} else  if (ApplicationConstant.TYPE_RELEASE.equals(item.getType())) {
+					type = "배포";
+					item.setTitle("배포버전 v" + item.getTitle());
+					item.setClassName("tr-release");
+				}
+				if (item.getReleased()!=null && item.getReleased()=='Y') {
+					item.setClassName("tr-released");
+					logger.debug("tr-released");
 				}
 				item.setType(type);
 			}

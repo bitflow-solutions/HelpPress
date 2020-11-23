@@ -47,6 +47,8 @@ public class ChangeHistory {
 	private Boolean del;
 	@Transient
 	private String fileId;
+	@Transient
+	private String className;
 	
 	@CreationTimestamp
     private LocalDateTime updDt;
